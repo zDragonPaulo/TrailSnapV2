@@ -8,7 +8,11 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.trailsnapv2.ui.dashboard.DashboardFragment"
         android:label="Dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_appSettingsFragment"
+            app:destination="@id/appSettingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.trailsnapv2.ui.history.HistoryFragment"
@@ -32,7 +36,11 @@
         android:id="@+id/navigation_add_walk"
         android:name="com.example.trailsnapv2.ui.walk.AddWalkFragment"
         android:label="Add Walk"
-        tools:layout="@layout/fragment_add_walk" />
+        tools:layout="@layout/fragment_add_walk" >
+        <action
+            android:id="@+id/action_navigation_add_walk_to_walkFragment"
+            app:destination="@id/walkFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.trailsnapv2.ui.profile.EditProfileFragment"
@@ -58,5 +66,24 @@
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/appSettingsFragment"
+        android:name="com.example.trailsnapv2.ui.dashboard.AppSettingsFragment"
+        android:label="fragment_app_settings"
+        tools:layout="@layout/fragment_app_settings" />
+    <fragment
+        android:id="@+id/walkFragment"
+        android:name="com.example.trailsnapv2.ui.walk.WalkFragment"
+        android:label="fragment_walk"
+        tools:layout="@layout/fragment_walk" >
+        <action
+            android:id="@+id/action_walkFragment_to_editWalkFragment"
+            app:destination="@id/editWalkFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editWalkFragment"
+        android:name="com.example.trailsnapv2.ui.walk.EditWalkFragment"
+        android:label="fragment_edit_walk"
+        tools:layout="@layout/fragment_edit_walk" />
 
 </navigation>
