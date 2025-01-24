@@ -1,6 +1,9 @@
 package com.example.trailsnapv2.dao;
 
 import android.database.Cursor;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
@@ -32,8 +35,9 @@ public final class UserDao_Impl implements UserDao {
     this.__insertionAdapterOfUser = new EntityInsertionAdapter<User>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `users` (`user_id`,`username`,`user_description`,`birthday`,`total_distance`,`time_used`,`creation_date`,`profile_picture`) VALUES (nullif(?, 0),?,?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `users` (`user_id`, `password`, `username`, `user_description`, `birthday`, `total_distance`, `time_used`, `creation_date`, `profile_picture`) VALUES (nullif(?, 0), ?, ?, ?, ?, ?, ?, ?, ?)";
       }
+
 
       @Override
       public void bind(SupportSQLiteStatement stmt, User value) {
@@ -115,6 +119,7 @@ public final class UserDao_Impl implements UserDao {
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
       final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "user_id");
+      final int _cursorIndexOfPassword = CursorUtil.getColumnIndexOrThrow(_cursor, "password");
       final int _cursorIndexOfUsername = CursorUtil.getColumnIndexOrThrow(_cursor, "username");
       final int _cursorIndexOfUserDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "user_description");
       final int _cursorIndexOfBirthday = CursorUtil.getColumnIndexOrThrow(_cursor, "birthday");
@@ -127,6 +132,12 @@ public final class UserDao_Impl implements UserDao {
         final User _item;
         final long _tmpUser_id;
         _tmpUser_id = _cursor.getLong(_cursorIndexOfUserId);
+        final String _tmpPassword;
+        if (_cursor.isNull(_cursorIndexOfPassword)) {
+          _tmpPassword = null;
+        } else {
+          _tmpPassword = _cursor.getString(_cursorIndexOfPassword);
+        }
         final String _tmpUsername;
         if (_cursor.isNull(_cursorIndexOfUsername)) {
           _tmpUsername = null;
@@ -161,7 +172,7 @@ public final class UserDao_Impl implements UserDao {
         } else {
           _tmpProfile_picture = _cursor.getString(_cursorIndexOfProfilePicture);
         }
-        _item = new User(_tmpUser_id,_tmpUsername,_tmpUser_description,_tmpBirthday,_tmpTotal_distance,_tmpTime_used,_tmpCreation_date,_tmpProfile_picture);
+        _item = new User(_tmpUser_id,_tmpPassword,_tmpUsername,_tmpUser_description,_tmpBirthday,_tmpTotal_distance,_tmpTime_used,_tmpCreation_date,_tmpProfile_picture);
         _result.add(_item);
       }
       return _result;
@@ -173,5 +184,11 @@ public final class UserDao_Impl implements UserDao {
 
   public static List<Class<?>> getRequiredConverters() {
     return Collections.emptyList();
+  }
+
+  @Nullable
+  @Override
+  public User getUserByUsername(@NonNull String username) {
+    return null;
   }
 }
