@@ -22,7 +22,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class Member(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val member_id: Long,
     val user_id: Long,
     val party_id: Long,
     val join_date: String

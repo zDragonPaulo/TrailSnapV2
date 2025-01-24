@@ -38,25 +38,20 @@ public final class SingularAchievementDao_Impl implements SingularAchievementDao
       @Override
       public void bind(SupportSQLiteStatement stmt, SingularAchievement value) {
         stmt.bindLong(1, value.getId_achievement());
-        if (value.getAchievement_type() == null) {
-          stmt.bindNull(2);
-        } else {
-          stmt.bindString(2, value.getAchievement_type());
-        }
-        stmt.bindLong(3, value.getReceiver_id());
+        stmt.bindLong(2, value.getReceiver_id());
         if (value.getName_achievement() == null) {
-          stmt.bindNull(4);
+          stmt.bindNull(3);
         } else {
-          stmt.bindString(4, value.getName_achievement());
+          stmt.bindString(3, value.getName_achievement());
         }
         if (value.getDescription_achievement() == null) {
-          stmt.bindNull(5);
+          stmt.bindNull(4);
         } else {
-          stmt.bindString(5, value.getDescription_achievement());
+          stmt.bindString(4, value.getDescription_achievement());
         }
         final int _tmp = value.getUnlocked() ? 1 : 0;
-        stmt.bindLong(6, _tmp);
-        stmt.bindDouble(7, value.getProgress());
+        stmt.bindLong(5, _tmp);
+        stmt.bindDouble(6, value.getProgress());
       }
     };
     this.__deletionAdapterOfSingularAchievement = new EntityDeletionOrUpdateAdapter<SingularAchievement>(__db) {
@@ -144,7 +139,7 @@ public final class SingularAchievementDao_Impl implements SingularAchievementDao
         _tmpUnlocked = _tmp != 0;
         final double _tmpProgress;
         _tmpProgress = _cursor.getDouble(_cursorIndexOfProgress);
-        _item = new SingularAchievement(_tmpId_achievement,_tmpAchievement_type,_tmpReceiver_id,_tmpName_achievement,_tmpDescription_achievement,_tmpUnlocked,_tmpProgress);
+        _item = new SingularAchievement(_tmpId_achievement,_tmpReceiver_id,_tmpName_achievement,_tmpDescription_achievement,_tmpUnlocked,_tmpProgress);
         _result.add(_item);
       }
       return _result;

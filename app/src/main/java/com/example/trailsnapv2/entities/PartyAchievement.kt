@@ -15,10 +15,13 @@ import androidx.room.PrimaryKey
 )
 data class PartyAchievement(
     @PrimaryKey(autoGenerate = true) val id_achievement: Long,
-    val achievement_type: String,
     val party_id: Long,
     val name_achievement: String,
     val description_achievement: String,
     val unlocked: Boolean,
     val progress: Double
-)
+) {
+    fun isUnlocked(): Boolean {
+        return unlocked
+    }
+}

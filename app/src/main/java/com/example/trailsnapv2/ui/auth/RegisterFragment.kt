@@ -2,6 +2,7 @@ package com.example.trailsnapv2.ui.auth
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,6 @@ class RegisterFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_register, container, false)
 
-        // Inicializar o ViewModel
         viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
         val usernameEditText: EditText = view.findViewById(R.id.username)
@@ -40,7 +40,7 @@ class RegisterFragment : Fragment() {
 
             if (password == confirmPassword) {
                 val user = User(
-                    user_id = 0, // O `autoGenerate` cuidará disso
+                    user_id = 0,
                     username = username,
                     password = password,
                     user_description = "",
@@ -48,8 +48,9 @@ class RegisterFragment : Fragment() {
                     total_distance = 0.0,
                     time_used = 0,
                     creation_date = "",
-                    profile_picture = ""
+                    profile_picture = "C:\\Users\\Narciso\\AndroidStudioProjects\\TrailSnapV2\\app\\src\\main\\res\\drawable\\ic_user_placeholder.png" // Use an empty string or a valid path
                 )
+                Log.d("RegisterFragment", "Registering user: $user")
                 viewModel.registerUser(user)
                 Toast.makeText(context, "User registered successfully", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)

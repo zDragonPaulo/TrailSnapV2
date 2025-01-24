@@ -8,9 +8,10 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.trailsnapv2.dao.*
 import com.example.trailsnapv2.entities.*
+
 @Database(
     entities = [User::class, Trail::class, Member::class, Party::class, SingularAchievement::class, PartyAchievement::class],
-    version = 2 // Aumente a versão para 2
+    version = 2 // Ensure the version is 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -31,17 +32,14 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app_database.db")
-                .addMigrations(MIGRATION_1_2) // Adicione a migração aqui
+                .addMigrations(MIGRATION_1_2)
                 .build()
 
-        // Definição da migração para adicionar a coluna 'password'
+        // Migration definition
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Adiciona a coluna 'password' na tabela 'users'
-                database.execSQL("ALTER TABLE users ADD COLUMN password TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE users ADD COLUMN profile_picture TEXT NOT NULL DEFAULT 'default_profile_picture_path'")
             }
         }
     }
 }
-
-

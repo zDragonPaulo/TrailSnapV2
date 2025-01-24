@@ -32,31 +32,25 @@ public final class PartyAchievementDao_Impl implements PartyAchievementDao {
     this.__insertionAdapterOfPartyAchievement = new EntityInsertionAdapter<PartyAchievement>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `party_achievements` (`id_achievement`,`achievement_type`,`party_id`,`name_achievement`,`description_achievement`,`unlocked`,`progress`) VALUES (nullif(?, 0),?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `party_achievements` (`id_achievement`,`party_id`,`name_achievement`,`description_achievement`,`unlocked`,`progress`) VALUES (nullif(?, 0),?,?,?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, PartyAchievement value) {
         stmt.bindLong(1, value.getId_achievement());
-        if (value.getAchievement_type() == null) {
-          stmt.bindNull(2);
-        } else {
-          stmt.bindString(2, value.getAchievement_type());
-        }
-        stmt.bindLong(3, value.getParty_id());
+        stmt.bindLong(2, value.getParty_id());
         if (value.getName_achievement() == null) {
-          stmt.bindNull(4);
+          stmt.bindNull(3);
         } else {
-          stmt.bindString(4, value.getName_achievement());
+          stmt.bindString(3, value.getName_achievement());
         }
         if (value.getDescription_achievement() == null) {
-          stmt.bindNull(5);
+          stmt.bindNull(4);
         } else {
-          stmt.bindString(5, value.getDescription_achievement());
+          stmt.bindString(4, value.getDescription_achievement());
         }
-        final int _tmp = value.getUnlocked() ? 1 : 0;
-        stmt.bindLong(6, _tmp);
-        stmt.bindDouble(7, value.getProgress());
+        stmt.bindLong(5, value.isUnlocked() ? 1 : 0);
+        stmt.bindDouble(6, value.getProgress());
       }
     };
     this.__deletionAdapterOfPartyAchievement = new EntityDeletionOrUpdateAdapter<PartyAchievement>(__db) {
@@ -73,11 +67,11 @@ public final class PartyAchievementDao_Impl implements PartyAchievementDao {
   }
 
   @Override
-  public long insert(final PartyAchievement achievement) {
+  public long insert(final PartyAchievement partyAchievement) {
     __db.assertNotSuspendingTransaction();
     __db.beginTransaction();
     try {
-      long _result = __insertionAdapterOfPartyAchievement.insertAndReturnId(achievement);
+      long _result = __insertionAdapterOfPartyAchievement.insertAndReturnId(partyAchievement);
       __db.setTransactionSuccessful();
       return _result;
     } finally {
@@ -86,12 +80,12 @@ public final class PartyAchievementDao_Impl implements PartyAchievementDao {
   }
 
   @Override
-  public int delete(final PartyAchievement achievement) {
+  public int delete(final PartyAchievement partyAchievement) {
     __db.assertNotSuspendingTransaction();
     int _total = 0;
     __db.beginTransaction();
     try {
-      _total +=__deletionAdapterOfPartyAchievement.handle(achievement);
+      _total +=__deletionAdapterOfPartyAchievement.handle(partyAchievement);
       __db.setTransactionSuccessful();
       return _total;
     } finally {
@@ -107,7 +101,6 @@ public final class PartyAchievementDao_Impl implements PartyAchievementDao {
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
       final int _cursorIndexOfIdAchievement = CursorUtil.getColumnIndexOrThrow(_cursor, "id_achievement");
-      final int _cursorIndexOfAchievementType = CursorUtil.getColumnIndexOrThrow(_cursor, "achievement_type");
       final int _cursorIndexOfPartyId = CursorUtil.getColumnIndexOrThrow(_cursor, "party_id");
       final int _cursorIndexOfNameAchievement = CursorUtil.getColumnIndexOrThrow(_cursor, "name_achievement");
       final int _cursorIndexOfDescriptionAchievement = CursorUtil.getColumnIndexOrThrow(_cursor, "description_achievement");
@@ -118,12 +111,6 @@ public final class PartyAchievementDao_Impl implements PartyAchievementDao {
         final PartyAchievement _item;
         final long _tmpId_achievement;
         _tmpId_achievement = _cursor.getLong(_cursorIndexOfIdAchievement);
-        final String _tmpAchievement_type;
-        if (_cursor.isNull(_cursorIndexOfAchievementType)) {
-          _tmpAchievement_type = null;
-        } else {
-          _tmpAchievement_type = _cursor.getString(_cursorIndexOfAchievementType);
-        }
         final long _tmpParty_id;
         _tmpParty_id = _cursor.getLong(_cursorIndexOfPartyId);
         final String _tmpName_achievement;
@@ -144,7 +131,7 @@ public final class PartyAchievementDao_Impl implements PartyAchievementDao {
         _tmpUnlocked = _tmp != 0;
         final double _tmpProgress;
         _tmpProgress = _cursor.getDouble(_cursorIndexOfProgress);
-        _item = new PartyAchievement(_tmpId_achievement,_tmpAchievement_type,_tmpParty_id,_tmpName_achievement,_tmpDescription_achievement,_tmpUnlocked,_tmpProgress);
+        _item = new PartyAchievement(_tmpId_achievement, _tmpParty_id, _tmpName_achievement, _tmpDescription_achievement, _tmpUnlocked, _tmpProgress);
         _result.add(_item);
       }
       return _result;

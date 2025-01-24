@@ -52,10 +52,10 @@ public final class AppDatabase_Impl extends AppDatabase {
 
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `users` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT NOT NULL, `user_description` TEXT NOT NULL, `birthday` TEXT NOT NULL, `total_distance` REAL NOT NULL, `time_used` INTEGER NOT NULL, `creation_date` TEXT NOT NULL, `profile_picture` TEXT NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `users` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `password` TEXT NOT NULL, `username` TEXT NOT NULL, `user_description` TEXT NOT NULL, `birthday` TEXT NOT NULL, `total_distance` REAL NOT NULL, `time_used` INTEGER NOT NULL, `creation_date` TEXT NOT NULL, `profile_picture` TEXT NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `trails` (`trail_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `trail_name` TEXT NOT NULL, `distance` REAL NOT NULL, `start_time` TEXT NOT NULL, `end_time` TEXT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `users`(`user_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `members` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `party_id` INTEGER NOT NULL, `join_date` TEXT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `users`(`user_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`party_id`) REFERENCES `party`(`party_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `party` (`party_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `party_name` TEXT NOT NULL, `party_description` TEXT NOT NULL, `creation_date` TEXT NOT NULL, `creator_id` INTEGER NOT NULL, `total_distance` REAL NOT NULL, `time_used` INTEGER NOT NULL, FOREIGN KEY(`creator_id`) REFERENCES `users`(`user_id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
@@ -112,8 +112,9 @@ public final class AppDatabase_Impl extends AppDatabase {
 
       @Override
       public RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
-        final HashMap<String, TableInfo.Column> _columnsUsers = new HashMap<String, TableInfo.Column>(8);
+        final HashMap<String, TableInfo.Column> _columnsUsers = new HashMap<String, TableInfo.Column>(9);
         _columnsUsers.put("user_id", new TableInfo.Column("user_id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsers.put("password", new TableInfo.Column("password", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsUsers.put("username", new TableInfo.Column("username", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsUsers.put("user_description", new TableInfo.Column("user_description", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsUsers.put("birthday", new TableInfo.Column("birthday", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -138,7 +139,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsTrails.put("start_time", new TableInfo.Column("start_time", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTrails.put("end_time", new TableInfo.Column("end_time", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTrails = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysTrails.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION",Arrays.asList("user_id"), Arrays.asList("user_id")));
+        _foreignKeysTrails.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION", Arrays.asList("user_id"), Arrays.asList("user_id")));
         final HashSet<TableInfo.Index> _indicesTrails = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoTrails = new TableInfo("trails", _columnsTrails, _foreignKeysTrails, _indicesTrails);
         final TableInfo _existingTrails = TableInfo.read(_db, "trails");
@@ -153,8 +154,8 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsMembers.put("party_id", new TableInfo.Column("party_id", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMembers.put("join_date", new TableInfo.Column("join_date", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysMembers = new HashSet<TableInfo.ForeignKey>(2);
-        _foreignKeysMembers.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION",Arrays.asList("user_id"), Arrays.asList("user_id")));
-        _foreignKeysMembers.add(new TableInfo.ForeignKey("party", "CASCADE", "NO ACTION",Arrays.asList("party_id"), Arrays.asList("party_id")));
+        _foreignKeysMembers.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION", Arrays.asList("user_id"), Arrays.asList("user_id")));
+        _foreignKeysMembers.add(new TableInfo.ForeignKey("party", "CASCADE", "NO ACTION", Arrays.asList("party_id"), Arrays.asList("party_id")));
         final HashSet<TableInfo.Index> _indicesMembers = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoMembers = new TableInfo("members", _columnsMembers, _foreignKeysMembers, _indicesMembers);
         final TableInfo _existingMembers = TableInfo.read(_db, "members");
@@ -172,7 +173,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsParty.put("total_distance", new TableInfo.Column("total_distance", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsParty.put("time_used", new TableInfo.Column("time_used", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysParty = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysParty.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION",Arrays.asList("creator_id"), Arrays.asList("user_id")));
+        _foreignKeysParty.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION", Arrays.asList("creator_id"), Arrays.asList("user_id")));
         final HashSet<TableInfo.Index> _indicesParty = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoParty = new TableInfo("party", _columnsParty, _foreignKeysParty, _indicesParty);
         final TableInfo _existingParty = TableInfo.read(_db, "party");
@@ -190,7 +191,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsSingularAchievements.put("unlocked", new TableInfo.Column("unlocked", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsSingularAchievements.put("progress", new TableInfo.Column("progress", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysSingularAchievements = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysSingularAchievements.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION",Arrays.asList("receiver_id"), Arrays.asList("user_id")));
+        _foreignKeysSingularAchievements.add(new TableInfo.ForeignKey("users", "CASCADE", "NO ACTION", Arrays.asList("receiver_id"), Arrays.asList("user_id")));
         final HashSet<TableInfo.Index> _indicesSingularAchievements = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoSingularAchievements = new TableInfo("singular_achievements", _columnsSingularAchievements, _foreignKeysSingularAchievements, _indicesSingularAchievements);
         final TableInfo _existingSingularAchievements = TableInfo.read(_db, "singular_achievements");
@@ -208,9 +209,8 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsPartyAchievements.put("unlocked", new TableInfo.Column("unlocked", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPartyAchievements.put("progress", new TableInfo.Column("progress", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysPartyAchievements = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysPartyAchievements.add(new TableInfo.ForeignKey("party", "CASCADE", "NO ACTION",Arrays.asList("party_id"), Arrays.asList("party_id")));
-        final HashSet<TableInfo.Index> _indicesPartyAchievements = new HashSet<TableInfo.Index>(0);
-        final TableInfo _infoPartyAchievements = new TableInfo("party_achievements", _columnsPartyAchievements, _foreignKeysPartyAchievements, _indicesPartyAchievements);
+        _foreignKeysPartyAchievements.add(new TableInfo.ForeignKey("party", "CASCADE", "NO ACTION", Arrays.asList("party_id"), Arrays.asList("party_id")));
+        final TableInfo _infoPartyAchievements = new TableInfo("party_achievements", _columnsPartyAchievements, _foreignKeysPartyAchievements);
         final TableInfo _existingPartyAchievements = TableInfo.read(_db, "party_achievements");
         if (! _infoPartyAchievements.equals(_existingPartyAchievements)) {
           return new RoomOpenHelper.ValidationResult(false, "party_achievements(com.example.trailsnapv2.entities.PartyAchievement).\n"
@@ -221,33 +221,24 @@ public final class AppDatabase_Impl extends AppDatabase {
       }
     }, "6acfd698bf8f28fd29171901a9893370", "cd7faf64430e92c7d870f44b80c33a49");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
-        .name(configuration.name)
-        .callback(_openCallback)
-        .build();
+            .name(configuration.name)
+            .callback(_openCallback)
+            .build();
     final SupportSQLiteOpenHelper _helper = configuration.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
   }
 
   @Override
   protected InvalidationTracker createInvalidationTracker() {
-    final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
-    HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","trails","members","party","singular_achievements","party_achievements");
+    return new InvalidationTracker(this, "users", "trails", "members", "party", "singular_achievements", "party_achievements");
   }
 
   @Override
   public void clearAllTables() {
     super.assertNotMainThread();
     final SupportSQLiteDatabase _db = super.getOpenHelper().getWritableDatabase();
-    boolean _supportsDeferForeignKeys = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP;
     try {
-      if (!_supportsDeferForeignKeys) {
-        _db.execSQL("PRAGMA foreign_keys = FALSE");
-      }
       super.beginTransaction();
-      if (_supportsDeferForeignKeys) {
-        _db.execSQL("PRAGMA defer_foreign_keys = TRUE");
-      }
       _db.execSQL("DELETE FROM `users`");
       _db.execSQL("DELETE FROM `trails`");
       _db.execSQL("DELETE FROM `members`");
@@ -257,9 +248,6 @@ public final class AppDatabase_Impl extends AppDatabase {
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
-      if (!_supportsDeferForeignKeys) {
-        _db.execSQL("PRAGMA foreign_keys = TRUE");
-      }
       _db.query("PRAGMA wal_checkpoint(FULL)").close();
       if (!_db.inTransaction()) {
         _db.execSQL("VACUUM");
@@ -286,8 +274,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   }
 
   @Override
-  public List<Migration> getAutoMigrations(
-      @NonNull Map<Class<? extends AutoMigrationSpec>, AutoMigrationSpec> autoMigrationSpecsMap) {
+  public List<Migration> getAutoMigrations(@NonNull Map<Class<? extends AutoMigrationSpec>, AutoMigrationSpec> autoMigrationSpecsMap) {
     return Arrays.asList();
   }
 

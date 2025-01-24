@@ -38,36 +38,40 @@ public final class UserDao_Impl implements UserDao {
         return "INSERT OR ABORT INTO `users` (`user_id`, `password`, `username`, `user_description`, `birthday`, `total_distance`, `time_used`, `creation_date`, `profile_picture`) VALUES (nullif(?, 0), ?, ?, ?, ?, ?, ?, ?, ?)";
       }
 
-
       @Override
       public void bind(SupportSQLiteStatement stmt, User value) {
         stmt.bindLong(1, value.getUser_id());
-        if (value.getUsername() == null) {
+        if (value.getPassword() == null) {
           stmt.bindNull(2);
         } else {
-          stmt.bindString(2, value.getUsername());
+          stmt.bindString(2, value.getPassword());
         }
-        if (value.getUser_description() == null) {
+        if (value.getUsername() == null) {
           stmt.bindNull(3);
         } else {
-          stmt.bindString(3, value.getUser_description());
+          stmt.bindString(3, value.getUsername());
         }
-        if (value.getBirthday() == null) {
+        if (value.getUser_description() == null) {
           stmt.bindNull(4);
         } else {
-          stmt.bindString(4, value.getBirthday());
+          stmt.bindString(4, value.getUser_description());
         }
-        stmt.bindDouble(5, value.getTotal_distance());
-        stmt.bindLong(6, value.getTime_used());
-        if (value.getCreation_date() == null) {
-          stmt.bindNull(7);
+        if (value.getBirthday() == null) {
+          stmt.bindNull(5);
         } else {
-          stmt.bindString(7, value.getCreation_date());
+          stmt.bindString(5, value.getBirthday());
         }
-        if (value.getProfile_picture() == null) {
+        stmt.bindDouble(6, value.getTotal_distance());
+        stmt.bindLong(7, value.getTime_used());
+        if (value.getCreation_date() == null) {
           stmt.bindNull(8);
         } else {
-          stmt.bindString(8, value.getProfile_picture());
+          stmt.bindString(8, value.getCreation_date());
+        }
+        if (value.getProfile_picture() == null) {
+          stmt.bindNull(9);
+        } else {
+          stmt.bindString(9, value.getProfile_picture());
         }
       }
     };
@@ -189,6 +193,78 @@ public final class UserDao_Impl implements UserDao {
   @Nullable
   @Override
   public User getUserByUsername(@NonNull String username) {
-    return null;
+    final String _sql = "SELECT * FROM users WHERE username = ?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (username == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, username);
+    }
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "user_id");
+      final int _cursorIndexOfPassword = CursorUtil.getColumnIndexOrThrow(_cursor, "password");
+      final int _cursorIndexOfUsername = CursorUtil.getColumnIndexOrThrow(_cursor, "username");
+      final int _cursorIndexOfUserDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "user_description");
+      final int _cursorIndexOfBirthday = CursorUtil.getColumnIndexOrThrow(_cursor, "birthday");
+      final int _cursorIndexOfTotalDistance = CursorUtil.getColumnIndexOrThrow(_cursor, "total_distance");
+      final int _cursorIndexOfTimeUsed = CursorUtil.getColumnIndexOrThrow(_cursor, "time_used");
+      final int _cursorIndexOfCreationDate = CursorUtil.getColumnIndexOrThrow(_cursor, "creation_date");
+      final int _cursorIndexOfProfilePicture = CursorUtil.getColumnIndexOrThrow(_cursor, "profile_picture");
+      final User _result;
+      if (_cursor.moveToFirst()) {
+        final long _tmpUser_id;
+        _tmpUser_id = _cursor.getLong(_cursorIndexOfUserId);
+        final String _tmpPassword;
+        if (_cursor.isNull(_cursorIndexOfPassword)) {
+          _tmpPassword = null;
+        } else {
+          _tmpPassword = _cursor.getString(_cursorIndexOfPassword);
+        }
+        final String _tmpUsername;
+        if (_cursor.isNull(_cursorIndexOfUsername)) {
+          _tmpUsername = null;
+        } else {
+          _tmpUsername = _cursor.getString(_cursorIndexOfUsername);
+        }
+        final String _tmpUser_description;
+        if (_cursor.isNull(_cursorIndexOfUserDescription)) {
+          _tmpUser_description = null;
+        } else {
+          _tmpUser_description = _cursor.getString(_cursorIndexOfUserDescription);
+        }
+        final String _tmpBirthday;
+        if (_cursor.isNull(_cursorIndexOfBirthday)) {
+          _tmpBirthday = null;
+        } else {
+          _tmpBirthday = _cursor.getString(_cursorIndexOfBirthday);
+        }
+        final double _tmpTotal_distance;
+        _tmpTotal_distance = _cursor.getDouble(_cursorIndexOfTotalDistance);
+        final long _tmpTime_used;
+        _tmpTime_used = _cursor.getLong(_cursorIndexOfTimeUsed);
+        final String _tmpCreation_date;
+        if (_cursor.isNull(_cursorIndexOfCreationDate)) {
+          _tmpCreation_date = null;
+        } else {
+          _tmpCreation_date = _cursor.getString(_cursorIndexOfCreationDate);
+        }
+        final String _tmpProfile_picture;
+        if (_cursor.isNull(_cursorIndexOfProfilePicture)) {
+          _tmpProfile_picture = null;
+        } else {
+          _tmpProfile_picture = _cursor.getString(_cursorIndexOfProfilePicture);
+        }
+        _result = new User(_tmpUser_id,_tmpPassword,_tmpUsername,_tmpUser_description,_tmpBirthday,_tmpTotal_distance,_tmpTime_used,_tmpCreation_date,_tmpProfile_picture);
+      } else {
+        _result = null;
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
   }
 }

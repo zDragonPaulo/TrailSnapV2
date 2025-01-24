@@ -37,7 +37,7 @@ public final class MemberDao_Impl implements MemberDao {
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Member value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getMember_id());
         stmt.bindLong(2, value.getUser_id());
         stmt.bindLong(3, value.getParty_id());
         if (value.getJoin_date() == null) {
@@ -55,7 +55,7 @@ public final class MemberDao_Impl implements MemberDao {
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Member value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getMember_id());
       }
     };
   }

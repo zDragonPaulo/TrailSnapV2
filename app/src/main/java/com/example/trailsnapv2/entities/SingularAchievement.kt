@@ -15,7 +15,6 @@ import androidx.room.PrimaryKey
 )
 data class SingularAchievement(
     @PrimaryKey(autoGenerate = true) val id_achievement: Long,
-    val achievement_type: String,
     val receiver_id: Long,
     val name_achievement: String,
     val description_achievement: String,

@@ -1,8 +1,8 @@
-// LoginFragment.kt
 package com.example.trailsnapv2.ui.auth
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +11,10 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.R
-
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
@@ -34,11 +35,14 @@ class LoginFragment : Fragment() {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            if (viewModel.loginUser(username, password)) {
-                Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_loginFragment_to_navigation_dashboard)
-            } else {
-                Toast.makeText(context, "Invalid credentials", Toast.LENGTH_SHORT).show()
+            lifecycleScope.launch {
+                val success = viewModel.loginUser(username, password)
+                if (success) {
+                    Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_loginFragment_to_navigation_dashboard)
+                } else {
+                    Toast.makeText(context, "Invalid credentials", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

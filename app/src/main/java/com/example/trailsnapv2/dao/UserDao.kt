@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.trailsnapv2.entities.User
 
-// UserDao.kt
 @Dao
 interface UserDao {
     @Query("SELECT * FROM users")
