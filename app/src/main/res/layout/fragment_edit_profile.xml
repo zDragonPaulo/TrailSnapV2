@@ -15,7 +15,6 @@
         android:contentDescription=""
         android:src="@drawable/ic_user_placeholder"
         android:layout_marginBottom="16dp" />
-
     <Button
         android:id="@+id/button_select_image"
         android:layout_width="wrap_content"
