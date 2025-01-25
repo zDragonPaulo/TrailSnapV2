@@ -9,10 +9,24 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.trailsnapv2.databinding.ActivityMainBinding
 
+
+/**
+ * Main activity of the TrailSnap application.
+ * This activity manages the main navigation interface and the bottom navigation view.
+ * It sets up the navigation controller to manage the transitions between different fragments
+ * and ensures that the action bar and bottom navigation are correctly synchronized.
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    /**
+     * Called when the activity is first created.
+     * Initializes the view binding, sets the content view, and sets up the bottom navigation.
+     * It also configures the navigation controller to manage fragment navigation.
+     *
+     * @param savedInstanceState A bundle that contains the activity's previous saved state, if any.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
