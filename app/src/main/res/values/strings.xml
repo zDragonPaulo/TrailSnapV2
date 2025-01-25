@@ -46,4 +46,5 @@
     <string name="fragment_walk_details">Detalhes da Caminhada</string>
     <string name="profile">Perfil</string>
     <string name="history">História</string>
+    <string name="birthday_hint">Data de Nascimento</string>
 </resources>

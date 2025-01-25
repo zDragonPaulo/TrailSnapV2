@@ -41,4 +41,5 @@
     <string name="fragment_walk_details">Walk Details</string>
     <string name="profile">Profile</string>
     <string name="history">History</string>
+    <string name="birthday_hint">Birthdate</string>
 </resources>

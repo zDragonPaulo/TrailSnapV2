@@ -31,10 +31,25 @@
         android:layout_marginBottom="16dp" />
 
     <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password_hint"
+        android:layout_marginBottom="16dp"
+        android:inputType="textPassword" />
+
+    <EditText
         android:id="@+id/edit_user_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/description_hint"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/edit_birthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/birthday_hint"
         android:layout_marginBottom="16dp" />
 
     <Button

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.trailsnapv2.entities.User
 import kotlinx.coroutines.flow.Flow
 
@@ -41,6 +42,9 @@ interface UserDao {
      */
     @Insert
     fun insert(user: User): Long
+
+    @Update
+    fun updateUser(user: User): Int
 
     /**
      * Deletes the specified user from the "users" table.
