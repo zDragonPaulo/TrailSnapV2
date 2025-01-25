@@ -38,4 +38,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     fun logoutUser() {
         _user.value = null
     }
+
+    suspend fun getUserId(username: String): Long? {
+        return withContext(Dispatchers.IO) {
+            userDao.getUserByUsername(username)?.user_id
+        }
+    }
+
 }
