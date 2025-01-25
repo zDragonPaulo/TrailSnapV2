@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TrailSnapV2</string>
     <string name="login_button">Sign In</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="register_button">Register</string>
@@ -42,4 +41,5 @@
     <string name="profile">Profile</string>
     <string name="history">History</string>
     <string name="birthday_hint">Birthdate</string>
+    <string name="apply_settings_button">Apply Settings</string>
 </resources>
