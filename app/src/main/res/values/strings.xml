@@ -7,7 +7,6 @@
     <string name="walk_hint">Insira o nome da caminhada</string>
     <string name="start_walk_button">Iniciar Caminhada</string>
     <string name="my_groups">Os Meus Grupos</string>
-    <string name="settings_button">Definições</string>
     <string name="group_invites">Convites de Grupo</string>
     <string name="next_achievements">Próximas Conquistas</string>
     <string name="image_select_button">Selecionar Imagem</string>
@@ -21,8 +20,15 @@
     <string name="login_button" translatable="false">Login</string>
     <string name="confirm_password_hint">Confirmar Password</string>
     <string name="register_button">Registar</string>
-    <string name="user_settings_button">Definições</string>
     <string name="finish_walk_button">Finalizar Caminhada</string>
+    <string name="edit_button">Editar</string>
+    <string name="settings_text">Definições</string>
+    <string name="language_text">Idioma</string>
+    <string name="theme_text">Tema</string>
+    <string name="dark_mode_text">Modo Escuro</string>
+    <string name="telemetry_text">Telemetria</string>
+    <string name="accelerometer_text">Acelerometro</string>
+    <string name="gps_text" translatable="false">GPS</string>
     <string-array name="language_options">
         <item>Português</item>
         <item>English</item>
