@@ -17,7 +17,7 @@
         android:layout_marginTop="422dp"
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="261dp"
-        android:text="Iniciar" />
+        android:text="@string/start_walk_button" />
 
     <TextView
         android:id="@+id/nameWalk"
@@ -31,7 +31,7 @@
         android:layout_marginTop="158dp"
         android:layout_marginEnd="162dp"
         android:layout_marginBottom="549dp"
-        android:text="Insira o nome da caminhada:" />
+        android:text="@string/walk_name_title" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -50,6 +50,6 @@
         android:layout_marginTop="197dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="488dp"
-        android:hint="Insira o nome da caminhada" />
+        android:hint="@string/walk_hint" />
 
 </RelativeLayout>

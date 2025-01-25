@@ -1,6 +1,26 @@
 <resources>
     <string name="app_name">TrailSnapV2</string>
-    <string name="title_home">Home</string>
+    <string name="title_home" translatable="false">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">Notificações</string>
+    <string name="walk_name_title">Nome da caminhada:</string>
+    <string name="walk_hint">Insira o nome da caminhada</string>
+    <string name="start_walk_button">Iniciar Caminhada</string>
+    <string name="my_groups">Os Meus Grupos</string>
+    <string name="settings_button">Definições</string>
+    <string name="group_invites">Convites de Grupo</string>
+    <string name="next_achievements">Próximas Conquistas</string>
+    <string name="image_select_button">Selecionar Imagem</string>
+    <string name="username_hint" translatable="false">Username</string>
+    <string name="save_button">Guardar</string>
+    <string name="description_hint">Descrição</string>
+    <string name="walk_photo">Foto Atual</string>
+    <string name="walk_name">Nome</string>
+    <string name="save_walk_button">Guardar Caminhada</string>
+    <string name="password_hint" translatable="false">Password</string>
+    <string name="login_button" translatable="false">Login</string>
+    <string name="confirm_password_hint">Confirmar Password</string>
+    <string name="register_button">Registar</string>
+    <string name="user_settings_button">Definições</string>
+    <string name="finish_walk_button">Finalizar Caminhada</string>
 </resources>

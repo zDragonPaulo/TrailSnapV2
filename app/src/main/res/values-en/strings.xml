@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TrailSnapV2</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="register_button">Register</string>
+    <string name="user_settings_button">Settings</string>
+    <string name="finish_walk_button">Finish Walk</string>
+    <string name="save_button">Save</string>
+    <string name="description_hint">Description</string>
+    <string name="walk_photo">Current Photo</string>
+    <string name="walk_name">Name</string>
+    <string name="save_walk_button">Save Walk</string>
+    <string name="title_dashboard">Inicio</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="walk_name_title">Walk Name:</string>
+    <string name="walk_hint">Insert walk name</string>
+    <string name="start_walk_button">Start Walk</string>
+    <string name="my_groups">My Groups</string>
+    <string name="settings_button">Settings</string>
+    <string name="group_invites">Group Invites</string>
+    <string name="next_achievements">Next Achievements</string>
+    <string name="image_select_button">Select Image</string>
+</resources>
