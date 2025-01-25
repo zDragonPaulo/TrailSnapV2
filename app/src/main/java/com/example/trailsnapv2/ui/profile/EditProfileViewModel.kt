@@ -3,6 +3,7 @@ package com.example.trailsnapv2.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.trailsnapv2.dao.UserDao
 import com.example.trailsnapv2.entities.User
@@ -25,6 +26,11 @@ class EditProfileViewModel(private val userDao: UserDao) : ViewModel() {
             }
         }
     }
+
+    fun getUserById(userId: Long): LiveData<User?> {
+        return userDao.getUserById(userId).asLiveData()
+    }
+
 
     private val _updateStatus = MutableLiveData<UpdateStatus>()
     val updateStatus: LiveData<UpdateStatus> = _updateStatus
