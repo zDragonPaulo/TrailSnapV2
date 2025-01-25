@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.trailsnapv2.R
 
-class WalkFragment : Fragment() {
+class
+WalkFragment : Fragment() {
 
     companion object {
         fun newInstance() = WalkFragment()

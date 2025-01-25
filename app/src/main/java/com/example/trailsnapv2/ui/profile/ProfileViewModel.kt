@@ -1,4 +1,3 @@
-// ProfileViewModel.kt
 package com.example.trailsnapv2.ui.profile
 
 import androidx.lifecycle.LiveData
@@ -6,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trailsnapv2.dao.UserDao
-import com.example.trailsnapv2.entities.User
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
@@ -25,12 +24,13 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
 
     fun loadUserData(userId: Long) {
         viewModelScope.launch {
-            val user = userDao.getUserById(userId)
-            user?.let {
-                _username.value = it.username
-                _birthday.value = it.birthday
-                _totalDistance.value = "${it.total_distance} km"
-                _timeUsed.value = "${it.time_used} hours"
+            userDao.getUserById(userId).collect { user ->
+                user?.let {
+                    _username.value = it.username
+                    _birthday.value = it.birthday
+                    _totalDistance.value = "${it.total_distance} km"
+                    _timeUsed.value = "${it.time_used} hours"
+                }
             }
         }
     }

@@ -30,7 +30,6 @@ class ProfileFragment : Fragment() {
         val timeUsedTextView: TextView = view.findViewById(R.id.time_used)
         val settingsButton: Button = view.findViewById(R.id.button_settings)
 
-        // Observe the ViewModel data and update the UI
         viewModel.username.observe(viewLifecycleOwner) {
             usernameTextView.text = it
         }
@@ -44,15 +43,10 @@ class ProfileFragment : Fragment() {
             timeUsedTextView.text = it
         }
 
-        // Load user data (replace with actual user ID)
         viewModel.loadUserData(1L)
 
-        // Set up the button click listener to navigate to the edit profile page
         settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment,
-                null,
-                null,
-                null)
+            findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment)
         }
 
         return view

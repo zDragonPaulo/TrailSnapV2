@@ -2,6 +2,7 @@ package com.example.trailsnapv2.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -21,6 +22,7 @@ data class PartyAchievement(
     val unlocked: Boolean,
     val progress: Double
 ) {
+    @Ignore
     fun isUnlocked(): Boolean {
         return unlocked
     }

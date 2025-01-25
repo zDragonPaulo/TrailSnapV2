@@ -11,7 +11,7 @@ import com.example.trailsnapv2.entities.*
 
 @Database(
     entities = [User::class, Trail::class, Member::class, Party::class, SingularAchievement::class, PartyAchievement::class],
-    version = 2 // Ensure the version is 2
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -27,18 +27,18 @@ abstract class AppDatabase : RoomDatabase() {
         private val LOCK = Any()
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            instance ?: buildDatabase(context.applicationContext).also { instance = it }
+            instance ?: buildDatabase(context).also { instance = it }
         }
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app_database.db")
                 .addMigrations(MIGRATION_1_2)
+                .allowMainThreadQueries() // for now :)
                 .build()
 
-        // Migration definition
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE users ADD COLUMN profile_picture TEXT NOT NULL DEFAULT 'default_profile_picture_path'")
+                database.execSQL("ALTER TABLE users ADD COLUMN profile_picture TEXT NOT NULL DEFAULT '@drawable/ic_user_placeholder.png'")
             }
         }
     }

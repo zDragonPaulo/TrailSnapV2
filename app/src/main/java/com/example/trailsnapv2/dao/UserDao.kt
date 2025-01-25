@@ -1,4 +1,3 @@
-// UserDao.kt
 package com.example.trailsnapv2.dao
 
 import androidx.room.Dao
@@ -23,5 +22,5 @@ interface UserDao {
     fun delete(user: User): Int
 
     @Query("SELECT * FROM users WHERE user_id = :userId")
-    suspend fun getUserById(userId: Long): User?
+    fun getUserById(userId: Long): Flow<User?>
 }

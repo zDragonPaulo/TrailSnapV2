@@ -34,7 +34,7 @@ class RegisterFragment : Fragment() {
         val registerButton: Button = view.findViewById(R.id.register_button)
         val alreadyHaveAcountButton: Button = view.findViewById(R.id.register_bypass_button)
 
-        alreadyHaveAcountButton.setOnClickListener{
+        alreadyHaveAcountButton.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
         registerButton.setOnClickListener {
