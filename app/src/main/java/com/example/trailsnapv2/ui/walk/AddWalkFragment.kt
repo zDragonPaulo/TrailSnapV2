@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.R
 import com.google.android.material.textfield.TextInputLayout
@@ -38,7 +39,11 @@ class AddWalkFragment : Fragment() {
             // TODO: Save the walk to the database
 
 
-            findNavController().navigate(R.id.action_navigation_add_walk_to_walkFragment)
+            findNavController().navigate(R.id.action_navigation_add_walk_to_walkFragment,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.navigation_add_walk, true)
+                    .build())
         }
 
 

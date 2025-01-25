@@ -49,7 +49,7 @@
             android:id="@+id/action_navigation_add_walk_to_walkFragment"
             app:destination="@id/walkFragment"
             app:popUpTo="@id/navigation_add_walk"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -89,6 +89,9 @@
         <action
             android:id="@+id/action_walkFragment_to_editWalkFragment"
             app:destination="@id/editWalkFragment" />
+        <action
+            android:id="@+id/action_walkFragment_to_navigation_add_walk"
+            app:destination="@id/navigation_add_walk" />
     </fragment>
     <fragment
         android:id="@+id/editWalkFragment"
