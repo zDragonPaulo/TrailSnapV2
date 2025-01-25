@@ -72,10 +72,12 @@ class RegisterFragment : Fragment() {
                 )
                 Log.d("RegisterFragment", "Registering user: $user")
                 viewModel.registerUser(user)
-                Toast.makeText(context, "User registered successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    getString(R.string.user_registered_successfully), Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             } else {
-                Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT).show()
             }
         }
 

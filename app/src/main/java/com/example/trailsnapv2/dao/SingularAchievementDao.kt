@@ -40,4 +40,7 @@ interface SingularAchievementDao {
      */
     @Delete
     fun delete(achievement: SingularAchievement): Int
+
+    @Query("DELETE FROM singular_achievements")
+    fun clearAll()
 }

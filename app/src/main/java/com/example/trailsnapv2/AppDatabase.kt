@@ -24,8 +24,9 @@ import com.example.trailsnapv2.entities.*
  * @property partyAchievementDao DAO for accessing party achievement data.
  */
 @Database(
-    entities = [User::class, Trail::class, Member::class, Party::class, SingularAchievement::class, PartyAchievement::class],
-    version = 2
+    entities = [User::class, Trail::class, Member::class, Party::class, SingularAchievement::class,
+        PartyAchievement::class, UserAchievement::class],
+    version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -35,6 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun partyDao(): PartyDao
     abstract fun singularAchievementDao(): SingularAchievementDao
     abstract fun partyAchievementDao(): PartyAchievementDao
+    abstract fun userAchievementDao(): UserAchievementDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null
@@ -67,7 +69,7 @@ abstract class AppDatabase : RoomDatabase() {
          * Migration from version 1 to version 2 of the database.
          * This migration adds a new column 'profile_picture' to the 'users' table.
          */
-        val MIGRATION_1_2 = object : Migration(1, 2) {
+        val MIGRATION_1_2 = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE users ADD COLUMN profile_picture TEXT NOT NULL DEFAULT '@drawable/ic_user_placeholder.png'")
             }

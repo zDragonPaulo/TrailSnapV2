@@ -19,19 +19,10 @@ import androidx.room.PrimaryKey
  * @property progress The current progress towards unlocking the achievement, represented as a percentage.
  */
 @Entity(
-    tableName = "singular_achievements",
-    foreignKeys = [ForeignKey(
-        entity = User::class,
-        parentColumns = ["user_id"],
-        childColumns = ["receiver_id"],
-        onDelete = ForeignKey.CASCADE
-    )]
+    tableName = "singular_achievements"
 )
 data class SingularAchievement(
     @PrimaryKey(autoGenerate = true) val id_achievement: Long,
-    val receiver_id: Long,
     val name_achievement: String,
     val description_achievement: String,
-    val unlocked: Boolean,
-    val progress: Double
 )

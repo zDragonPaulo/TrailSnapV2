@@ -42,5 +42,9 @@
     <string name="history">History</string>
     <string name="birthday_hint">Birthdate</string>
     <string name="apply_settings_button">Apply Settings</string>
+    <string name="login_successful">Sign In Sucessfully!</string>
+    <string name="invalid_credentials">Invalid Credentials!</string>
+    <string name="user_registered_successfully">User Registed Successfully!</string>
+    <string name="passwords_do_not_match">Passwords don\'t match!</string>
     <string name="profile_photo">Profile Photo</string>
 </resources>
