@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trailsnapv2.dao.UserDao
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**

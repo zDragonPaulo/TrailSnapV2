@@ -43,6 +43,14 @@ interface UserDao {
     @Insert
     fun insert(user: User): Long
 
+    /**
+     * Updates an existing user in the "users" table with new data.
+     *
+     * @param user The User object containing the updated information.
+     *             The user must already exist in the database with a matching primary key.
+     * @return The number of rows affected by the update operation.
+     *         Typically, this should be 1 if the update is successful, or 0 if no matching record exists.
+     */
     @Update
     fun updateUser(user: User): Int
 
