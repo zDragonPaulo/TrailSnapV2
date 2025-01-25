@@ -17,7 +17,11 @@
         android:id="@+id/navigation_history"
         android:name="com.example.trailsnapv2.ui.history.HistoryFragment"
         android:label="History"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_navigation_history_to_walkDetailsFragment"
+            app:destination="@id/walkDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_achievements"
         android:name="com.example.trailsnapv2.ui.achievements.AchievementsFragment"
@@ -84,6 +88,19 @@
         android:id="@+id/editWalkFragment"
         android:name="com.example.trailsnapv2.ui.walk.EditWalkFragment"
         android:label="fragment_edit_walk"
-        tools:layout="@layout/fragment_edit_walk" />
+        tools:layout="@layout/fragment_edit_walk" >
+        <action
+            android:id="@+id/action_editWalkFragment_to_walkDetailsFragment"
+            app:destination="@id/walkDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/walkDetailsFragment"
+        android:name="com.example.trailsnapv2.ui.walk.WalkDetailsFragment"
+        android:label="fragment_walk_details"
+        tools:layout="@layout/fragment_walk_details" >
+        <action
+            android:id="@+id/action_walkDetailsFragment_to_editWalkFragment"
+            app:destination="@id/editWalkFragment" />
+    </fragment>
 
 </navigation>
