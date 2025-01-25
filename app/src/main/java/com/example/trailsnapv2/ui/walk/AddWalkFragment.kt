@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.R
+import com.google.android.material.textfield.TextInputLayout
 
 class AddWalkFragment : Fragment() {
 
@@ -26,6 +29,21 @@ class AddWalkFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_add_walk, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_walk, container, false)
+        val walkName : TextInputLayout = view.findViewById(R.id.textInputLayoutWalkName)
+        val buttonStartWalk : Button = view.findViewById(R.id.startWalk)
+
+
+        buttonStartWalk.setOnClickListener {
+            // TODO: Save the walk to the database
+
+
+            findNavController().navigate(R.id.action_navigation_add_walk_to_walkFragment)
+        }
+
+
+
+
+        return view
     }
 }

@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.R
 
 class
@@ -27,6 +29,16 @@ WalkFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_walk, container, false)
+        val view = inflater.inflate(R.layout.fragment_walk, container, false)
+        val buttonFinishWalk : Button = view.findViewById(R.id.finishWalk)
+
+
+        buttonFinishWalk.setOnClickListener {
+
+
+            findNavController().navigate(R.id.action_walkFragment_to_editWalkFragment)
+        }
+
+        return view
     }
 }
