@@ -29,5 +29,5 @@ data class User(
     val total_distance: Double,
     val time_used: Long,
     val creation_date: String,
-    val profile_picture: String = "@drawable/ic_user_placeholder.png"
+    val profile_picture: String?
 )

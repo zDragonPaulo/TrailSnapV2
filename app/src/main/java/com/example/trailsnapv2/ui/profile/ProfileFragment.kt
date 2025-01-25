@@ -1,10 +1,12 @@
 package com.example.trailsnapv2.ui.profile
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -42,6 +44,7 @@ class ProfileFragment : Fragment() {
         val birthdayTextView: TextView = view.findViewById(R.id.birthday)
         val totalDistanceTextView: TextView = view.findViewById(R.id.total_distance)
         val timeUsedTextView: TextView = view.findViewById(R.id.time_used)
+        val profileImageView: ImageView = view.findViewById(R.id.user_image)
         val settingsButton: Button = view.findViewById(R.id.button_settings)
 
         viewModel.username.observe(viewLifecycleOwner) {
@@ -55,6 +58,13 @@ class ProfileFragment : Fragment() {
         }
         viewModel.timeUsed.observe(viewLifecycleOwner) {
             timeUsedTextView.text = it
+        }
+        viewModel.profilePicture.observe(viewLifecycleOwner) { profilePicturePath ->
+            if (profilePicturePath.isNullOrEmpty()) {
+                profileImageView.setImageResource(R.drawable.ic_user_placeholder)
+            } else {
+                profileImageView.setImageURI(Uri.parse(profilePicturePath))
+            }
         }
 
         viewModel.loadUserData(1L)

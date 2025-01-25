@@ -29,6 +29,9 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
     private val _timeUsed = MutableLiveData<String>()
     val timeUsed: LiveData<String> = _timeUsed
 
+    private val _profilePicture = MutableLiveData<String?>()
+    val profilePicture: LiveData<String?> = _profilePicture
+
     /**
      * Loads the user data by userId and updates the LiveData properties.
      * This function will query the database for the user with the given userId
@@ -44,6 +47,7 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
                     _birthday.value = it.birthday
                     _totalDistance.value = "${it.total_distance} km"
                     _timeUsed.value = "${it.time_used} hours"
+                    _profilePicture.value = it.profile_picture
                 }
             }
         }

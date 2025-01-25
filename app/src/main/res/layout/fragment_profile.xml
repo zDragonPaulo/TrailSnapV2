@@ -12,8 +12,11 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
+        android:contentDescription="@string/profile_photo"
         android:src="@drawable/ic_user_placeholder"
-        tools:ignore="ContentDescription" />
+        android:scaleType="centerCrop"
+        android:background="@drawable/photo_circle"
+        android:clipToOutline="true"/>
 
     <TextView
         android:id="@+id/username"
