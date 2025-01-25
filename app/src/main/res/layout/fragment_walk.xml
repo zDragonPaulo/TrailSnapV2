@@ -1,63 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.walk.WalkFragment">
 
+    <!-- Nome da Caminhada -->
     <TextView
         android:id="@+id/walkName"
-        android:layout_width="171dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="662dp"
-        android:text="@string/walk_name_title" />
+        android:text="@string/walk_name_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
+    <!-- Tempo Decorrido -->
     <TextView
         android:id="@+id/timeUsed"
-        android:layout_width="267dp"
-        android:layout_height="29dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="125dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginBottom="577dp"
-        android:text="Tempo decorrido: (Inserir tempo)" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Tempo decorrido: (Inserir tempo)"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/walkName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="16dp" />
 
+    <!-- Distância Percorrida -->
     <TextView
         android:id="@+id/distanceUsed"
-        android:layout_width="282dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="294dp"
-        android:layout_marginEnd="81dp"
-        android:layout_marginBottom="418dp"
-        android:text="Distância percorrida: (INSERIR DISTÂNCIA)" />
+        android:text="Distância percorrida: (INSERIR DISTÂNCIA)"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/timeUsed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="16dp" />
 
+    <!-- Botão Finalizar Caminhada -->
     <Button
         android:id="@+id/finishWalk"
-        android:layout_width="wrap_content"
-        android:layout_height="65dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="378dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginBottom="288dp"
-        android:text="@string/finish_walk_button" />
-</RelativeLayout>
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/finish_walk_button"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/distanceUsed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="64dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

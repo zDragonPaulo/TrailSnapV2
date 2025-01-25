@@ -23,4 +23,8 @@
     <string name="register_button">Registar</string>
     <string name="user_settings_button">Definições</string>
     <string name="finish_walk_button">Finalizar Caminhada</string>
+    <string-array name="language_options">
+        <item>Português</item>
+        <item>English</item>
+    </string-array>
 </resources>

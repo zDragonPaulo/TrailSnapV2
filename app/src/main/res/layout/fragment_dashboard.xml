@@ -1,107 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="132dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="242dp"
-        android:layout_marginBottom="645dp"
-        android:text="@string/my_groups" />
-
-    <Button
-        android:id="@+id/AppSettingsButton"
+    <!-- Botão de configurações no canto superior direito -->
+    <ImageButton
+        android:id="@+id/button_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="302dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="658dp"
-        android:text="@string/settings_button" />
+        android:src="@drawable/ic_settings"
+    android:contentDescription="@string/settings_button"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp" />
 
+    <!-- Título: Meus Grupos -->
     <TextView
-        android:id="@+id/user_next_achievements"
-        android:layout_width="141dp"
-        android:layout_height="17dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="208dp"
-        android:layout_marginEnd="239dp"
-        android:layout_marginBottom="505dp"
-        android:text="@string/next_achievements" />
-
-    <TextView
-        android:id="@+id/user_party_invites"
-        android:layout_width="141dp"
-        android:layout_height="17dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="318dp"
-        android:layout_marginEnd="238dp"
-        android:layout_marginBottom="395dp"
-        android:text="@string/group_invites" />
-
-    <TextView
-        android:id="@+id/exampleTextGroup"
-        android:layout_width="185dp"
+        android:id="@+id/text_my_groups"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/text_dashboard"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="111dp"
-        android:layout_marginTop="126dp"
-        android:layout_marginEnd="115dp"
-        android:layout_marginBottom="578dp"
-        android:text="INSERIR ICONS/GRUPO" />
+        android:text="@string/my_groups"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
-    <TextView
-        android:id="@+id/exampleTextGroup2"
-        android:layout_width="243dp"
+    <!-- Carrossel de Grupos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_groups"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/text_dashboard"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="82dp"
-        android:layout_marginTop="258dp"
-        android:layout_marginEnd="86dp"
-        android:layout_marginBottom="446dp"
-        android:text="INSERIR ICONS CONQUISTAS" />
+        app:layout_constraintTop_toBottomOf="@id/text_my_groups"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="8dp"
+        tools:listitem="@layout/item_group" />
 
-</RelativeLayout>
+    <!-- Título: Próximas Conquistas -->
+    <TextView
+        android:id="@+id/text_next_achievements"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/next_achievements"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_groups"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- Carrossel de Conquistas -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_achievements"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_next_achievements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="8dp"
+        tools:listitem="@layout/item_achievement" />
+
+    <!-- Título: Convites de Grupo -->
+    <TextView
+        android:id="@+id/text_group_invites"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/group_invites"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_achievements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
