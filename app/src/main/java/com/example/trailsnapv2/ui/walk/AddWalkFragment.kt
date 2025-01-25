@@ -33,6 +33,13 @@ class AddWalkFragment : Fragment() {
         val factory = AddWalkViewModel.Factory(walkDao)
         addWalkViewModel = ViewModelProvider(this, factory).get(AddWalkViewModel::class.java)
 
+        // Observe user data
+        userViewModel.user.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                Log.d("AddWalkFragment", "Observed user ID: ${it.user_id}")
+            }
+        }
+
         buttonStartWalk.setOnClickListener {
             val name = walkName.editText?.text.toString()
             val userId = userViewModel.user.value?.user_id ?: 0L
@@ -61,4 +68,17 @@ class AddWalkFragment : Fragment() {
 
         return view
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Observe user data
+        userViewModel.user.observe(viewLifecycleOwner) { user ->
+            if (user != null) {
+                Log.d("AddWalkFragment", "Observed user ID in onViewCreated: ${user.user_id}")
+            } else {
+                Log.e("AddWalkFragment", "User data is null in onViewCreated.")
+            }
+        }
+    }
+
 }

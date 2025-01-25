@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
  *
  * @param userDao The DAO used to interact with the database for user-related operations.
  */
+
 class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
 
     private val _username = MutableLiveData<String>()
@@ -28,6 +29,13 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
 
     private val _timeUsed = MutableLiveData<String>()
     val timeUsed: LiveData<String> = _timeUsed
+
+    private val _description = MutableLiveData<String>()
+    val description: LiveData<String> = _description
+
+    private val _profilePicture = MutableLiveData<String>()
+    val profilePicture: LiveData<String> = _profilePicture
+
 
     /**
      * Loads the user data by userId and updates the LiveData properties.

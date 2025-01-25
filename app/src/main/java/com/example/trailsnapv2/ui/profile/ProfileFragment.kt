@@ -48,20 +48,20 @@ class ProfileFragment : Fragment() {
         val descriptionTextView: TextView = view.findViewById(R.id.description) // Add this line
         val settingsButton: Button = view.findViewById(R.id.button_settings)
 
-        viewModel.username.observe(viewLifecycleOwner) {
-            usernameTextView.text = it
+        viewModel.username.observe(viewLifecycleOwner) { username ->
+            usernameTextView.text = username
         }
-        viewModel.birthday.observe(viewLifecycleOwner) {
-            birthdayTextView.text = it
+        viewModel.birthday.observe(viewLifecycleOwner) { birthday ->
+            birthdayTextView.text = birthday
         }
-        viewModel.totalDistance.observe(viewLifecycleOwner) {
-            totalDistanceTextView.text = it
+        viewModel.totalDistance.observe(viewLifecycleOwner) { totalDistance ->
+            totalDistanceTextView.text = totalDistance
         }
-        viewModel.timeUsed.observe(viewLifecycleOwner) {
-            timeUsedTextView.text = it
+        viewModel.timeUsed.observe(viewLifecycleOwner) { timeUsed ->
+            timeUsedTextView.text = timeUsed
         }
-        viewModel.description.observe(viewLifecycleOwner) { // Add this observer
-            descriptionTextView.text = it
+        viewModel.description.observe(viewLifecycleOwner) { description ->
+            descriptionTextView.text = description
         }
         viewModel.profilePicture.observe(viewLifecycleOwner) { profilePicturePath ->
             if (profilePicturePath.isNullOrEmpty()) {

@@ -21,7 +21,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val user = userDao.getUserByUsername(username)
                 if (user?.password == password) {
-                    _user.postValue(user)
+                    _user.postValue(user) // Ensure the user data is set
                     Log.d("LoginViewModel", "Logged in user ID: ${user.user_id}")
                     true
                 } else {
@@ -33,6 +33,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
 
     fun logoutUser() {
         _user.value = null

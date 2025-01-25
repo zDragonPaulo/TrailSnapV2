@@ -65,7 +65,8 @@ class AppDatabaseTest {
             birthday = "2000-01-01",
             total_distance = 100.0,
             time_used = 3600L,
-            creation_date = "2025-01-01"
+            creation_date = "2025-01-01",
+            profile_picture = "path/to/image.jpg"
         )
 
         userDao.insert(user)
