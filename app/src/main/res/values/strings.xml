@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TrailSnapV2</string>
-    <string name="title_home" translatable="false">Home</string>
+    <string name="title_home">Página Inicial</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notificações</string>
     <string name="walk_name_title">Nome da caminhada:</string>
@@ -10,14 +10,14 @@
     <string name="group_invites">Convites de Grupo</string>
     <string name="next_achievements">Próximas Conquistas</string>
     <string name="image_select_button">Selecionar Imagem</string>
-    <string name="username_hint" translatable="false">Username</string>
+    <string name="username_hint">Nome de Utilizador</string>
     <string name="save_button">Guardar</string>
     <string name="description_hint">Descrição</string>
     <string name="walk_photo">Foto Atual</string>
     <string name="walk_name">Nome</string>
     <string name="save_walk_button">Guardar Caminhada</string>
     <string name="password_hint" translatable="false">Password</string>
-    <string name="login_button" translatable="false">Login</string>
+    <string name="login_button">Iniciar Sessão</string>
     <string name="confirm_password_hint">Confirmar Password</string>
     <string name="register_button">Registar</string>
     <string name="finish_walk_button">Finalizar Caminhada</string>
@@ -34,4 +34,16 @@
         <item>English</item>
     </string-array>
     <string name="already_have_account">Já tem conta? Inicie Sessão!</string>
+    <string name="dashboard">Página Inicial</string>
+    <string name="achievements">Conquistas</string>
+    <string name="add_walk">Adicionar Caminhada</string>
+    <string name="fragment_edit_profile">Editar Perfil</string>
+    <string name="register_fragment">Registar Utilizador</string>
+    <string name="fragment_login">Iniciar Sessão</string>
+    <string name="fragment_app_settings">Definições da Aplicação</string>
+    <string name="fragment_walk">Progresso de Caminhada</string>
+    <string name="fragment_edit_walk">Editar Caminhada</string>
+    <string name="fragment_walk_details">Detalhes da Caminhada</string>
+    <string name="profile">Perfil</string>
+    <string name="history">História</string>
 </resources>

@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.trailsnapv2.ui.dashboard.DashboardFragment"
-        android:label="Dashboard"
+        android:label="@string/dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_navigation_dashboard_to_appSettingsFragment"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.trailsnapv2.ui.history.HistoryFragment"
-        android:label="History"
+        android:label="@string/history"
         tools:layout="@layout/fragment_history" >
         <action
             android:id="@+id/action_navigation_history_to_walkDetailsFragment"
@@ -27,12 +27,12 @@
     <fragment
         android:id="@+id/navigation_achievements"
         android:name="com.example.trailsnapv2.ui.achievements.AchievementsFragment"
-        android:label="Achievements"
+        android:label="@string/achievements"
         tools:layout="@layout/fragment_achievements" />
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.trailsnapv2.ui.profile.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_navigation_profile_to_editProfileFragment"
@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/navigation_add_walk"
         android:name="com.example.trailsnapv2.ui.walk.AddWalkFragment"
-        android:label="Add Walk"
+        android:label="@string/add_walk"
         tools:layout="@layout/fragment_add_walk" >
         <action
             android:id="@+id/action_navigation_add_walk_to_walkFragment"
@@ -54,12 +54,12 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.trailsnapv2.ui.profile.EditProfileFragment"
-        android:label="fragment_edit_profile"
+        android:label="@string/fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.trailsnapv2.ui.auth.RegisterFragment"
-        android:label="RegisterFragment" >
+        android:label="@string/register_fragment" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -67,7 +67,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.trailsnapv2.ui.auth.LoginFragment"
-        android:label="fragment_login"
+        android:label="@string/fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_navigation_dashboard"
@@ -79,12 +79,12 @@
     <fragment
         android:id="@+id/appSettingsFragment"
         android:name="com.example.trailsnapv2.ui.dashboard.AppSettingsFragment"
-        android:label="fragment_app_settings"
+        android:label="@string/fragment_app_settings"
         tools:layout="@layout/fragment_app_settings" />
     <fragment
         android:id="@+id/walkFragment"
         android:name="com.example.trailsnapv2.ui.walk.WalkFragment"
-        android:label="fragment_walk"
+        android:label="@string/fragment_walk"
         tools:layout="@layout/fragment_walk" >
         <action
             android:id="@+id/action_walkFragment_to_editWalkFragment"
@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/editWalkFragment"
         android:name="com.example.trailsnapv2.ui.walk.EditWalkFragment"
-        android:label="fragment_edit_walk"
+        android:label="@string/fragment_edit_walk"
         tools:layout="@layout/fragment_edit_walk" >
         <action
             android:id="@+id/action_editWalkFragment_to_walkDetailsFragment"
@@ -105,7 +105,7 @@
     <fragment
         android:id="@+id/walkDetailsFragment"
         android:name="com.example.trailsnapv2.ui.walk.WalkDetailsFragment"
-        android:label="fragment_walk_details"
+        android:label="@string/fragment_walk_details"
         tools:layout="@layout/fragment_walk_details" >
         <action
             android:id="@+id/action_walkDetailsFragment_to_editWalkFragment"
