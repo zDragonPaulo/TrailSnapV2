@@ -1,16 +1,19 @@
 package com.example.trailsnapv2.ui.dashboard
 
+import android.content.Intent
 import android.content.res.Configuration
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Spinner
-import java.util.Locale
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.trailsnapv2.MainActivity
 import com.example.trailsnapv2.R
+import com.example.trailsnapv2.databinding.FragmentAppSettingsBinding
+import java.util.Locale
 
 /**
  * Fragment that manages the application settings related to language preferences.
@@ -19,61 +22,61 @@ import com.example.trailsnapv2.R
  */
 class AppSettingsFragment : Fragment() {
 
-    /**
-     * Called when the view for the fragment is created. This method sets up the
-     * listener for the language selection spinner and handles the language change.
-     *
-     * @param view The root view of the fragment.
-     * @param savedInstanceState The previously saved instance state, if any.
-     */
+    private var _binding: FragmentAppSettingsBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentAppSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Configura o spinner de seleção de idioma
         val languageSpinner: Spinner = view.findViewById(R.id.language_spinner)
         languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-            /**
-             * Called when an item is selected from the language spinner.
-             * This method updates the app's locale based on the selected language.
-             *
-             * @param parent The AdapterView where the selection was made.
-             * @param view The view within the AdapterView that was clicked.
-             * @param position The position of the selected item.
-             * @param id The row id of the selected item.
-             */
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (position) {
-                    0 -> setLocale("pt")
-                    1 -> setLocale("en")
+                    0 -> updateLocale("pt") // Português
+                    1 -> updateLocale("en") // Inglês
                 }
             }
 
-            /**
-             * Called when no item is selected in the spinner.
-             * This method does nothing in this case.
-             *
-             * @param parent The AdapterView where the selection was made.
-             */
             override fun onNothingSelected(parent: AdapterView<*>) {
+                // Não faz nada
             }
         }
     }
 
     /**
-     * Changes the app's locale based on the provided language code.
-     * This method updates the application's locale and recreates the activity
-     * to apply the new language configuration.
+     * Updates the app's locale and restarts the activity to apply changes globally.
      *
-     * @param languageCode The language code to set the app's locale (e.g., "pt" for Portuguese, "en" for English).
+     * @param languageCode The ISO language code to set the app's locale.
      */
-    private fun setLocale(languageCode: String) {
+    private fun updateLocale(languageCode: String) {
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
 
-        val config = Configuration()
-        config.locale = locale
-        requireActivity().resources.updateConfiguration(config, requireActivity().resources.displayMetrics)
+        val config = Configuration(requireContext().resources.configuration)
+        config.setLocale(locale)
 
-        requireActivity().recreate()
+        requireContext().resources.updateConfiguration(
+            config,
+            requireContext().resources.displayMetrics
+        )
+
+        // Reinicia a MainActivity para aplicar as alterações no idioma
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
