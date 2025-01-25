@@ -2,15 +2,14 @@ package com.example.trailsnapv2
 
 import android.content.res.Configuration
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.trailsnapv2.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Locale
-
 
 /**
  * Main activity of the TrailSnap application.
@@ -32,9 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Restore the saved state
         val sharedPreferences = getSharedPreferences("AppSettings", MODE_PRIVATE)
-        val languageCode = sharedPreferences.getString("languageCode", "en") // Default to English if not set
+        val languageCode = sharedPreferences.getString("languageCode", "en")
         val locale = Locale(languageCode!!)
         Locale.setDefault(locale)
 

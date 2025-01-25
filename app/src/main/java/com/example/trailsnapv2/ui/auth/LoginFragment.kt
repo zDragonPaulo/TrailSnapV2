@@ -37,10 +37,11 @@ class LoginFragment : Fragment() {
             lifecycleScope.launch {
                 val success = viewModel.loginUser(username, password)
                 if (success) {
-                    Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_loginFragment_to_navigation_dashboard)
                 } else {
-                    Toast.makeText(context, "Invalid credentials", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show()
                 }
             }
         }
