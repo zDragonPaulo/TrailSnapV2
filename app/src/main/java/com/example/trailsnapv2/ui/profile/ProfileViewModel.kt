@@ -20,6 +20,9 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
     private val _username = MutableLiveData<String>()
     val username: LiveData<String> = _username
 
+    private val _description = MutableLiveData<String>()
+    val description: LiveData<String> = _description
+
     private val _birthday = MutableLiveData<String>()
     val birthday: LiveData<String> = _birthday
 
@@ -44,6 +47,7 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
             userDao.getUserById(userId).collect { user ->
                 user?.let {
                     _username.value = it.username
+                    _description.value = it.user_description
                     _birthday.value = it.birthday
                     _totalDistance.value = "${it.total_distance} km"
                     _timeUsed.value = "${it.time_used} hours"

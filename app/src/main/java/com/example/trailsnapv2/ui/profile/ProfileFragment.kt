@@ -45,6 +45,7 @@ class ProfileFragment : Fragment() {
         val totalDistanceTextView: TextView = view.findViewById(R.id.total_distance)
         val timeUsedTextView: TextView = view.findViewById(R.id.time_used)
         val profileImageView: ImageView = view.findViewById(R.id.user_image)
+        val descriptionTextView: TextView = view.findViewById(R.id.description) // Add this line
         val settingsButton: Button = view.findViewById(R.id.button_settings)
 
         viewModel.username.observe(viewLifecycleOwner) {
@@ -58,6 +59,9 @@ class ProfileFragment : Fragment() {
         }
         viewModel.timeUsed.observe(viewLifecycleOwner) {
             timeUsedTextView.text = it
+        }
+        viewModel.description.observe(viewLifecycleOwner) { // Add this observer
+            descriptionTextView.text = it
         }
         viewModel.profilePicture.observe(viewLifecycleOwner) { profilePicturePath ->
             if (profilePicturePath.isNullOrEmpty()) {
