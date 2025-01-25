@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TrailSnapV2</string>
+    <string name="app_name" translatable="false">TrailSnap</string>
     <string name="title_home">Página Inicial</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notificações</string>
@@ -47,4 +47,6 @@
     <string name="profile">Perfil</string>
     <string name="history">História</string>
     <string name="birthday_hint">Data de Nascimento</string>
+    <string name="apply_settings_button">Aplicar Definições</string>
+    <string name="profile_photo">Foto de Perfil</string>
 </resources>

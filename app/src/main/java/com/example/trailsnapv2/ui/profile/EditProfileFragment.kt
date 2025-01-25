@@ -19,6 +19,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.entities.User
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class EditProfileFragment : Fragment() {
 
@@ -27,6 +30,10 @@ class EditProfileFragment : Fragment() {
     }
 
     private lateinit var profileImageView: ImageView
+    private lateinit var usernameEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var descriptionEditText: EditText
+    private lateinit var birthdayEditText: EditText
     private var selectedImageUri: Uri? = null
 
     private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -42,23 +49,27 @@ class EditProfileFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
 
-        val usernameEditText: EditText = view.findViewById(R.id.edit_username)
-        val passwordEditText: EditText = view.findViewById(R.id.edit_password)
-        val descriptionEditText: EditText = view.findViewById(R.id.edit_user_description)
-        val birthdayEditText: EditText = view.findViewById(R.id.edit_birthday)
+        // Inicializar os componentes da interface
+        usernameEditText = view.findViewById(R.id.edit_username)
+        passwordEditText = view.findViewById(R.id.edit_password)
+        descriptionEditText = view.findViewById(R.id.edit_user_description)
+        birthdayEditText = view.findViewById(R.id.edit_birthday)
         profileImageView = view.findViewById(R.id.edit_user_image)
         val selectImageButton: Button = view.findViewById(R.id.button_select_image)
         val saveButton: Button = view.findViewById(R.id.button_save)
 
+        // Ação para selecionar imagem
         selectImageButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             selectImageLauncher.launch(intent)
         }
 
+        // Ação para salvar o perfil
         saveButton.setOnClickListener {
+            val imagePath = selectedImageUri?.let { saveImageToInternalStorage(it) }
             val updatedUser = User(
-                user_id = 1L, // Assuming user ID is 1, replace with actual user ID
+                user_id = 1L, // Replace with the actual logged-in user ID
                 username = usernameEditText.text.toString(),
                 password = passwordEditText.text.toString(),
                 user_description = descriptionEditText.text.toString(),
@@ -66,11 +77,12 @@ class EditProfileFragment : Fragment() {
                 total_distance = 0.0, // Placeholder value
                 time_used = 0L, // Placeholder value
                 creation_date = "", // Placeholder value
-                profile_picture = selectedImageUri.toString() // Use the selected image URI
+                profile_picture = imagePath // Use the path to the saved image
             )
             viewModel.updateUser(updatedUser)
         }
 
+        // Observar mudanças no status da atualização
         viewModel.updateStatus.observe(viewLifecycleOwner, Observer { status ->
             when (status) {
                 EditProfileViewModel.UpdateStatus.SUCCESS -> {
@@ -84,5 +96,41 @@ class EditProfileFragment : Fragment() {
         })
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val userId = 1L // Substitua pelo ID real do usuário logado
+        viewModel.getUserById(userId).observe(viewLifecycleOwner, Observer { user ->
+            user?.let {
+                // Popula os campos do formulário com os dados do usuário
+                usernameEditText.setText(it.username)
+                passwordEditText.setText(it.password)
+                descriptionEditText.setText(it.user_description)
+                birthdayEditText.setText(it.birthday)
+                selectedImageUri = it.profile_picture?.let { uriString -> Uri.parse(uriString) }
+                profileImageView.setImageURI(selectedImageUri)
+            }
+        })
+    }
+
+    private fun saveImageToInternalStorage(uri: Uri): String? {
+        val context = requireContext()
+        val contentResolver = context.contentResolver
+        val fileName = "profile_image_${System.currentTimeMillis()}.jpg"
+        val file = File(context.filesDir, fileName)
+
+        try {
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                FileOutputStream(file).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            return file.absolutePath
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

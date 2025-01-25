@@ -12,9 +12,12 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
+        android:contentDescription="@string/profile_photo"
         android:src="@drawable/ic_user_placeholder"
         android:layout_marginBottom="16dp"
-        tools:ignore="ContentDescription" />
+        android:scaleType="centerCrop"
+        android:background="@drawable/photo_circle"
+        android:clipToOutline="true"/>
     <Button
         android:id="@+id/button_select_image"
         android:layout_width="wrap_content"
