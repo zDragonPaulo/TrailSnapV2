@@ -2,7 +2,7 @@ package com.example.trailsnapv2.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.Ignore
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
@@ -26,7 +26,8 @@ import androidx.room.PrimaryKey
         parentColumns = ["party_id"],
         childColumns = ["party_id"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index(value = ["party_id"])]
 )
 data class PartyAchievement(
     @PrimaryKey(autoGenerate = true) val id_achievement: Long,
@@ -35,9 +36,4 @@ data class PartyAchievement(
     val description_achievement: String,
     val unlocked: Boolean,
     val progress: Double
-) {
-    @Ignore
-    fun isUnlocked(): Boolean {
-        return unlocked
-    }
-}
+)

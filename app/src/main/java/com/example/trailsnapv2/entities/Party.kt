@@ -2,6 +2,7 @@ package com.example.trailsnapv2.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
@@ -29,7 +30,8 @@ import androidx.room.PrimaryKey
         parentColumns = ["user_id"],
         childColumns = ["creator_id"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index(value = ["creator_id"])]
 )
 data class Party(
     @PrimaryKey(autoGenerate = true) val party_id: Long,
