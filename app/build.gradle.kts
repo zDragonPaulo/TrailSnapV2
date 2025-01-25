@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.android)
     kapt(libs.androidx.room.compiler) // Room annotation processor
     implementation(libs.androidx.ui.text.android)
     testImplementation(libs.junit)
