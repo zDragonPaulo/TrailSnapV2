@@ -12,12 +12,26 @@ import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
 
+/**
+ * Fragment responsible for displaying the user's profile information.
+ * This fragment shows the user's username, birthday, total distance, and time used.
+ * It also allows the user to navigate to the EditProfileFragment to modify their profile.
+ */
 class ProfileFragment : Fragment() {
 
     private val viewModel: ProfileViewModel by viewModels {
         ProfileViewModelFactory((requireActivity().application as MyApp).database.userDao())
     }
 
+    /**
+     * Called to create the view for the fragment. This is where UI components are initialized.
+     * The user's data is loaded and displayed in the corresponding TextViews.
+     *
+     * @param inflater The LayoutInflater used to inflate the fragment's view.
+     * @param container The parent view that this fragment's UI will be attached to.
+     * @param savedInstanceState The previous saved state (if any).
+     * @return The root view for this fragment.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

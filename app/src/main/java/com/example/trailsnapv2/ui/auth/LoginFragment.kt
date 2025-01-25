@@ -15,10 +15,25 @@ import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.R
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment responsible for handling the user login UI and logic.
+ * It collects user input for username and password, performs the login verification,
+ * and provides feedback to the user via Toast messages.
+ */
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
 
+    /**
+     * Inflates the layout for the login screen, initializes UI components, and handles login button click.
+     * The login credentials entered by the user are verified by the LoginViewModel.
+     * If the login is successful, the user is navigated to the dashboard. Otherwise, an error message is shown.
+     *
+     * @param inflater The LayoutInflater object used to inflate the view.
+     * @param container The parent view that the fragment's UI will be attached to.
+     * @param savedInstanceState A Bundle containing the activity's previously saved state.
+     * @return The inflated view for this fragment.
+     */
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
