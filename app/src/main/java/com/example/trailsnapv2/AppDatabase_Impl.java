@@ -267,6 +267,8 @@ public final class AppDatabase_Impl extends AppDatabase {
     return _typeConvertersMap;
   }
 
+
+
   @Override
   public Set<Class<? extends AutoMigrationSpec>> getRequiredAutoMigrationSpecs() {
     final HashSet<Class<? extends AutoMigrationSpec>> _autoMigrationSpecsSet = new HashSet<Class<? extends AutoMigrationSpec>>();

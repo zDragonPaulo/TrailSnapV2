@@ -1,3 +1,4 @@
+// UserDao.kt
 package com.example.trailsnapv2.dao
 
 import androidx.room.Dao
@@ -5,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.trailsnapv2.entities.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -19,4 +21,7 @@ interface UserDao {
 
     @Delete
     fun delete(user: User): Int
+
+    @Query("SELECT * FROM users WHERE user_id = :userId")
+    suspend fun getUserById(userId: Long): User?
 }

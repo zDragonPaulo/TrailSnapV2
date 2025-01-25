@@ -9,11 +9,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
 
 class ProfileFragment : Fragment() {
 
-    private val viewModel: ProfileViewModel by viewModels()
+    private val viewModel: ProfileViewModel by viewModels {
+        ProfileViewModelFactory((requireActivity().application as MyApp).database.userDao())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +43,9 @@ class ProfileFragment : Fragment() {
         viewModel.timeUsed.observe(viewLifecycleOwner) {
             timeUsedTextView.text = it
         }
+
+        // Load user data (replace with actual user ID)
+        viewModel.loadUserData(1L)
 
         // Set up the button click listener to navigate to the edit profile page
         settingsButton.setOnClickListener {

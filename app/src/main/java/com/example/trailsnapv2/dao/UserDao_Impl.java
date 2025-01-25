@@ -12,6 +12,14 @@ import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import com.example.trailsnapv2.entities.User;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.Callable;
+
+import kotlin.coroutines.Continuation;
+import androidx.room.CoroutinesRoom;
+
 import java.lang.Class;
 import java.lang.Override;
 import java.lang.String;
@@ -87,7 +95,9 @@ public final class UserDao_Impl implements UserDao {
       }
     };
   }
-
+  public static List<Class<?>> getRequiredConverters() {
+    return Collections.emptyList();
+  }
   @Override
   public long insert(final User user) {
     __db.assertNotSuspendingTransaction();
@@ -134,49 +144,16 @@ public final class UserDao_Impl implements UserDao {
       final List<User> _result = new ArrayList<User>(_cursor.getCount());
       while(_cursor.moveToNext()) {
         final User _item;
-        final long _tmpUser_id;
-        _tmpUser_id = _cursor.getLong(_cursorIndexOfUserId);
-        final String _tmpPassword;
-        if (_cursor.isNull(_cursorIndexOfPassword)) {
-          _tmpPassword = null;
-        } else {
-          _tmpPassword = _cursor.getString(_cursorIndexOfPassword);
-        }
-        final String _tmpUsername;
-        if (_cursor.isNull(_cursorIndexOfUsername)) {
-          _tmpUsername = null;
-        } else {
-          _tmpUsername = _cursor.getString(_cursorIndexOfUsername);
-        }
-        final String _tmpUser_description;
-        if (_cursor.isNull(_cursorIndexOfUserDescription)) {
-          _tmpUser_description = null;
-        } else {
-          _tmpUser_description = _cursor.getString(_cursorIndexOfUserDescription);
-        }
-        final String _tmpBirthday;
-        if (_cursor.isNull(_cursorIndexOfBirthday)) {
-          _tmpBirthday = null;
-        } else {
-          _tmpBirthday = _cursor.getString(_cursorIndexOfBirthday);
-        }
-        final double _tmpTotal_distance;
-        _tmpTotal_distance = _cursor.getDouble(_cursorIndexOfTotalDistance);
-        final long _tmpTime_used;
-        _tmpTime_used = _cursor.getLong(_cursorIndexOfTimeUsed);
-        final String _tmpCreation_date;
-        if (_cursor.isNull(_cursorIndexOfCreationDate)) {
-          _tmpCreation_date = null;
-        } else {
-          _tmpCreation_date = _cursor.getString(_cursorIndexOfCreationDate);
-        }
-        final String _tmpProfile_picture;
-        if (_cursor.isNull(_cursorIndexOfProfilePicture)) {
-          _tmpProfile_picture = null;
-        } else {
-          _tmpProfile_picture = _cursor.getString(_cursorIndexOfProfilePicture);
-        }
-        _item = new User(_tmpUser_id,_tmpPassword,_tmpUsername,_tmpUser_description,_tmpBirthday,_tmpTotal_distance,_tmpTime_used,_tmpCreation_date,_tmpProfile_picture);
+        final long _tmpUser_id = _cursor.getLong(_cursorIndexOfUserId);
+        final String _tmpPassword = _cursor.isNull(_cursorIndexOfPassword) ? null : _cursor.getString(_cursorIndexOfPassword);
+        final String _tmpUsername = _cursor.isNull(_cursorIndexOfUsername) ? null : _cursor.getString(_cursorIndexOfUsername);
+        final String _tmpUser_description = _cursor.isNull(_cursorIndexOfUserDescription) ? null : _cursor.getString(_cursorIndexOfUserDescription);
+        final String _tmpBirthday = _cursor.isNull(_cursorIndexOfBirthday) ? null : _cursor.getString(_cursorIndexOfBirthday);
+        final double _tmpTotal_distance = _cursor.getDouble(_cursorIndexOfTotalDistance);
+        final long _tmpTime_used = _cursor.getLong(_cursorIndexOfTimeUsed);
+        final String _tmpCreation_date = _cursor.isNull(_cursorIndexOfCreationDate) ? null : _cursor.getString(_cursorIndexOfCreationDate);
+        final String _tmpProfile_picture = _cursor.isNull(_cursorIndexOfProfilePicture) ? null : _cursor.getString(_cursorIndexOfProfilePicture);
+        _item = new User(_tmpUser_id, _tmpPassword, _tmpUsername, _tmpUser_description, _tmpBirthday, _tmpTotal_distance, _tmpTime_used, _tmpCreation_date, _tmpProfile_picture);
         _result.add(_item);
       }
       return _result;
@@ -184,10 +161,6 @@ public final class UserDao_Impl implements UserDao {
       _cursor.close();
       _statement.release();
     }
-  }
-
-  public static List<Class<?>> getRequiredConverters() {
-    return Collections.emptyList();
   }
 
   @Nullable
@@ -215,49 +188,16 @@ public final class UserDao_Impl implements UserDao {
       final int _cursorIndexOfProfilePicture = CursorUtil.getColumnIndexOrThrow(_cursor, "profile_picture");
       final User _result;
       if (_cursor.moveToFirst()) {
-        final long _tmpUser_id;
-        _tmpUser_id = _cursor.getLong(_cursorIndexOfUserId);
-        final String _tmpPassword;
-        if (_cursor.isNull(_cursorIndexOfPassword)) {
-          _tmpPassword = null;
-        } else {
-          _tmpPassword = _cursor.getString(_cursorIndexOfPassword);
-        }
-        final String _tmpUsername;
-        if (_cursor.isNull(_cursorIndexOfUsername)) {
-          _tmpUsername = null;
-        } else {
-          _tmpUsername = _cursor.getString(_cursorIndexOfUsername);
-        }
-        final String _tmpUser_description;
-        if (_cursor.isNull(_cursorIndexOfUserDescription)) {
-          _tmpUser_description = null;
-        } else {
-          _tmpUser_description = _cursor.getString(_cursorIndexOfUserDescription);
-        }
-        final String _tmpBirthday;
-        if (_cursor.isNull(_cursorIndexOfBirthday)) {
-          _tmpBirthday = null;
-        } else {
-          _tmpBirthday = _cursor.getString(_cursorIndexOfBirthday);
-        }
-        final double _tmpTotal_distance;
-        _tmpTotal_distance = _cursor.getDouble(_cursorIndexOfTotalDistance);
-        final long _tmpTime_used;
-        _tmpTime_used = _cursor.getLong(_cursorIndexOfTimeUsed);
-        final String _tmpCreation_date;
-        if (_cursor.isNull(_cursorIndexOfCreationDate)) {
-          _tmpCreation_date = null;
-        } else {
-          _tmpCreation_date = _cursor.getString(_cursorIndexOfCreationDate);
-        }
-        final String _tmpProfile_picture;
-        if (_cursor.isNull(_cursorIndexOfProfilePicture)) {
-          _tmpProfile_picture = null;
-        } else {
-          _tmpProfile_picture = _cursor.getString(_cursorIndexOfProfilePicture);
-        }
-        _result = new User(_tmpUser_id,_tmpPassword,_tmpUsername,_tmpUser_description,_tmpBirthday,_tmpTotal_distance,_tmpTime_used,_tmpCreation_date,_tmpProfile_picture);
+        final long _tmpUser_id = _cursor.getLong(_cursorIndexOfUserId);
+        final String _tmpPassword = _cursor.isNull(_cursorIndexOfPassword) ? null : _cursor.getString(_cursorIndexOfPassword);
+        final String _tmpUsername = _cursor.isNull(_cursorIndexOfUsername) ? null : _cursor.getString(_cursorIndexOfUsername);
+        final String _tmpUser_description = _cursor.isNull(_cursorIndexOfUserDescription) ? null : _cursor.getString(_cursorIndexOfUserDescription);
+        final String _tmpBirthday = _cursor.isNull(_cursorIndexOfBirthday) ? null : _cursor.getString(_cursorIndexOfBirthday);
+        final double _tmpTotal_distance = _cursor.getDouble(_cursorIndexOfTotalDistance);
+        final long _tmpTime_used = _cursor.getLong(_cursorIndexOfTimeUsed);
+        final String _tmpCreation_date = _cursor.isNull(_cursorIndexOfCreationDate) ? null : _cursor.getString(_cursorIndexOfCreationDate);
+        final String _tmpProfile_picture = _cursor.isNull(_cursorIndexOfProfilePicture) ? null : _cursor.getString(_cursorIndexOfProfilePicture);
+        _result = new User(_tmpUser_id, _tmpPassword, _tmpUsername, _tmpUser_description, _tmpBirthday, _tmpTotal_distance, _tmpTime_used, _tmpCreation_date, _tmpProfile_picture);
       } else {
         _result = null;
       }
@@ -266,5 +206,51 @@ public final class UserDao_Impl implements UserDao {
       _cursor.close();
       _statement.release();
     }
+  }
+
+  @Nullable
+  @Override
+  public Object getUserById(final long userId, @NotNull final Continuation<? super User> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<User>() {
+      @Override
+      public User call() throws Exception {
+        final String _sql = "SELECT * FROM users WHERE user_id = ?";
+        final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+        int _argIndex = 1;
+        _statement.bindLong(_argIndex, userId);
+        __db.assertNotSuspendingTransaction();
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "user_id");
+          final int _cursorIndexOfPassword = CursorUtil.getColumnIndexOrThrow(_cursor, "password");
+          final int _cursorIndexOfUsername = CursorUtil.getColumnIndexOrThrow(_cursor, "username");
+          final int _cursorIndexOfUserDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "user_description");
+          final int _cursorIndexOfBirthday = CursorUtil.getColumnIndexOrThrow(_cursor, "birthday");
+          final int _cursorIndexOfTotalDistance = CursorUtil.getColumnIndexOrThrow(_cursor, "total_distance");
+          final int _cursorIndexOfTimeUsed = CursorUtil.getColumnIndexOrThrow(_cursor, "time_used");
+          final int _cursorIndexOfCreationDate = CursorUtil.getColumnIndexOrThrow(_cursor, "creation_date");
+          final int _cursorIndexOfProfilePicture = CursorUtil.getColumnIndexOrThrow(_cursor, "profile_picture");
+          final User _result;
+          if (_cursor.moveToFirst()) {
+            final long _tmpUser_id = _cursor.getLong(_cursorIndexOfUserId);
+            final String _tmpPassword = _cursor.isNull(_cursorIndexOfPassword) ? null : _cursor.getString(_cursorIndexOfPassword);
+            final String _tmpUsername = _cursor.isNull(_cursorIndexOfUsername) ? null : _cursor.getString(_cursorIndexOfUsername);
+            final String _tmpUser_description = _cursor.isNull(_cursorIndexOfUserDescription) ? null : _cursor.getString(_cursorIndexOfUserDescription);
+            final String _tmpBirthday = _cursor.isNull(_cursorIndexOfBirthday) ? null : _cursor.getString(_cursorIndexOfBirthday);
+            final double _tmpTotal_distance = _cursor.getDouble(_cursorIndexOfTotalDistance);
+            final long _tmpTime_used = _cursor.getLong(_cursorIndexOfTimeUsed);
+            final String _tmpCreation_date = _cursor.isNull(_cursorIndexOfCreationDate) ? null : _cursor.getString(_cursorIndexOfCreationDate);
+            final String _tmpProfile_picture = _cursor.isNull(_cursorIndexOfProfilePicture) ? null : _cursor.getString(_cursorIndexOfProfilePicture);
+            _result = new User(_tmpUser_id, _tmpPassword, _tmpUsername, _tmpUser_description, _tmpBirthday, _tmpTotal_distance, _tmpTime_used, _tmpCreation_date, _tmpProfile_picture);
+          } else {
+            _result = null;
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, continuation);
   }
 }

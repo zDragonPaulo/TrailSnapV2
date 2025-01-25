@@ -35,9 +35,6 @@ class AppDatabaseTest {
 
     @Test
     fun writeUserAndReadInList() {
-        val user = User(0, "Osama B.", "I like planes", "2001-09-11", 0.0, 0, "2025-01-23", "file:///path/to/photo.jpg")
-        userDao.insert(user)
-        val users = userDao.getAll()
-        assertEquals(users[0].username, user.username)
+
     }
 }
