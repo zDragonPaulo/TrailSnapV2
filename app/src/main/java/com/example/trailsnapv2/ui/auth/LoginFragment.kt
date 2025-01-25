@@ -2,7 +2,6 @@ package com.example.trailsnapv2.ui.auth
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,7 @@ class LoginFragment : Fragment() {
 
         val usernameEditText: EditText = view.findViewById(R.id.username)
         val passwordEditText: EditText = view.findViewById(R.id.password)
-        val loginButton: Button = view.findViewById(R.id.login_button)
+        val loginButton: Button = view.findViewById(R.id.register_bypass_button)
 
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()

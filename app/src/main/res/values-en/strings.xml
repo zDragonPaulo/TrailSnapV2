@@ -20,4 +20,5 @@
     <string name="group_invites">Group Invites</string>
     <string name="next_achievements">Next Achievements</string>
     <string name="image_select_button">Select Image</string>
+    <string name="already_have_account">Already have an account? Sign In!</string>
 </resources>

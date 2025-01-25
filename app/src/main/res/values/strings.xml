@@ -27,4 +27,5 @@
         <item>Português</item>
         <item>English</item>
     </string-array>
+    <string name="already_have_account">Já tem conta? Inicie Sessão!</string>
 </resources>

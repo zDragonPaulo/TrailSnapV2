@@ -32,7 +32,11 @@ class RegisterFragment : Fragment() {
         val passwordEditText: EditText = view.findViewById(R.id.password)
         val confirmPasswordEditText: EditText = view.findViewById(R.id.confirm_password)
         val registerButton: Button = view.findViewById(R.id.register_button)
+        val alreadyHaveAcountButton: Button = view.findViewById(R.id.register_bypass_button)
 
+        alreadyHaveAcountButton.setOnClickListener{
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
         registerButton.setOnClickListener {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -48,7 +52,7 @@ class RegisterFragment : Fragment() {
                     total_distance = 0.0,
                     time_used = 0,
                     creation_date = "",
-                    profile_picture = "C:\\Users\\Narciso\\AndroidStudioProjects\\TrailSnapV2\\app\\src\\main\\res\\drawable\\ic_user_placeholder.png" // Use an empty string or a valid path
+                    profile_picture = "" // Use an empty string or a valid path
                 )
                 Log.d("RegisterFragment", "Registering user: $user")
                 viewModel.registerUser(user)

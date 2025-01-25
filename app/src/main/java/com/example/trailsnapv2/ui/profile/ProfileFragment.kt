@@ -43,7 +43,10 @@ class ProfileFragment : Fragment() {
 
         // Set up the button click listener to navigate to the edit profile page
         settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment)
+            findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment,
+                null,
+                null,
+                null)
         }
 
         return view

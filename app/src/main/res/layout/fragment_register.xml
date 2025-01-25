@@ -30,4 +30,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register_button" />
+
+    <!-- Botão "Já tem conta?" -->
+    <Button
+        android:id="@+id/register_bypass_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/already_have_account"
+        android:layout_marginTop="16dp" />
 </LinearLayout>
