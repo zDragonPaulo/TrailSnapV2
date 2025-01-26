@@ -2,6 +2,7 @@ package com.example.trailsnapv2.ui.walk
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,8 +50,13 @@ class WalkDetailsFragment : Fragment() {
             val walk = walkDao.getWalkById(walkId)
             if (walk != null) {
                 walkNameTextView.text = walk.walk_name
-                distanceTextView.text = "Distância: %.2f km".format(walk.distance)
-                timeTextView.text = "Tempo: ${formatTime(walk.end_time - walk.start_time)}"
+
+                val startTime = walk.start_time
+                val endTime = walk.end_time
+                val elapsedTime = (endTime - startTime) / 1000
+                val distance = walk.distance
+                distanceTextView.text = "Distância: %.2f km".format(distance)
+                timeTextView.text = "Tempo: ${formatTime(elapsedTime)}"
                 // Se você salvar a URI da imagem no banco de dados, pode usá-la aqui
                 imageView.setImageURI(Uri.parse(walk.photo_path))
             } else {
@@ -64,6 +70,7 @@ class WalkDetailsFragment : Fragment() {
             val bundle = Bundle().apply {
                 putLong("walkId", walkId)
             }
+            Log.d("ATENZZIONE PICKPOCKET DO WALK ID", "Walk ID: $walkId")
             findNavController().navigate(R.id.action_walkDetailsFragment_to_editWalkFragment, bundle)
         }
 

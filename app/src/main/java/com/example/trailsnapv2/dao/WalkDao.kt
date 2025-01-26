@@ -3,6 +3,7 @@ package com.example.trailsnapv2.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.trailsnapv2.entities.Walk
 
 @Dao
@@ -26,4 +27,9 @@ interface WalkDao {
     // Function to calculate the number of walks completed by a user
     @Query("SELECT COUNT(*) FROM walks WHERE user_id = :userId")
     suspend fun calculateWalksCompleted(userId: Long): Int
+    @Query ("SELECT * FROM walks")
+    suspend fun getAllWalks(): List<Walk>  // Get all Walks, returns List<Walk>
+
+    @Update
+    suspend fun updateWalk(walk: Walk): Int
 }
