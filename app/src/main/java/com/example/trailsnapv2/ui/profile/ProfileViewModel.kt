@@ -49,8 +49,8 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
                 user?.let {
                     _username.value = it.username
                     _birthday.value = it.birthday
-                    _totalDistance.value = "${it.total_distance} km"
-                    _timeUsed.value = "${it.time_used} hours"
+                    _description.value = it.user_description
+                    _profilePicture.value = it.profile_picture!!
                 }
             }
         }

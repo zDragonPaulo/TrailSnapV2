@@ -86,5 +86,5 @@ interface UserDao {
      *         Typically, this should be 1 if the update is successful, or 0 if no matching record exists.
      */
     @Update
-    fun updateUser(user: User): Int
+    suspend fun updateUser(user: User): Int
 }

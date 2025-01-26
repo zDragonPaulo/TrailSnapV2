@@ -2,6 +2,7 @@ package com.example.trailsnapv2.ui.profile
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,8 +43,7 @@ class ProfileFragment : Fragment() {
 
         val usernameTextView: TextView = view.findViewById(R.id.username)
         val birthdayTextView: TextView = view.findViewById(R.id.birthday)
-        val totalDistanceTextView: TextView = view.findViewById(R.id.total_distance)
-        val timeUsedTextView: TextView = view.findViewById(R.id.time_used)
+
         val profileImageView: ImageView = view.findViewById(R.id.user_image)
         val descriptionTextView: TextView = view.findViewById(R.id.description) // Add this line
         val settingsButton: Button = view.findViewById(R.id.button_settings)
@@ -54,21 +54,12 @@ class ProfileFragment : Fragment() {
         viewModel.birthday.observe(viewLifecycleOwner) { birthday ->
             birthdayTextView.text = birthday
         }
-        viewModel.totalDistance.observe(viewLifecycleOwner) { totalDistance ->
-            totalDistanceTextView.text = totalDistance
-        }
-        viewModel.timeUsed.observe(viewLifecycleOwner) { timeUsed ->
-            timeUsedTextView.text = timeUsed
-        }
         viewModel.description.observe(viewLifecycleOwner) { description ->
             descriptionTextView.text = description
         }
-        viewModel.profilePicture.observe(viewLifecycleOwner) { profilePicturePath ->
-            if (profilePicturePath.isNullOrEmpty()) {
-                profileImageView.setImageResource(R.drawable.ic_user_placeholder)
-            } else {
-                profileImageView.setImageURI(Uri.parse(profilePicturePath))
-            }
+        Log.d("WHERE ARE U NOW?","HUH?")
+        viewModel.profilePicture.observe(viewLifecycleOwner) { profilePicture ->
+            profileImageView.setImageURI(Uri.parse(profilePicture))
         }
 
         viewModel.loadUserData(1L)
