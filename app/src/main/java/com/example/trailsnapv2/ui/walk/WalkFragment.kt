@@ -37,16 +37,21 @@ class WalkFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var startLocation: Pair<Double, Double>? = null
     private var endLocation: Pair<Double, Double>? = null
+    private var intermediateLocations = mutableListOf<Pair<Double, Double>>()
+    private var totalDistance: Double = 0.0
     private var startTime: Long = 0
     private lateinit var textTime: TextView
     private lateinit var textDistance: TextView
     private var handler: Handler? = null
+    private var locationHandler: Handler? = null
     private var runnable: Runnable? = null
+    private var locationRunnable: Runnable? = null
     private var elapsedTime: Long = 0
     private lateinit var sensorManager: SensorManager
     private lateinit var accelerometer: Sensor
     private var isTrackingAccelerometer = false
-    private var distanceWalked = 0.0 // Used for accelerometer-based distance
+    private var distanceWalked = 0.0
+    private lateinit var accelerometerListener: SensorEventListener
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -57,58 +62,64 @@ class WalkFragment : Fragment() {
 
         val walkNameTextView: TextView = view.findViewById(R.id.walkName)
         textDistance = view.findViewById(R.id.textDistance)
-        textTime = view.findViewById(R.id.textTime) // Using the textTime existing TextView
+        textTime = view.findViewById(R.id.textTime)
         val buttonStartWalk: Button = view.findViewById(R.id.startWalk)
         val buttonFinishWalk: Button = view.findViewById(R.id.finishWalk)
         val walkName = arguments?.getString("walkName")
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         walkNameTextView.text = walkName
-        // Initialize ViewModel with Factory
+
         val walkDao = (requireActivity().application as MyApp).database.walkDao()
         val factory = WalkViewModel.Factory(walkDao)
         viewModel = ViewModelProvider(this, factory).get(WalkViewModel::class.java)
 
-        // Load the telemetry preference (either "gps" or "accelerometer")
         val sharedPreferences = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-        val selectedTelemetry = sharedPreferences.getString("telemetry", "gps") // Default to "gps"
+        val selectedTelemetry = sharedPreferences.getString("telemetry", "gps")
 
         buttonStartWalk.setOnClickListener {
             startTime = System.currentTimeMillis()
             getCurrentLocation { location ->
                 startLocation = Pair(location.latitude, location.longitude)
+                intermediateLocations.add(startLocation!!)
                 Log.d("WalkFragment", "Started walk at: $startLocation")
             }
             startChronometer()
 
-            if (selectedTelemetry == "accelerometer") {
+            if (selectedTelemetry == "gps") {
+                startLocationUpdates()
+            } else if (selectedTelemetry == "accelerometer") {
                 startAccelerometerTracking()
             }
         }
 
         buttonFinishWalk.setOnClickListener {
+            if (selectedTelemetry == "gps") {
+                stopLocationUpdates()
+            } else if (selectedTelemetry == "accelerometer") {
+                stopAccelerometerTracking()
+            }
+
             getCurrentLocation { location ->
                 endLocation = Pair(location.latitude, location.longitude)
                 Log.d("WalkFragment", "Finished walk at: $endLocation")
 
-                // Calculate distance
                 val distance = if (selectedTelemetry == "gps") {
-                    calculateDistance(startLocation, endLocation)
+                    val lastDistance = calculateDistance(intermediateLocations.last(), endLocation)
+                    totalDistance += lastDistance
+                    totalDistance
                 } else {
-                    distanceWalked // Use accelerometer distance
+                    distanceWalked/10000
                 }
 
                 val endTime = System.currentTimeMillis()
                 val elapsedTime = endTime - startTime
 
-                // Update UI
                 textDistance.text = "${"%.2f".format(distance)} km"
                 textTime.text = formatTime(elapsedTime)
-                Log.d("WalkFragment", "Distance: $distance km")
-                stopChronometer()
-                stopAccelerometerTracking()
 
-                // Pass data to EditWalkFragment by Bundle
+                stopChronometer()
+
                 val bundle = Bundle().apply {
                     putString("walkName", walkName)
                     putFloat("distance", distance.toFloat())
@@ -116,7 +127,6 @@ class WalkFragment : Fragment() {
                     putLong("endTime", endTime)
                 }
 
-                // Go to EditWalkFragment
                 findNavController().navigate(R.id.action_walkFragment_to_editWalkFragment, bundle)
             }
         }
@@ -125,32 +135,30 @@ class WalkFragment : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun getCurrentLocation(callback: (Location) -> Unit) {
-        val sharedPreferences = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-        val selectedTelemetry = sharedPreferences.getString("telemetry", "gps")
-
-        if (selectedTelemetry == "gps") {
-            // Use GPS for location tracking
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    1
-                )
-                return
-            }
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                location?.let {
-                    callback(it)
+    private fun startLocationUpdates() {
+        locationHandler = Handler(Looper.getMainLooper())
+        locationRunnable = object : Runnable {
+            override fun run() {
+                getCurrentLocation { location ->
+                    val currentLocation = Pair(location.latitude, location.longitude)
+                    if (intermediateLocations.isNotEmpty()) {
+                        val lastLocation = intermediateLocations.last()
+                        val incrementalDistance = calculateDistance(lastLocation, currentLocation)
+                        totalDistance += incrementalDistance
+                    }
+                    intermediateLocations.add(currentLocation)
+                    textDistance.text = "${"%.2f".format(totalDistance)} km"
+                    Log.d("WalkFragment", "Intermediate location: $currentLocation, Total distance: $totalDistance km")
                 }
+                locationHandler?.postDelayed(this, 1000)
             }
         }
+        locationHandler?.post(locationRunnable!!)
     }
 
-    private lateinit var accelerometerListener: SensorEventListener
+    private fun stopLocationUpdates() {
+        locationHandler?.removeCallbacks(locationRunnable!!)
+    }
 
     private fun startAccelerometerTracking() {
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -162,9 +170,10 @@ class WalkFragment : Fragment() {
                     val (x, y, z) = event.values
                     val acceleration = sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH
 
-                    if (acceleration > 2.5) { // Lowered threshold for step detection
-                        distanceWalked += 0.6 // Each step assumed to be 0.8 meters
-                        textDistance.text = "${"%.2f".format(distanceWalked / 1000)} km" // Update UI immediately
+                    if (acceleration > 2.5) {
+                        distanceWalked += 0.6
+                        textDistance.text = "${"%.2f".format(distanceWalked / 10000)} km"
+                        Log.d("ACELERA ESSA MERDA CARALHO", "Distance walked: $distanceWalked")
                     }
                 }
             }
@@ -183,6 +192,26 @@ class WalkFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation(callback: (Location) -> Unit) {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                callback(it)
+            }
+        }
+    }
+
     private fun calculateDistance(
         start: Pair<Double, Double>?,
         end: Pair<Double, Double>?
@@ -192,7 +221,7 @@ class WalkFragment : Fragment() {
         val (lat1, lon1) = start
         val (lat2, lon2) = end
 
-        val earthRadius = 6371 // Earth radius in kilometers
+        val earthRadius = 6371
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2) * sin(dLat / 2) +
@@ -209,7 +238,7 @@ class WalkFragment : Fragment() {
                 val currentTime = System.currentTimeMillis()
                 elapsedTime = currentTime - startTime
                 textTime.text = formatTime(elapsedTime)
-                handler?.postDelayed(this, 1000) // Update every 1 second
+                handler?.postDelayed(this, 1000)
             }
         }
         handler?.post(runnable!!)
