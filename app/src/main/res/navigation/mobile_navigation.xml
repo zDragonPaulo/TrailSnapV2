@@ -101,6 +101,18 @@
         <action
             android:id="@+id/action_editWalkFragment_to_walkDetailsFragment"
             app:destination="@id/walkDetailsFragment" />
+        <argument
+            android:name="walkName"
+            app:argType="string" />
+        <argument
+            android:name="distance"
+            app:argType="float" />
+        <argument
+            android:name="startTime"
+            app:argType="long" />
+        <argument
+            android:name="endTime"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/walkDetailsFragment"

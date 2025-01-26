@@ -57,16 +57,12 @@ class AddWalkFragment : Fragment() {
                 Log.e("AddWalkFragment", "Invalid user_id. Make sure the user is logged in.")
                 return@setOnClickListener
             }
-
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-            val startTime = dateFormat.parse("2025-01-25T15:00:00")?.time ?: 0L // Example start time
-            val endTime = dateFormat.parse("2025-01-25T16:00:00")?.time ?: 0L // Example end time
-            val distance = 5.0 // Example distance
-
-            addWalkViewModel.createWalk(name, userId, startTime, endTime, distance)
+            val bundle = Bundle().apply {
+                putString("walkName", name)
+            }
 
             // Navigate to the next fragment
-            findNavController().navigate(R.id.action_navigation_add_walk_to_walkFragment)
+            findNavController().navigate(R.id.action_navigation_add_walk_to_walkFragment, bundle)
         }
 
         return view

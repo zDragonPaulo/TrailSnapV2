@@ -31,6 +31,17 @@ abstract class AppDatabase : RoomDatabase() {
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
             instance ?: buildDatabase(context).also { instance = it }
         }
+        fun getInstance(context: Context): AppDatabase {
+            return instance ?: synchronized(this) {
+                val instanceForNow = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "trailsnap_database"
+                ).build()
+                instance = instanceForNow
+                instanceForNow
+            }
+        }
 
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(
