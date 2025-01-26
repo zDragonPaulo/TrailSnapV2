@@ -68,4 +68,27 @@
         android:layout_marginTop="32dp"
         android:layout_marginHorizontal="64dp" />
 
+    <!-- Texto para Distância -->
+    <TextView
+        android:id="@+id/distanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distância: "
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/actualNameWalk"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Texto para Tempo -->
+    <TextView
+        android:id="@+id/elapsedTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tempo: "
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/distanceText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

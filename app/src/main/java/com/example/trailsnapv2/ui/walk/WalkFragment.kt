@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -71,7 +72,18 @@ class WalkFragment : Fragment() {
 
                 // Save data into database
                 saveWalkData("My Walk", distance, elapsedTime)
+
+                // Pass data to EditWalkFragment by Bundle
+                val bundle = Bundle().apply {
+                    putString("walkName", "My Walk")
+                    putFloat("distance", distance.toFloat())
+                    putLong("elapsedTime", elapsedTime)
+                }
+
+                // Go to EditWalkFragment
+                findNavController().navigate(R.id.action_walkFragment_to_editWalkFragment, bundle)
             }
+
         }
 
         return view
