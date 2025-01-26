@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.AppDatabase
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.entities.Walk
-import com.google.android.material.textfield.TextInputEditText
 
 class EditWalkFragment : Fragment() {
 

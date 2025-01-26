@@ -14,8 +14,6 @@ import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.ui.auth.LoginViewModel
 import com.google.android.material.textfield.TextInputLayout
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class AddWalkFragment : Fragment() {
 

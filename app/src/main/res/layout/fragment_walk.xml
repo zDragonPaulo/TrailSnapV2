@@ -21,29 +21,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Distância Percorrida -->
-    <TextView
-        android:id="@+id/textDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="0.00 km"
-        android:textSize="24sp"
+    <!-- Distância dentro de um círculo -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/distanceCircle"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/walkName" />
+        app:layout_constraintTop_toBottomOf="@id/walkName">
 
-    <!-- Tempo Decorrido -->
-    <TextView
-        android:id="@+id/textTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/textDistance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0.00 km"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Tempo dentro de um círculo -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/timeCircle"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginTop="16dp"
-        android:text="00:00:00"
-        android:textSize="24sp"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textDistance" />
+        app:layout_constraintTop_toBottomOf="@id/distanceCircle">
+
+        <TextView
+            android:id="@+id/textTime"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="00:00:00"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
 
     <!-- Botão Iniciar Caminhada -->
     <Button
@@ -56,7 +76,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textTime" />
+        app:layout_constraintTop_toBottomOf="@id/timeCircle" />
 
     <!-- Botão Finalizar Caminhada -->
     <Button
@@ -70,4 +90,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/startWalk" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

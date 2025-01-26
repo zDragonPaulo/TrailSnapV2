@@ -2,8 +2,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trailsnapv2.databinding.ItemAchievementBinding
-import com.example.trailsnapv2.entities.UserAchievement
 import com.example.trailsnapv2.entities.SingularAchievement
+import com.example.trailsnapv2.entities.UserAchievement
 
 class AchievementsAdapter : RecyclerView.Adapter<AchievementsAdapter.AchievementViewHolder>() {
 

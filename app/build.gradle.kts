@@ -49,6 +49,7 @@ android {
 dependencies {
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.androidx.media3.common.ktx)
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
