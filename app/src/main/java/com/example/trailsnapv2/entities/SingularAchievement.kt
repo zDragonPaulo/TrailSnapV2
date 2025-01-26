@@ -21,4 +21,5 @@ data class SingularAchievement(
     @PrimaryKey(autoGenerate = true) val id_achievement: Long,
     val name_achievement: String,
     val description_achievement: String,
+    val condition: String = ""
 )

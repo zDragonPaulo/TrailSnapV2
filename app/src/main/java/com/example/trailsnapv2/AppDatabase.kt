@@ -19,7 +19,7 @@ import com.example.trailsnapv2.entities.*
         SingularAchievement::class,
         PartyAchievement::class
     ],
-    version = 16 // Atualizei para a nova versão
+    version = 17 // Atualizei para a nova versão
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -58,7 +58,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 "app_database.db"
             )
-                .addMigrations(MIGRATION_14_15, MIGRATION_15_16) // Incluí todas as migrações
+                .addMigrations(MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17) // Incluí todas as migrações
                 .fallbackToDestructiveMigration()
                 .build()
         }
@@ -94,7 +94,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         /**
-         * Migração da versão 15 para 16: adição de coluna `photo_path`.
+         * Migration from version 15 to 16: Adding `photo_path` column to `walks`.
          */
         private val MIGRATION_15_16 = object : Migration(15, 16) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -102,5 +102,16 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE walks ADD COLUMN photo_path TEXT")
             }
         }
+
+        /**
+         * Migration from version 16 to 17: Adding `condition` column to `singular_achievements`.
+         */
+        private val MIGRATION_16_17 = object : Migration(16, 17) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add the `condition` column with a default value
+                database.execSQL("ALTER TABLE singular_achievements ADD COLUMN condition TEXT NOT NULL DEFAULT ''")
+            }
+        }
+
     }
 }

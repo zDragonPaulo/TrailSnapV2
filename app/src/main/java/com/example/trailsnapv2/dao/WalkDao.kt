@@ -19,6 +19,11 @@ interface WalkDao {
     @Query("SELECT * FROM walks WHERE user_id = :userId")
     suspend fun getWalksByUserId(userId: Long): List<Walk>
 
-    @Query ("SELECT * FROM walks")
-    suspend fun getAllWalks(): List<Walk>  // Get all Walks, returns List<Walk>
+    // Function to calculate the total distance walked by a user
+    @Query("SELECT SUM(distance) FROM walks WHERE user_id = :userId")
+    suspend fun calculateDistanceWalked(userId: Long): Double
+
+    // Function to calculate the number of walks completed by a user
+    @Query("SELECT COUNT(*) FROM walks WHERE user_id = :userId")
+    suspend fun calculateWalksCompleted(userId: Long): Int
 }

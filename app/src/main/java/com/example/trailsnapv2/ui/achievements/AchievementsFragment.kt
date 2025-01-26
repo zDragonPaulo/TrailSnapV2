@@ -19,7 +19,8 @@ class AchievementsFragment : Fragment() {
     private val viewModel: AchievementsViewModel by viewModels {
         AchievementsViewModelFactory(
             (requireActivity().application as MyApp).database.singularAchievementDao(),
-            (requireActivity().application as MyApp).database.userAchievementDao()
+            (requireActivity().application as MyApp).database.userAchievementDao(),
+            (requireActivity().application as MyApp).database.walkDao()
         )
     }
 
@@ -30,6 +31,8 @@ class AchievementsFragment : Fragment() {
         binding = FragmentAchievementsBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +53,8 @@ class AchievementsFragment : Fragment() {
             viewModel.getAllSingularAchievements().observe(viewLifecycleOwner) { singularAchievements ->
                 adapter.setUserAchievements(userAchievements, singularAchievements)
             }
+
+            viewModel.updateAchievements(userId = 1L)
         }
     }
 }
