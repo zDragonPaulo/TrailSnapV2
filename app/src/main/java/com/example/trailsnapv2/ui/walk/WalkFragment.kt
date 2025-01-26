@@ -123,6 +123,7 @@ class WalkFragment : Fragment() {
 
 
                 val bundle = Bundle().apply {
+                    putLong("walkId", -1L)
                     putString("walkName", walkName)
                     putFloat("distance", distance.toFloat())
                     putLong("startTime", startTime)

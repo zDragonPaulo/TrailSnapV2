@@ -15,7 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.AppDatabase
 import com.example.trailsnapv2.R
@@ -23,115 +23,116 @@ import com.example.trailsnapv2.entities.Walk
 
 class EditWalkFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = EditWalkFragment()
-    }
     private var selectedPhotoUri: Uri? = null
-
     private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedPhotoUri = result.data?.data
-
-            // Atualize o ImageView com segurança
-            view?.findViewById<ImageView>(R.id.imageView)?.let { imageView ->
-                imageView.setImageURI(selectedPhotoUri)
-            } ?: Log.e("EditWalkFragment", "ImageView not found!")
+            view?.findViewById<ImageView>(R.id.imageView)?.setImageURI(selectedPhotoUri)
         }
     }
 
-    private val viewModel: EditWalkViewModel by viewModels()
+    private val viewModel: EditWalkViewModel by lazy {
+        ViewModelProvider(
+            this,
+            EditWalkViewModelFactory(AppDatabase.getInstance(requireContext()).walkDao())
+        ).get(EditWalkViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_edit_walk, container, false)
 
-        // Obter o DAO do banco de dados
-        val database = AppDatabase.getInstance(requireContext())
-        Log.d("EditWalkFragment", "Database instance: $database")
-        val walkDao = database.walkDao()
+        val walkId = arguments?.getLong("walkId", -1)
 
-        // Configurar o ViewModel com o Factory
-        val viewModelFactory = EditWalkViewModelFactory(walkDao)
-        val viewModel: EditWalkViewModel by viewModels { viewModelFactory }
+        if (walkId != null && walkId != -1L) {
+            viewModel.getWalkById(walkId,
+                onSuccess = { walk ->
+                    setupUIForEditing(view, walk)
+                },
+                onError = { errorMessage ->
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                    findNavController().popBackStack()
+                })
+        } else {
+            setupUIForNewWalk(view)
+        }
 
-        // Restante do código para lidar com o clique do botão Save
-        val buttonSaveWalk: Button = view.findViewById(R.id.saveButton)
-        val walkNameEditText: EditText = view.findViewById(R.id.editNameWalk)
-        val distanceTextView: TextView = view.findViewById(R.id.distanceText)
-        val elapsedTimeTextView: TextView = view.findViewById(R.id.elapsedTimeText)
-
-        // Obter os argumentos do Bundle
-        val distance = arguments?.getFloat("distance") ?: 0f
-        val startTime = arguments?.getLong("startTime") ?: 0L
-        val endTime = arguments?.getLong("endTime") ?: 0L
-        val walkName = arguments?.getString("walkName") ?: ""
-        val elapsedTime = (endTime - startTime) / 1000
-        walkNameEditText.setText(walkName)
-        distanceTextView.text = "Distância: %.2f km".format(distance)
-        elapsedTimeTextView.text = "Tempo decorrido: ${formatTime(elapsedTime)}"
-        val buttonSelectPhoto: Button = view.findViewById(R.id.addPhotoButton)
-        val buttonSaveEditedWalk: Button = view.findViewById(R.id.saveButton)
-
-        // Configurar o botão de seleção de imagem
-        buttonSelectPhoto.setOnClickListener {
+        view.findViewById<Button>(R.id.addPhotoButton).setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             selectImageLauncher.launch(intent)
         }
-        buttonSaveEditedWalk.setOnClickListener {
-            val walkNameInput = walkNameEditText.text.toString()
+
+        view.findViewById<Button>(R.id.saveButton).setOnClickListener {
+            val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()
             if (walkNameInput.isEmpty()) {
                 Toast.makeText(requireContext(), "O nome da caminhada não pode estar vazio.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            Log.d("EditWalkFragment", "Saving walk with name: $startTime")
+
             val walk = Walk(
-                user_id = 1L, // Substitua pelo ID do usuário válido
+                user_id = 1L,
                 walk_name = walkNameInput,
-                distance = distance.toDouble(),
-                start_time = startTime/1000,
-                end_time = endTime/1000,
+                distance = arguments?.getFloat("distance")?.toDouble() ?: 0.0,
+                start_time = arguments?.getLong("startTime") ?: 0L,
+                end_time = arguments?.getLong("endTime") ?: 0L,
                 photo_path = selectedPhotoUri?.toString()
             )
 
             viewModel.saveWalk(walk,
-                onSuccess = { walkId ->  // Supondo que o método `saveWalk` retorna o ID gerado
+                onSuccess = { savedWalkId ->
                     Toast.makeText(requireContext(), "Caminhada salva com sucesso!", Toast.LENGTH_LONG).show()
                     val bundle = Bundle().apply {
-                        putLong("walkId", walkId) // Enviar o ID para o fragmento de detalhes
+                        putLong("walkId", savedWalkId)
                     }
                     findNavController().navigate(R.id.action_editWalkFragment_to_walkDetailsFragment, bundle)
                 },
                 onError = { errorMessage ->
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                    Log.e("ERRO NESTA MERDA", errorMessage)
                 }
             )
-
         }
 
         return view
     }
 
-    fun formatTime(seconds: Long): String {
+    private fun setupUIForEditing(view: View, walk: Walk) {
+        view.findViewById<EditText>(R.id.editNameWalk).setText(walk.walk_name)
+        view.findViewById<TextView>(R.id.distanceText).text = "Distância: %.2f km".format(walk.distance)
+        view.findViewById<TextView>(R.id.elapsedTimeText).text = "Tempo decorrido: ${formatTime(walk.end_time - walk.start_time)}"
+
+        selectedPhotoUri = walk.photo_path?.let { Uri.parse(it) }
+        view.findViewById<ImageView>(R.id.imageView)?.setImageURI(selectedPhotoUri)
+    }
+
+    private fun setupUIForNewWalk(view: View) {
+        val distance = arguments?.getFloat("distance") ?: 0f
+        val startTime = arguments?.getLong("startTime") ?: 0L
+        val endTime = arguments?.getLong("endTime") ?: 0L
+        val walkName = arguments?.getString("walkName") ?: ""
+        val elapsedTime = (endTime - startTime) / 1000
+
+        view.findViewById<EditText>(R.id.editNameWalk).setText(walkName)
+        view.findViewById<TextView>(R.id.distanceText).text = "Distância: %.2f km".format(distance)
+        view.findViewById<TextView>(R.id.elapsedTimeText).text = "Tempo decorrido: ${formatTime(elapsedTime)}"
+    }
+
+    private fun formatTime(seconds: Long): String {
         return when {
-            seconds >= 3600 -> { // Mais que 1 hora
+            seconds >= 3600 -> {
                 val hours = seconds / 3600
                 val minutes = (seconds % 3600) / 60
                 if (minutes > 0) "$hours h $minutes min" else "$hours h"
             }
-            seconds >= 60 -> { // Mais que 1 minuto
+            seconds >= 60 -> {
                 val minutes = seconds / 60
                 val remainingSeconds = seconds % 60
                 if (remainingSeconds > 0) "$minutes min $remainingSeconds s" else "$minutes min"
             }
-            else -> { // Menos de 1 minuto
-                "$seconds s"
-            }
+            else -> "$seconds s"
         }
     }
-
-
 }
-
