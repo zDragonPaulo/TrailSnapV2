@@ -1,7 +1,6 @@
 package com.example.trailsnapv2.entities
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 /**
@@ -12,11 +11,8 @@ import androidx.room.PrimaryKey
  * to the user who earned it.
  *
  * @property id_achievement Unique identifier for the achievement. This is the primary key and is auto-generated.
- * @property receiver_id The ID of the user who unlocked or is associated with this achievement.
  * @property name_achievement The name of the achievement.
  * @property description_achievement A brief description of what the achievement entails.
- * @property unlocked A boolean indicating whether the achievement has been unlocked or not.
- * @property progress The current progress towards unlocking the achievement, represented as a percentage.
  */
 @Entity(
     tableName = "singular_achievements"

@@ -59,6 +59,12 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    /**
+     * Handles navigation when the "up" button in the action bar is pressed.
+     * Ensures navigation transitions are performed correctly.
+     *
+     * @return true if navigation was successful; otherwise, false.
+     */
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return navController.navigateUp() || super.onSupportNavigateUp()

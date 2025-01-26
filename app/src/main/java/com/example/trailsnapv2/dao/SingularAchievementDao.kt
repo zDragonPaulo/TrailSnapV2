@@ -41,6 +41,14 @@ interface SingularAchievementDao {
     @Delete
     fun delete(achievement: SingularAchievement): Int
 
+    /**
+     * Deletes all singular achievements from the "singular_achievements" table.
+     *
+     * This method removes all records from the `singular_achievements` table. This operation is irreversible,
+     * so use it with caution. It doesn't take any parameters and clears the entire table of singular achievements.
+     *
+     * @return The number of rows affected (which will be the number of rows deleted from the table).
+     */
     @Query("DELETE FROM singular_achievements")
     fun clearAll()
 }
