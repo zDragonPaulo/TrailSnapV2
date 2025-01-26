@@ -1,44 +1,43 @@
-package com.example.trailsnapv2.ui.achievements
-
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trailsnapv2.R
+import com.example.trailsnapv2.databinding.ItemAchievementBinding
+import com.example.trailsnapv2.entities.UserAchievement
 import com.example.trailsnapv2.entities.SingularAchievement
 
-class AchievementsAdapter : ListAdapter<SingularAchievement, AchievementsAdapter.AchievementViewHolder>(AchievementDiffCallback()) {
+class AchievementsAdapter : RecyclerView.Adapter<AchievementsAdapter.AchievementViewHolder>() {
+
+    private var userAchievements: List<UserAchievement> = emptyList()
+    private var singularAchievements: List<SingularAchievement> = emptyList()
+
+    // This function is called to set the user achievements
+    fun setUserAchievements(newUserAchievements: List<UserAchievement>, newSingularAchievements: List<SingularAchievement>) {
+        userAchievements = newUserAchievements
+        singularAchievements = newSingularAchievements
+        notifyDataSetChanged()  // Refreshes the RecyclerView with the new data
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AchievementViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_achievement, parent, false)
-        return AchievementViewHolder(view)
+        val binding = ItemAchievementBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AchievementViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: AchievementViewHolder, position: Int) {
-        val achievement = getItem(position)
-        holder.bind(achievement)
+        val userAchievement = userAchievements[position]
+        val singularAchievement = singularAchievements.find { it.id_achievement == userAchievement.achievement_id }
+        holder.bind(userAchievement, singularAchievement)
     }
 
-    class AchievementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val achievementName: TextView = itemView.findViewById(R.id.achievement_name)
-        private val achievementDescription: TextView = itemView.findViewById(R.id.achievement_description)
+    override fun getItemCount(): Int = userAchievements.size
 
-        fun bind(achievement: SingularAchievement) {
-            achievementName.text = achievement.name_achievement
-            achievementDescription.text = achievement.description_achievement
-        }
-    }
-
-    class AchievementDiffCallback : DiffUtil.ItemCallback<SingularAchievement>() {
-        override fun areItemsTheSame(oldItem: SingularAchievement, newItem: SingularAchievement): Boolean {
-            return oldItem.id_achievement == newItem.id_achievement
-        }
-
-        override fun areContentsTheSame(oldItem: SingularAchievement, newItem: SingularAchievement): Boolean {
-            return oldItem == newItem
+    inner class AchievementViewHolder(private val binding: ItemAchievementBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(userAchievement: UserAchievement, singularAchievement: SingularAchievement?) {
+            singularAchievement?.let {
+                binding.textAchievementName.text = it.name_achievement
+                binding.textAchievementDescription.text = it.description_achievement
+            }
+            binding.progressBarAchievement.progress = userAchievement.progress.toInt()
+            binding.textAchievementStatus.text = if (userAchievement.unlocked) "Unlocked" else "In Progress"
         }
     }
 }
