@@ -38,7 +38,7 @@ class WalkFragment : Fragment() {
     private var startLocation: Pair<Double, Double>? = null
     private var endLocation: Pair<Double, Double>? = null
     private var intermediateLocations = mutableListOf<Pair<Double, Double>>()
-    private var totalDistance: Double = 0.0
+    private var totalDistance: Double = 0.0 // Distance in meters
     private var startTime: Long = 0
     private lateinit var textTime: TextView
     private lateinit var textDistance: TextView
@@ -50,7 +50,7 @@ class WalkFragment : Fragment() {
     private lateinit var sensorManager: SensorManager
     private lateinit var accelerometer: Sensor
     private var isTrackingAccelerometer = false
-    private var distanceWalked = 0.0
+    private var distanceWalked = 0.0 // Distance in meters
     private lateinit var accelerometerListener: SensorEventListener
 
     @SuppressLint("MissingInflatedId")
@@ -94,6 +94,9 @@ class WalkFragment : Fragment() {
         }
 
         buttonFinishWalk.setOnClickListener {
+
+            stopChronometer()
+
             if (selectedTelemetry == "gps") {
                 stopLocationUpdates()
             } else if (selectedTelemetry == "accelerometer") {
@@ -109,16 +112,15 @@ class WalkFragment : Fragment() {
                     totalDistance += lastDistance
                     totalDistance
                 } else {
-                    distanceWalked/10000
+                    distanceWalked // Already in meters
                 }
 
                 val endTime = System.currentTimeMillis()
                 val elapsedTime = endTime - startTime
 
-                textDistance.text = "${"%.2f".format(distance)} km"
+                textDistance.text = "${"%.0f".format(distance)} m"
                 textTime.text = formatTime(elapsedTime)
 
-                stopChronometer()
 
                 val bundle = Bundle().apply {
                     putString("walkName", walkName)
@@ -147,8 +149,8 @@ class WalkFragment : Fragment() {
                         totalDistance += incrementalDistance
                     }
                     intermediateLocations.add(currentLocation)
-                    textDistance.text = "${"%.2f".format(totalDistance)} km"
-                    Log.d("WalkFragment", "Intermediate location: $currentLocation, Total distance: $totalDistance km")
+                    textDistance.text = "${"%.0f".format(totalDistance)} m"
+                    Log.d("WalkFragment", "Intermediate location: $currentLocation, Total distance: $totalDistance m")
                 }
                 locationHandler?.postDelayed(this, 1000)
             }
@@ -171,9 +173,9 @@ class WalkFragment : Fragment() {
                     val acceleration = sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH
 
                     if (acceleration > 2.5) {
-                        distanceWalked += 0.6
-                        textDistance.text = "${"%.2f".format(distanceWalked / 10000)} km"
-                        Log.d("ACELERA ESSA MERDA CARALHO", "Distance walked: $distanceWalked")
+                        distanceWalked += 0.6 // Approximate step distance in meters
+                        textDistance.text = "${"%.0f".format(distanceWalked)} m"
+                        Log.d("WalkFragment", "Distance walked: $distanceWalked m")
                     }
                 }
             }
@@ -221,7 +223,7 @@ class WalkFragment : Fragment() {
         val (lat1, lon1) = start
         val (lat2, lon2) = end
 
-        val earthRadius = 6371
+        val earthRadius = 6371000 // Radius in meters
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2) * sin(dLat / 2) +
