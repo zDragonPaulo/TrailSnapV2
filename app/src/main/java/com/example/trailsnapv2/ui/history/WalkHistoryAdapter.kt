@@ -31,8 +31,8 @@ class WalkHistoryAdapter : ListAdapter<Walk, WalkHistoryAdapter.WalkHistoryViewH
         fun bind(item: Walk) {
             walkName.text = item.walk_name
             distance.text = item.distance.toString()
-            startTime.text = item.start_time
-            endTime.text = item.end_time
+            startTime.text = item.start_time.toString()
+            endTime.text = item.end_time.toString()
         }
     }
 

@@ -14,6 +14,8 @@ import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.ui.auth.LoginViewModel
 import com.google.android.material.textfield.TextInputLayout
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AddWalkFragment : Fragment() {
 
@@ -56,8 +58,9 @@ class AddWalkFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val startTime = "2025-01-25T15:00:00" // Example start time
-            val endTime = "2025-01-25T16:00:00" // Example end time
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val startTime = dateFormat.parse("2025-01-25T15:00:00")?.time ?: 0L // Example start time
+            val endTime = dateFormat.parse("2025-01-25T16:00:00")?.time ?: 0L // Example end time
             val distance = 5.0 // Example distance
 
             addWalkViewModel.createWalk(name, userId, startTime, endTime, distance)

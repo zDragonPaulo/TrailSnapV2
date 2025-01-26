@@ -2,6 +2,7 @@ package com.example.trailsnapv2.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
@@ -36,6 +37,10 @@ import androidx.room.PrimaryKey
             childColumns = ["achievement_id"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["user_id"]), // Index for user_id
+        Index(value = ["achievement_id"]) // Index for achievement_id
     ]
 )
 data class UserAchievement(

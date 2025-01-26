@@ -9,12 +9,12 @@ import kotlinx.coroutines.launch
 
 class AddWalkViewModel(private val walkDao: WalkDao) : ViewModel() {
 
-    fun createWalk(name: String, userId: Long, startTime: String, endTime: String, distance: Double) {
+    fun createWalk(name: String, userId: Long, startTime: Long, endTime: Long, distance: Double) {
         viewModelScope.launch {
             val userExists = walkDao.userExists(userId)
             if (userExists) {
                 val walk = Walk(0, userId, name, distance, startTime, endTime)
-                walkDao.insert(walk)
+                walkDao.insertWalk(walk)
             } else {
                 // Handle the case where the user does not exist
                 // e.g., log an error or show a message to the user
