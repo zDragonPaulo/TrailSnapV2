@@ -23,5 +23,6 @@ data class Walk(
     val walk_name: String,
     val distance: Double,
     val start_time: Long,
-    val end_time: Long
+    val end_time: Long,
+    val photo_path: String? = null // Novo campo para o caminho da foto
 )

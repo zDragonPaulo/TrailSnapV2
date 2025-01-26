@@ -1,5 +1,8 @@
 package com.example.trailsnapv2.ui.walk
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,6 +25,18 @@ class EditWalkFragment : Fragment() {
 
     companion object {
         fun newInstance() = EditWalkFragment()
+    }
+    private var selectedPhotoUri: Uri? = null
+
+    private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            selectedPhotoUri = result.data?.data
+
+            // Atualize o ImageView com segurança
+            view?.findViewById<ImageView>(R.id.imageView)?.let { imageView ->
+                imageView.setImageURI(selectedPhotoUri)
+            } ?: Log.e("EditWalkFragment", "ImageView not found!")
+        }
     }
 
     private val viewModel: EditWalkViewModel by viewModels()
@@ -41,7 +58,7 @@ class EditWalkFragment : Fragment() {
 
         // Restante do código para lidar com o clique do botão Save
         val buttonSaveWalk: Button = view.findViewById(R.id.saveButton)
-        val walkNameEditText: EditText = view.findViewById(R.id.editNameText)
+        val walkNameEditText: EditText = view.findViewById(R.id.editNameWalk)
         val distanceTextView: TextView = view.findViewById(R.id.distanceText)
         val elapsedTimeTextView: TextView = view.findViewById(R.id.elapsedTimeText)
 
@@ -54,8 +71,16 @@ class EditWalkFragment : Fragment() {
         walkNameEditText.setText(walkName)
         distanceTextView.text = "Distância: %.2f km".format(distance)
         elapsedTimeTextView.text = "Tempo decorrido: ${formatTime(elapsedTime)}"
+        val buttonSelectPhoto: Button = view.findViewById(R.id.addPhotoButton)
+        val buttonSaveEditedWalk: Button = view.findViewById(R.id.saveButton)
 
-        buttonSaveWalk.setOnClickListener {
+        // Configurar o botão de seleção de imagem
+        buttonSelectPhoto.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            selectImageLauncher.launch(intent)
+        }
+        buttonSaveEditedWalk.setOnClickListener {
             val walkNameInput = walkNameEditText.text.toString()
             if (walkNameInput.isEmpty()) {
                 Toast.makeText(requireContext(), "O nome da caminhada não pode estar vazio.", Toast.LENGTH_LONG).show()
@@ -67,7 +92,8 @@ class EditWalkFragment : Fragment() {
                 walk_name = walkNameInput,
                 distance = distance.toDouble(),
                 start_time = startTime/1000,
-                end_time = endTime/1000
+                end_time = endTime/1000,
+                photo_path = selectedPhotoUri?.toString()
             )
 
             viewModel.saveWalk(walk,
