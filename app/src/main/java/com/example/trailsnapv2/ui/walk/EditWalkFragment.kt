@@ -97,9 +97,12 @@ class EditWalkFragment : Fragment() {
             )
 
             viewModel.saveWalk(walk,
-                onSuccess = {
+                onSuccess = { walkId ->  // Supondo que o método `saveWalk` retorna o ID gerado
                     Toast.makeText(requireContext(), "Caminhada salva com sucesso!", Toast.LENGTH_LONG).show()
-                    findNavController().navigate(R.id.action_editWalkFragment_to_walkDetailsFragment)
+                    val bundle = Bundle().apply {
+                        putLong("walkId", walkId) // Enviar o ID para o fragmento de detalhes
+                    }
+                    findNavController().navigate(R.id.action_editWalkFragment_to_walkDetailsFragment, bundle)
                 },
                 onError = { errorMessage ->
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()

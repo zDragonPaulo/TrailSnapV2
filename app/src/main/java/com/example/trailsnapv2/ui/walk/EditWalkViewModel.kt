@@ -9,15 +9,13 @@ import kotlinx.coroutines.launch
 
 class EditWalkViewModel(private val walkDao: WalkDao) : ViewModel() {
 
-    fun saveWalk(walk: Walk, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun saveWalk(walk: Walk, onSuccess: (Long) -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             try {
-                val id = walkDao.insertWalk(walk)
+                val id = walkDao.insertWalk(walk) // Inserir e obter o ID gerado
                 if (id > 0) {
-                    val allWalks = walkDao.getAllWalks()
-                    Log.d("EditWalkFragment", "All walks: $allWalks")
-
-                    onSuccess()
+                    Log.d("EditWalkViewModel", "Caminhada salva com ID: $id")
+                    onSuccess(id) // Passar o ID gerado no callback de sucesso
                 } else {
                     onError("Erro ao salvar a caminhada.")
                 }

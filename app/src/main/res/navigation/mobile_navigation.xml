@@ -119,6 +119,9 @@
         android:name="com.example.trailsnapv2.ui.walk.WalkDetailsFragment"
         android:label="@string/fragment_walk_details"
         tools:layout="@layout/fragment_walk_details" >
+        <argument
+            android:name="walkId"
+            app:argType="long" />
         <action
             android:id="@+id/action_walkDetailsFragment_to_editWalkFragment"
             app:destination="@id/editWalkFragment" />
