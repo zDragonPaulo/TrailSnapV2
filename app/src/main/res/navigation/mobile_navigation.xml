@@ -108,7 +108,10 @@
             android:name="distance"
             app:argType="float" />
         <argument
-            android:name="elapsedTime"
+            android:name="startTime"
+            app:argType="long" />
+        <argument
+            android:name="endTime"
             app:argType="long" />
     </fragment>
     <fragment

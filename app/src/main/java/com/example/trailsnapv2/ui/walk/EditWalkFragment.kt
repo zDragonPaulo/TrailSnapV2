@@ -46,12 +46,13 @@ class EditWalkFragment : Fragment() {
 
         // Obter os argumentos do Bundle
         val distance = arguments?.getFloat("distance") ?: 0f
-        val elapsedTime = arguments?.getLong("elapsedTime") ?: 0L
+        val startTime = arguments?.getLong("startTime") ?: 0L
+        val endTime = arguments?.getLong("endTime") ?: 0L
         val walkName = arguments?.getString("walkName") ?: ""
-
+        val elapsedTime = (endTime - startTime) / 1000
         walkNameEditText.setText(walkName)
         distanceTextView.text = "Distância: %.2f km".format(distance)
-        elapsedTimeTextView.text = "Tempo decorrido: %d segundos".format(elapsedTime)
+        elapsedTimeTextView.text = "Tempo decorrido: ${formatTime(elapsedTime)}"
 
         buttonSaveWalk.setOnClickListener {
             val walkNameInput = walkNameEditText.text.toString()
@@ -80,6 +81,24 @@ class EditWalkFragment : Fragment() {
         }
 
         return view
+    }
+
+    fun formatTime(seconds: Long): String {
+        return when {
+            seconds >= 3600 -> { // Mais que 1 hora
+                val hours = seconds / 3600
+                val minutes = (seconds % 3600) / 60
+                if (minutes > 0) "$hours h $minutes min" else "$hours h"
+            }
+            seconds >= 60 -> { // Mais que 1 minuto
+                val minutes = seconds / 60
+                val remainingSeconds = seconds % 60
+                if (remainingSeconds > 0) "$minutes min $remainingSeconds s" else "$minutes min"
+            }
+            else -> { // Menos de 1 minuto
+                "$seconds s"
+            }
+        }
     }
 
 
