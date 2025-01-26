@@ -1,6 +1,7 @@
 package com.example.trailsnapv2.ui.walk
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ class EditWalkFragment : Fragment() {
 
         // Obter o DAO do banco de dados
         val database = AppDatabase.getInstance(requireContext())
+        Log.d("EditWalkFragment", "Database instance: $database")
         val walkDao = database.walkDao()
 
         // Configurar o ViewModel com o Factory
@@ -60,13 +62,13 @@ class EditWalkFragment : Fragment() {
                 Toast.makeText(requireContext(), "O nome da caminhada não pode estar vazio.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-
+            Log.d("EditWalkFragment", "Saving walk with name: $startTime")
             val walk = Walk(
                 user_id = 1L, // Substitua pelo ID do usuário válido
                 walk_name = walkNameInput,
-                distance = distance.toDouble(), // Substitua pelo valor da distância correta
-                start_time = elapsedTime, // Substitua pelo valor correto
-                end_time = System.currentTimeMillis()
+                distance = distance.toDouble(),
+                start_time = startTime/1000,
+                end_time = endTime/1000
             )
 
             viewModel.saveWalk(walk,
@@ -78,6 +80,7 @@ class EditWalkFragment : Fragment() {
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
                 }
             )
+
         }
 
         return view

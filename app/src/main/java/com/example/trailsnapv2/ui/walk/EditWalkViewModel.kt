@@ -1,5 +1,6 @@
 package com.example.trailsnapv2.ui.walk
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trailsnapv2.dao.WalkDao
@@ -13,6 +14,9 @@ class EditWalkViewModel(private val walkDao: WalkDao) : ViewModel() {
             try {
                 val id = walkDao.insertWalk(walk)
                 if (id > 0) {
+                    val allWalks = walkDao.getAllWalks()
+                    Log.d("EditWalkFragment", "All walks: $allWalks")
+
                     onSuccess()
                 } else {
                     onError("Erro ao salvar a caminhada.")

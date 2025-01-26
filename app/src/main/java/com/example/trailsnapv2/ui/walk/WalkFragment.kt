@@ -78,7 +78,7 @@ class WalkFragment : Fragment() {
                 // Update UI
                 distanceTextView.text = "Distance: ${"%.2f".format(distance)} km"
                 textTime.text = formatTime(elapsedTime)
-
+                Log.d("WalkFragment", "Distance: $startTime km")
                 stopChronometer()
                 // Pass data to EditWalkFragment by Bundle
                 val bundle = Bundle().apply {
