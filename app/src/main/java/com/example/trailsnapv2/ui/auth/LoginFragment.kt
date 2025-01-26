@@ -37,11 +37,20 @@ class LoginFragment : Fragment() {
             lifecycleScope.launch {
                 val success = viewModel.loginUser(username, password)
                 if (success) {
+                    // Salvar user_id no SharedPreferences
+                    val userId = viewModel.getUserId(username)
+                    userId?.let {
+                        val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putLong("current_user_id", userId)
+                            apply()
+                        }
+                    }
+
                     Toast.makeText(context, getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_loginFragment_to_navigation_dashboard)
                 } else {
-                    Toast.makeText(context,
-                        getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -19,7 +19,7 @@ class AddWalkFragment : Fragment() {
 
     private lateinit var addWalkViewModel: AddWalkViewModel
     private val userViewModel: LoginViewModel by activityViewModels()
-
+    private var userId: Long = 0L
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +42,8 @@ class AddWalkFragment : Fragment() {
 
         buttonStartWalk.setOnClickListener {
             val name = walkName.editText?.text.toString()
-            val userId = userViewModel.user.value?.user_id ?: 0L
+            val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+            userId = sharedPref.getLong("current_user_id", -1L)
 
             Log.d("AddWalkFragment", "Retrieved user ID: $userId")
 

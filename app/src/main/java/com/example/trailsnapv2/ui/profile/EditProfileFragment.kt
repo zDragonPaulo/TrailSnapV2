@@ -35,7 +35,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var descriptionEditText: EditText
     private lateinit var birthdayEditText: EditText
     private var selectedImageUri: Uri? = null
-
+    private var userId: Long = 0L
     private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedImageUri = result.data?.data
@@ -69,7 +69,7 @@ class EditProfileFragment : Fragment() {
         saveButton.setOnClickListener {
             val imagePath = selectedImageUri?.let { saveImageToInternalStorage(it) }
             val updatedUser = User(
-                user_id = 1L, // Replace with the actual logged-in user ID
+                user_id = userId,
                 username = usernameEditText.text.toString(),
                 password = passwordEditText.text.toString(),
                 user_description = descriptionEditText.text.toString(),
@@ -101,18 +101,26 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userId = 1L // Substitua pelo ID real do usuário logado
-        viewModel.getUserById(userId).observe(viewLifecycleOwner, Observer { user ->
-            user?.let {
-                // Popula os campos do formulário com os dados do usuário
-                usernameEditText.setText(it.username)
-                passwordEditText.setText(it.password)
-                descriptionEditText.setText(it.user_description)
-                birthdayEditText.setText(it.birthday)
-                selectedImageUri = it.profile_picture?.let { uriString -> Uri.parse(uriString) }
-                profileImageView.setImageURI(selectedImageUri)
-            }
-        })
+        val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+        userId = sharedPref.getLong("current_user_id", -1L)
+
+        if (userId != -1L) {
+            // Busca os dados do usuário logado
+            viewModel.getUserById(userId).observe(viewLifecycleOwner, Observer { user ->
+                user?.let {
+                    // Popula os campos do formulário com os dados do usuário
+                    usernameEditText.setText(it.username)
+                    passwordEditText.setText(it.password)
+                    descriptionEditText.setText(it.user_description)
+                    birthdayEditText.setText(it.birthday)
+                    selectedImageUri = it.profile_picture?.let { uriString -> Uri.parse(uriString) }
+                    profileImageView.setImageURI(selectedImageUri)
+                }
+            })
+        } else {
+            // Redireciona para o login se o ID do usuário não for encontrado
+            Toast.makeText(requireContext(), "Usuário não autenticado. Faça login novamente.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveImageToInternalStorage(uri: Uri): String? {

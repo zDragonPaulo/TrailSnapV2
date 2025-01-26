@@ -22,7 +22,7 @@ import com.example.trailsnapv2.R
 import com.example.trailsnapv2.entities.Walk
 
 class EditWalkFragment : Fragment() {
-
+    private var userId: Long = -1L
     private var selectedPhotoUri: Uri? = null
     private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -45,6 +45,8 @@ class EditWalkFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_edit_walk, container, false)
 
         val walkId = arguments?.getLong("walkId", -1)
+        val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+        userId = sharedPref.getLong("current_user_id", -1L)
 
         if (walkId != null && walkId != -1L) {
             Log.d("ATENZZIONE PICKPOCKET CARALHO FODA-SE", "Walk ID: $walkId")
@@ -122,7 +124,7 @@ class EditWalkFragment : Fragment() {
             val walkId = arguments?.getLong("walkId", -1)
             val walk = walkId?.let { it1 ->
                 Walk(
-                    user_id = 1L,
+                    user_id = userId,
                     walk_name = walkNameInput,
                     distance = arguments?.getFloat("distance")?.toDouble() ?: 0.0,
                     start_time = arguments?.getLong("startTime") ?: 0L,

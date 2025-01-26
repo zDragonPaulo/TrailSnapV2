@@ -41,11 +41,19 @@ class ProfileFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+        val userId = sharedPref.getLong("current_user_id", -1L)
+
+        if (userId != -1L) {
+            viewModel.loadUserData(userId)
+        } else {
+            Log.e("ProfileFragment", "Nenhum usuário logado.")
+        }
+
         val usernameTextView: TextView = view.findViewById(R.id.username)
         val birthdayTextView: TextView = view.findViewById(R.id.birthday)
-
         val profileImageView: ImageView = view.findViewById(R.id.user_image)
-        val descriptionTextView: TextView = view.findViewById(R.id.description) // Add this line
+        val descriptionTextView: TextView = view.findViewById(R.id.description)
         val settingsButton: Button = view.findViewById(R.id.button_settings)
 
         viewModel.username.observe(viewLifecycleOwner) { username ->
@@ -57,12 +65,9 @@ class ProfileFragment : Fragment() {
         viewModel.description.observe(viewLifecycleOwner) { description ->
             descriptionTextView.text = description
         }
-        Log.d("WHERE ARE U NOW?","HUH?")
         viewModel.profilePicture.observe(viewLifecycleOwner) { profilePicture ->
             profileImageView.setImageURI(Uri.parse(profilePicture))
         }
-
-        viewModel.loadUserData(1L)
 
         settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment)
@@ -70,4 +75,5 @@ class ProfileFragment : Fragment() {
 
         return view
     }
+
 }
