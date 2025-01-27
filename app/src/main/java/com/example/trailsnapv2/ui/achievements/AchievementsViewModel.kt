@@ -1,5 +1,6 @@
 package com.example.trailsnapv2.ui.achievements
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -61,32 +62,38 @@ class AchievementsViewModel(
             val userAchievements = userAchievementDao.getUserAchievements(userId)
 
             // Fetch user's metrics
-            val distanceWalked = getTotalDistanceWalked(userId) // Get total distance
-            val walksCompleted = getTotalWalksCompleted(userId) // Get total walks
+            if (getTotalDistanceWalked(userId) != null) {
+                val distanceWalked = getTotalDistanceWalked(userId) // Get total distance
+                val walksCompleted = getTotalWalksCompleted(userId) // Get total walks
 
-            // Loop through the user's achievements and update their progress
-            val updatedAchievements = userAchievements.map { userAchievement ->
-                val singularAchievement = singularAchievements.find { it.id_achievement == userAchievement.achievement_id }
-                singularAchievement?.let { sa ->
-                    val condition = sa.condition // Get condition JSON string
-                    val (metric, target) = parseCondition(condition) // Parse the condition into metric and target
+                // Loop through the user's achievements and update their progress
+                val updatedAchievements = userAchievements.map { userAchievement ->
+                    val singularAchievement = singularAchievements.find { it.id_achievement == userAchievement.achievement_id }
+                    singularAchievement?.let { sa ->
+                        val condition = sa.condition // Get condition JSON string
+                        val (metric, target) = parseCondition(condition) // Parse the condition into metric and target
 
-                    // Calculate progress based on the metric
-                    val progress = when (metric) {
-                        "distance_walked" -> (distanceWalked / target) * 100
-                        "walks_completed" -> (walksCompleted / target) * 100
-                        else -> userAchievement.progress  // Fallback to existing progress
-                    }
+                        // Calculate progress based on the metric
+                        val progress = when (metric) {
+                            "distance_walked" -> (distanceWalked / target) * 100
+                            "walks_completed" -> (walksCompleted / target) * 100
+                            else -> userAchievement.progress  // Fallback to existing progress
+                        }
 
-                    // Determine if the achievement is unlocked
-                    val unlocked = progress >= 100
+                        // Determine if the achievement is unlocked
+                        val unlocked = progress >= 100
 
-                    userAchievement.copy(progress = progress.coerceAtMost(100.0), unlocked = unlocked)
-                } ?: userAchievement
+                        userAchievement.copy(progress = progress.coerceAtMost(100.0), unlocked = unlocked)
+                    } ?: userAchievement
+                }
+
+                // Update the user's achievements in the database
+                userAchievementDao.updateAll(updatedAchievements)
+            } else {
+
+                Log.d("OMAE WA MOU SHINDEIRU", "NANI? IT'S MY FIRST TIME")
             }
 
-            // Update the user's achievements in the database
-            userAchievementDao.updateAll(updatedAchievements)
         }
     }
 
