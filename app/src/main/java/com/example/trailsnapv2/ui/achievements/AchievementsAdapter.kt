@@ -41,4 +41,6 @@ class AchievementsAdapter : RecyclerView.Adapter<AchievementsAdapter.Achievement
             binding.textAchievementStatus.text = if (userAchievement.unlocked) "Unlocked" else "In Progress"
         }
     }
+
+
 }

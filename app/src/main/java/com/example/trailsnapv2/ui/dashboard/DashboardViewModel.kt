@@ -1,7 +1,10 @@
+package com.example.trailsnapv2.ui.dashboard
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.trailsnapv2.dao.UserAchievementDao
 import com.example.trailsnapv2.dao.UserDao
 import com.example.trailsnapv2.dao.WalkDao
 import com.example.trailsnapv2.entities.SingularAchievement
@@ -10,7 +13,11 @@ import com.example.trailsnapv2.entities.UserAchievement
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class DashboardViewModel(private val userDao: UserDao, private val walkDao: WalkDao) : ViewModel() {
+class DashboardViewModel(
+    private val userDao: UserDao,
+    private val walkDao: WalkDao,
+    private val userAchievementDao: UserAchievementDao
+) : ViewModel() {
 
     private val _userAchievements = MutableLiveData<List<UserAchievement>>()
     val userAchievements: LiveData<List<UserAchievement>> = _userAchievements
@@ -23,9 +30,6 @@ class DashboardViewModel(private val userDao: UserDao, private val walkDao: Walk
 
     private val _totalWalks = MutableLiveData<Int>()
     val totalWalks: LiveData<Int> = _totalWalks
-    init {
-        loadAchievements()
-    }
 
     fun loadUserData(userId: Long) {
         viewModelScope.launch {
@@ -36,15 +40,22 @@ class DashboardViewModel(private val userDao: UserDao, private val walkDao: Walk
         }
     }
 
-    private fun loadAchievements() {
-        // Fetch achievements data (simulated here)
-        _userAchievements.value = listOf()
-        _singularAchievements.value = listOf()
-    }
     fun loadTotalWalks(userId: Long) {
         viewModelScope.launch {
             val total = walkDao.calculateWalksCompleted(userId)
             _totalWalks.postValue(total)
         }
     }
+
+    fun loadTopAchievements(userId: Long) {
+        viewModelScope.launch {
+            val topUserAchievements = userAchievementDao.getTopProgressAchievements(userId)
+            _userAchievements.postValue(topUserAchievements)
+
+            // Carrega a lista de SingularAchievement correspondente
+            val singularAchievementsList = userAchievementDao.getSingularAchievementsForUser(userId)
+            _singularAchievements.postValue(singularAchievementsList)
+        }
+    }
 }
+
