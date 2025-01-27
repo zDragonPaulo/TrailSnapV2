@@ -9,127 +9,155 @@
         android:name="com.example.trailsnapv2.ui.dashboard.DashboardFragment"
         android:label="@string/dashboard"
         tools:layout="@layout/fragment_dashboard" >
+
         <action
             android:id="@+id/action_navigation_dashboard_to_appSettingsFragment"
             app:destination="@id/appSettingsFragment"
             app:popUpTo="@id/navigation_dashboard"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.trailsnapv2.ui.history.HistoryFragment"
         android:label="@string/history"
         tools:layout="@layout/fragment_history" >
+
         <action
             android:id="@+id/action_navigation_history_to_walkDetailsFragment"
             app:destination="@id/walkDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/navigation_achievements"
         android:name="com.example.trailsnapv2.ui.achievements.AchievementsFragment"
         android:label="@string/achievements"
         tools:layout="@layout/fragment_achievements" />
+
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.trailsnapv2.ui.profile.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" >
+
         <action
             android:id="@+id/action_navigation_profile_to_editProfileFragment"
             app:destination="@id/editProfileFragment"
             app:popUpTo="@id/navigation_profile"
             app:popUpToInclusive="false" />
     </fragment>
+
     <fragment
         android:id="@+id/navigation_add_walk"
         android:name="com.example.trailsnapv2.ui.walk.AddWalkFragment"
         android:label="@string/add_walk"
         tools:layout="@layout/fragment_add_walk" >
+
         <action
             android:id="@+id/action_navigation_add_walk_to_walkFragment"
             app:destination="@id/walkFragment"
             app:popUpTo="@id/navigation_add_walk"
             app:popUpToInclusive="false" />
     </fragment>
+
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.trailsnapv2.ui.profile.EditProfileFragment"
         android:label="@string/fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.trailsnapv2.ui.auth.RegisterFragment"
         android:label="@string/register_fragment" >
+
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.trailsnapv2.ui.auth.LoginFragment"
         android:label="@string/fragment_login"
         tools:layout="@layout/fragment_login" >
+
         <action
             android:id="@+id/action_loginFragment_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />
+
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/appSettingsFragment"
         android:name="com.example.trailsnapv2.ui.dashboard.AppSettingsFragment"
         android:label="@string/fragment_app_settings"
         tools:layout="@layout/fragment_app_settings" />
+
     <fragment
         android:id="@+id/walkFragment"
         android:name="com.example.trailsnapv2.ui.walk.WalkFragment"
         android:label="@string/fragment_walk"
         tools:layout="@layout/fragment_walk" >
+
         <action
             android:id="@+id/action_walkFragment_to_editWalkFragment"
             app:destination="@id/editWalkFragment" />
+
         <action
             android:id="@+id/action_walkFragment_to_navigation_add_walk"
             app:destination="@id/navigation_add_walk" />
     </fragment>
+
     <fragment
         android:id="@+id/editWalkFragment"
         android:name="com.example.trailsnapv2.ui.walk.EditWalkFragment"
         android:label="@string/fragment_edit_walk"
         tools:layout="@layout/fragment_edit_walk" >
+
         <action
             android:id="@+id/action_editWalkFragment_to_walkDetailsFragment"
             app:destination="@id/walkDetailsFragment" />
+
         <argument
             android:name="walkId"
             app:argType="long"
             android:defaultValue="0L" />
+
         <argument
             android:name="distance"
             app:argType="float"
             android:defaultValue="0.0" />
+
         <argument
             android:name="startTime"
             app:argType="long"
             android:defaultValue="0L" />
+
         <argument
             android:name="endTime"
             app:argType="long"
             android:defaultValue="0L" />
+
         <argument
             android:name="walkName"
             app:argType="string"
             android:defaultValue="" />
     </fragment>
+
     <fragment
         android:id="@+id/walkDetailsFragment"
         android:name="com.example.trailsnapv2.ui.walk.WalkDetailsFragment"
         android:label="@string/fragment_walk_details"
         tools:layout="@layout/fragment_walk_details" >
+
         <argument
             android:name="walkId"
             app:argType="long" />
+
         <action
             android:id="@+id/action_walkDetailsFragment_to_editWalkFragment"
             app:destination="@id/editWalkFragment" />

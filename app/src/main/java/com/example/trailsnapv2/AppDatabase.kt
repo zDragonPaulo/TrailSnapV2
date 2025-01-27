@@ -6,8 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.trailsnapv2.dao.*
-import com.example.trailsnapv2.entities.*
+import com.example.trailsnapv2.dao.MemberDao
+import com.example.trailsnapv2.dao.PartyAchievementDao
+import com.example.trailsnapv2.dao.PartyDao
+import com.example.trailsnapv2.dao.SingularAchievementDao
+import com.example.trailsnapv2.dao.UserAchievementDao
+import com.example.trailsnapv2.dao.UserDao
+import com.example.trailsnapv2.dao.WalkDao
+import com.example.trailsnapv2.entities.Member
+import com.example.trailsnapv2.entities.Party
+import com.example.trailsnapv2.entities.PartyAchievement
+import com.example.trailsnapv2.entities.SingularAchievement
+import com.example.trailsnapv2.entities.User
+import com.example.trailsnapv2.entities.UserAchievement
+import com.example.trailsnapv2.entities.Walk
 
 @Database(
     entities = [

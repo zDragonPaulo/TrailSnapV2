@@ -66,5 +66,14 @@
     <string name="walk_name_empty">O nome da caminhada não pode estar vazio.</string>
     <string name="walk_update">Caminhada atualizada com sucesso!</string>
     <string name="walk_saved">Caminhada guardada com sucesso!</string>
+    <string name="walk_distance">Distância</string>
+    <string name="walk_time">Tempo Total</string>
+    <string name="achievement_name">Nome da Conquista</string>
+    <string name="achievement_description">Descrição da Conquista</string>
+    <string name="achievement_status">Status (Desbloqueada/Em Progresso)</string>
+    <string name="start_distance" translatable="false">0 m</string>
+    <string name="start_time" translatable="false">00:00:00</string>
+    <string name="total_walk_time">Tempo:</string>
+    <string name="total_walk_distance">Distância:</string>
 
 </resources>

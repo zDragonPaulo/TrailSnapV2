@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.walk.WalkFragment">
 
-    <!-- Nome da Caminhada -->
     <TextView
         android:id="@+id/walkName"
         android:layout_width="0dp"
@@ -21,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Distância dentro de um círculo -->
     <androidx.cardview.widget.CardView
         android:id="@+id/distanceCircle"
         android:layout_width="120dp"
@@ -38,12 +36,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="0.00 km"
+            android:text="@string/start_distance"
             android:textSize="24sp"
             android:textStyle="bold" />
+
     </androidx.cardview.widget.CardView>
 
-    <!-- Tempo dentro de um círculo -->
     <androidx.cardview.widget.CardView
         android:id="@+id/timeCircle"
         android:layout_width="120dp"
@@ -60,12 +58,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="00:00:00"
+            android:text="@string/start_time"
             android:textSize="24sp"
             android:textStyle="bold" />
+
     </androidx.cardview.widget.CardView>
 
-    <!-- Botão Iniciar Caminhada -->
     <Button
         android:id="@+id/startWalk"
         android:layout_width="0dp"
@@ -78,7 +76,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeCircle" />
 
-    <!-- Botão Finalizar Caminhada -->
     <Button
         android:id="@+id/finishWalk"
         android:layout_width="0dp"

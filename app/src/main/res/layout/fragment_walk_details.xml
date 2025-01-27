@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.walk.WalkDetailsFragment">
 
-    <!-- Nome da Caminhada -->
     <TextView
         android:id="@+id/walkNameDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nome da Caminhada"
+        android:text="@string/walk_name"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,7 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
 
-    <!-- Imagem -->
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="150dp"
@@ -31,31 +29,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
-    <!-- Distância Percorrida -->
     <TextView
         android:id="@+id/distanteUsedDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Distância Percorrida"
+        android:text="@string/walk_distance"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/imageView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
-    <!-- Tempo Decorrido -->
     <TextView
         android:id="@+id/timeUsedDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tempo Decorrido"
+        android:text="@string/walk_time"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/distanteUsedDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
-    <!-- Botão Editar -->
     <Button
         android:id="@+id/editButton"
         android:layout_width="wrap_content"

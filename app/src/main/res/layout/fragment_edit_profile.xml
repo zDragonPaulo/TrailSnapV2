@@ -17,7 +17,9 @@
         android:layout_marginBottom="16dp"
         android:scaleType="centerCrop"
         android:background="@drawable/photo_circle"
-        android:clipToOutline="true"/>
+        android:clipToOutline="true"
+        tools:ignore="UnusedAttribute" />
+
     <Button
         android:id="@+id/button_select_image"
         android:layout_width="wrap_content"

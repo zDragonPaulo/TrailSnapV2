@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.databinding.FragmentDashboardBinding
 import com.example.trailsnapv2.entities.UserAchievement
-import androidx.navigation.fragment.findNavController
 
 
 class DashboardFragment : Fragment() {

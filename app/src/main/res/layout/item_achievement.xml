@@ -7,7 +7,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="@android:color/white"> <!-- Ensuring background is white -->
+    app:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,26 +15,23 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Achievement Name TextView -->
         <TextView
             android:id="@+id/textAchievementName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Achievement Name"
+            android:text="@string/achievement_name"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@android:color/black"
             android:layout_marginBottom="8dp"/>
 
-        <!-- Achievement Description TextView -->
         <TextView
             android:id="@+id/textAchievementDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description of the achievement"
+            android:text="@string/achievement_description"
             android:textColor="@android:color/darker_gray"
             android:layout_marginBottom="8dp"/>
 
-        <!-- Progress Bar -->
         <ProgressBar
             android:id="@+id/progressBarAchievement"
             style="@android:style/Widget.ProgressBar.Horizontal"
@@ -44,14 +41,15 @@
             android:max="100"
             android:layout_marginBottom="8dp"/>
 
-        <!-- Achievement Status TextView -->
         <TextView
             android:id="@+id/textAchievementStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status (Unlocked/In Progress)"
+            android:text="@string/achievement_status"
             android:textColor="@android:color/darker_gray"
             android:textStyle="bold"
             android:layout_marginTop="4dp"/>
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

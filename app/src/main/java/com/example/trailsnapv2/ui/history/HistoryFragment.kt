@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trailsnapv2.R
 import com.example.trailsnapv2.AppDatabase
+import com.example.trailsnapv2.R
 
 class HistoryFragment : Fragment() {
 

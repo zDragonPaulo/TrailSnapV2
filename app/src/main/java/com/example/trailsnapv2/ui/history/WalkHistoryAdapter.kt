@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,9 +32,9 @@ class WalkHistoryAdapter(private val context: Context, private val onItemClick: 
         fun bind(item: Walk) {
             binding.apply {
                 itemWalkName.text = item.walk_name
-                itemDistance.text = context.getString(R.string.dist_ncia_2f_km, item.distance)
+                itemWalkDistance.text = context.getString(R.string.dist_ncia_2f_km, item.distance)
                 val elapsedTime = (item.end_time - item.start_time) / 1000
-                itemStartTime.text = context.getString(R.string.total_time, formatTime(elapsedTime))
+                itemWalkTime.text = context.getString(R.string.total_time, formatTime(elapsedTime))
 
                 // Adiciona o clique no item
                 root.setOnClickListener {

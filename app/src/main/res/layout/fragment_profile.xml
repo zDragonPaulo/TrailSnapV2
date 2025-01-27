@@ -16,7 +16,8 @@
         android:src="@drawable/ic_user_placeholder"
         android:scaleType="centerCrop"
         android:background="@drawable/photo_circle"
-        android:clipToOutline="true"/>
+        android:clipToOutline="true"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/username"

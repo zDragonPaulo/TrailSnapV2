@@ -60,4 +60,11 @@
     <string name="walk_name_empty">Walk name can\'t be empty</string>
     <string name="walk_update">Walk updated with sucess</string>
     <string name="walk_saved">Walk saved with sucess</string>
+    <string name="walk_distance">Distance</string>
+    <string name="walk_time">Total Time</string>
+    <string name="achievement_name">Achievement Name</string>
+    <string name="achievement_description">Achievement Description</string>
+    <string name="achievement_status">Status (Unlocked/In Progress)</string>
+    <string name="total_walk_time">Time:</string>
+    <string name="total_walk_distance">Distance:</string>
 </resources>

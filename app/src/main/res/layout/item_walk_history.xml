@@ -5,7 +5,6 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <!-- LinearLayout for TextViews on the left side -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -17,22 +16,22 @@
             android:id="@+id/item_walk_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Walk Name"
+            android:text="@string/walk_name"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/item_distance"
+            android:id="@+id/item_walk_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Distance"
+            android:text="@string/walk_distance"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/item_start_time"
+            android:id="@+id/item_walk_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start Time"
+            android:text="@string/walk_time"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -42,6 +41,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="end"
+        android:contentDescription="@string/walk_photo"
         android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars" />
 
