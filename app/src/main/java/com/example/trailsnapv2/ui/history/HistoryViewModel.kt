@@ -11,14 +11,13 @@ class HistoryViewModel(private val walkDao: WalkDao, private val userId: Long) :
 
     val historyItems: LiveData<List<Walk>> = liveData {
         try {
-            // Fetch walks for the specific user using userId
+            // Busca caminhadas para o usuário específico usando userId
             val walks = walkDao.getWalksByUserId(userId)
-            emit(walks)  // Emit the result to LiveData
+            emit(walks)  // Emite o resultado para o LiveData
         } catch (e: Exception) {
             Log.e("HistoryViewModel", "Error fetching walks", e)
-            emit(emptyList())  // Emit an empty list in case of error
+            emit(emptyList())  // Emite uma lista vazia em caso de erro
         }
     }
 }
-
 

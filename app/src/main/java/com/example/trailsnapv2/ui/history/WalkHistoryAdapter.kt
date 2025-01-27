@@ -1,6 +1,6 @@
 package com.example.trailsnapv2.ui.history
 
-import android.graphics.drawable.Drawable
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.databinding.ItemWalkHistoryBinding
 import com.example.trailsnapv2.entities.Walk
+import java.io.File
 
 class WalkHistoryAdapter :
     ListAdapter<Walk, WalkHistoryAdapter.WalkHistoryViewHolder>(WalkHistoryDiffCallback()) {
@@ -33,33 +34,27 @@ class WalkHistoryAdapter :
         private val distance: TextView = itemView.findViewById(R.id.item_distance)
         private val startTime: TextView = itemView.findViewById(R.id.item_start_time)
         private val endTime: TextView = itemView.findViewById(R.id.item_end_time)
-        private val photoPath: ImageView = itemView.findViewById(R.id.item_photo_path)  // Corrected
+        private val photoPath: ImageView = itemView.findViewById(R.id.item_photo_path)
 
         fun bind(item: Walk) {
             binding.apply {
                 walkName.text = item.walk_name
-                distance.text = item.distance.toString()
-                startTime.text = item.start_time.toString()
-                endTime.text = item.end_time.toString()
+                distance.text = "Distância: %.2f km".format(item.distance)
+                startTime.text = "Início: ${item.start_time}"
+                endTime.text = "Fim: ${item.end_time}"
 
-                val uri = Uri.parse(item.photo_path)
+                val photoFile = File(item.photo_path ?: "")
 
-                try {
-                    // Usa o ContentResolver para abrir o input stream da URI
-                    val inputStream = itemView.context.contentResolver.openInputStream(uri)
-                    val drawable = Drawable.createFromStream(inputStream, uri.toString())
-                    photoPath.setImageDrawable(drawable)
-                    inputStream?.close()  // Fecha o stream após o uso
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    // Define uma imagem de placeholder em caso de erro
+                if (photoFile.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+                    photoPath.setImageBitmap(bitmap)
+                } else {
+                    // Define uma imagem placeholder se o arquivo não for encontrado
                     photoPath.setImageResource(R.drawable.ic_user_placeholder)
                 }
             }
         }
-
     }
-
 
     class WalkHistoryDiffCallback : DiffUtil.ItemCallback<Walk>() {
         override fun areItemsTheSame(oldItem: Walk, newItem: Walk): Boolean {

@@ -20,6 +20,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.AppDatabase
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.entities.Walk
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class EditWalkFragment : Fragment() {
     private var userId: Long = -1L
@@ -90,7 +93,11 @@ class EditWalkFragment : Fragment() {
                 Toast.makeText(requireContext(), "O nome da caminhada não pode estar vazio.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            val updatedWalk = walk.copy(walk_name = walkNameInput, photo_path = selectedPhotoUri?.toString())
+
+            // Salvar imagem no armazenamento interno
+            val imagePath = selectedPhotoUri?.let { saveImageToInternalStorage(it) }
+
+            val updatedWalk = walk.copy(walk_name = walkNameInput, photo_path = imagePath)
             viewModel.updateWalk(updatedWalk,
                 onSuccess = {
                     Toast.makeText(requireContext(), "Caminhada atualizada com sucesso!", Toast.LENGTH_LONG).show()
@@ -121,6 +128,10 @@ class EditWalkFragment : Fragment() {
                 Toast.makeText(requireContext(), "O nome da caminhada não pode estar vazio.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+
+            // Salvar imagem no armazenamento interno
+            val imagePath = selectedPhotoUri?.let { saveImageToInternalStorage(it) }
+
             val walkId = arguments?.getLong("walkId", -1)
             val walk = walkId?.let { it1 ->
                 Walk(
@@ -129,7 +140,7 @@ class EditWalkFragment : Fragment() {
                     distance = arguments?.getFloat("distance")?.toDouble() ?: 0.0,
                     start_time = arguments?.getLong("startTime") ?: 0L,
                     end_time = arguments?.getLong("endTime") ?: 0L,
-                    photo_path = selectedPhotoUri?.toString()
+                    photo_path = imagePath
                 )
             }
 
@@ -166,4 +177,23 @@ class EditWalkFragment : Fragment() {
             else -> "$seconds s"
         }
     }
+    private fun saveImageToInternalStorage(uri: Uri): String? {
+        val context = requireContext()
+        val contentResolver = context.contentResolver
+        val fileName = "walk_image_${System.currentTimeMillis()}.jpg"
+        val file = File(context.filesDir, fileName)
+
+        try {
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                FileOutputStream(file).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            return file.absolutePath
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
 }
