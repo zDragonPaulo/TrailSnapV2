@@ -43,7 +43,10 @@ class RegisterFragment : Fragment() {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
             val confirmPassword = confirmPasswordEditText.text.toString()
-
+            if (username == "" || password == "" || confirmPassword == "") {
+                Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (password == confirmPassword) {
                 val user = User(
                     user_id = 0, // This will be updated in the ViewModel

@@ -1,5 +1,6 @@
 package com.example.trailsnapv2.ui.history
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -42,9 +43,21 @@ class WalkHistoryAdapter :
                 endTime.text = item.end_time.toString()
 
                 val uri = Uri.parse(item.photo_path)
-                photoPath.setImageURI(uri)
+
+                try {
+                    // Usa o ContentResolver para abrir o input stream da URI
+                    val inputStream = itemView.context.contentResolver.openInputStream(uri)
+                    val drawable = Drawable.createFromStream(inputStream, uri.toString())
+                    photoPath.setImageDrawable(drawable)
+                    inputStream?.close()  // Fecha o stream após o uso
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    // Define uma imagem de placeholder em caso de erro
+                    photoPath.setImageResource(R.drawable.ic_user_placeholder)
+                }
             }
         }
+
     }
 
 

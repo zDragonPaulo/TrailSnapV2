@@ -15,12 +15,11 @@ import com.example.trailsnapv2.AppDatabase
 
 class HistoryFragment : Fragment() {
 
-    private val userId: Long = 1 // You need to get the actual logged-in user's ID
-
     private val viewModel: HistoryViewModel by viewModels {
         val database = AppDatabase.getInstance(requireContext())
         val walkDao = database.walkDao()
-        HistoryViewModelFactory(walkDao, userId)  // Pass userId here
+        val userId = getCurrentUserId()  // Obtém o ID do usuário logado
+        HistoryViewModelFactory(walkDao, userId)  // Passa o userId para o ViewModel
     }
 
     override fun onCreateView(
@@ -33,17 +32,26 @@ class HistoryFragment : Fragment() {
         val adapter = WalkHistoryAdapter()
         recyclerView.adapter = adapter
 
-
-        // Observe the historyItems LiveData
+        // Observar os dados do histórico
         viewModel.historyItems.observe(viewLifecycleOwner, Observer { items ->
             if (items.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), "No walks found", Toast.LENGTH_SHORT).show()
             } else {
-                adapter.submitList(items)  // Update RecyclerView with the filtered walks
+                adapter.submitList(items)  // Atualiza a RecyclerView com os dados
             }
         })
 
         return binding
     }
-}
 
+    private fun getCurrentUserId(): Long {
+        // Recupera o ID do usuário logado do SharedPreferences
+        val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+        return sharedPref.getLong("current_user_id", -1L).also { userId ->
+            if (userId == -1L) {
+                // Exibe uma mensagem de erro e redireciona para o login se necessário
+                Toast.makeText(requireContext(), "Usuário não autenticado. Faça login novamente.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
