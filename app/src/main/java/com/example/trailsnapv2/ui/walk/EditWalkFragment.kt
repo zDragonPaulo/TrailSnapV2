@@ -121,7 +121,7 @@ class EditWalkFragment : Fragment() {
 
         view.findViewById<EditText>(R.id.editNameWalk).setText(walkName)
         view.findViewById<TextView>(R.id.distanceText).text = getString(R.string.dist_ncia_2f_km, distance)
-        view.findViewById<TextView>(R.id.elapsedTimeText).text = getString(R.string.total_time)
+        view.findViewById<TextView>(R.id.elapsedTimeText).text = getString(R.string.total_time, formatTime(elapsedTime))
 
         view.findViewById<Button>(R.id.saveButton).setOnClickListener {
             val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()

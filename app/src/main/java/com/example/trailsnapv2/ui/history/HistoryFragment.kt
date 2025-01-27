@@ -44,7 +44,7 @@ class HistoryFragment : Fragment() {
 
         return binding
     }
-
+    //TODO VERIFICAR A ATUALIZAÇÃO
     private fun getCurrentUserId(): Long {
         // Recupera o ID do usuário logado do SharedPreferences
         val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
