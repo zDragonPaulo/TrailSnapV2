@@ -37,7 +37,8 @@ class EditWalkFragment : Fragment() {
     private val viewModel: EditWalkViewModel by lazy {
         ViewModelProvider(
             this,
-            EditWalkViewModelFactory(AppDatabase.getInstance(requireContext()).walkDao())
+            EditWalkViewModelFactory(AppDatabase.getInstance(requireContext()).walkDao(),
+                AppDatabase.getInstance(requireContext()).userDao())
         ).get(EditWalkViewModel::class.java)
     }
 
