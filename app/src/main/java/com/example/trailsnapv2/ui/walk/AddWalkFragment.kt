@@ -48,7 +48,7 @@ class AddWalkFragment : Fragment() {
             Log.d("AddWalkFragment", "Retrieved user ID: $userId")
 
             if (name.isBlank()) {
-                walkName.error = "Walk name cannot be empty"
+                walkName.error = getString(R.string.walk_name_empty)
                 return@setOnClickListener
             }
 

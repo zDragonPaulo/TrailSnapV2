@@ -82,15 +82,15 @@ class EditWalkFragment : Fragment() {
         val endTime = walk.end_time
         val elapsedTime = (endTime - startTime) / 1000
         val distance = walk.distance
-        view.findViewById<TextView>(R.id.distanceText).text = "Distância: %.2f km".format(distance)
-        view.findViewById<TextView>(R.id.elapsedTimeText).text = "Tempo decorrido: ${formatTime(elapsedTime)}"
+        view.findViewById<TextView>(R.id.distanceText).text = getString(R.string.dist_ncia_2f_km, distance)
+        view.findViewById<TextView>(R.id.elapsedTimeText).text = getString(R.string.total_time, formatTime(elapsedTime))
 
         selectedPhotoUri = walk.photo_path?.let { Uri.parse(it) }
         view.findViewById<ImageView>(R.id.imageView)?.setImageURI(selectedPhotoUri)
         view.findViewById<Button>(R.id.saveButton).setOnClickListener {
             val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()
             if (walkNameInput.isEmpty()) {
-                Toast.makeText(requireContext(), "O nome da caminhada não pode estar vazio.", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.walk_name_empty), Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -100,7 +100,8 @@ class EditWalkFragment : Fragment() {
             val updatedWalk = walk.copy(walk_name = walkNameInput, photo_path = imagePath)
             viewModel.updateWalk(updatedWalk,
                 onSuccess = {
-                    Toast.makeText(requireContext(), "Caminhada atualizada com sucesso!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.walk_update), Toast.LENGTH_LONG).show()
                     findNavController().popBackStack()
                 },
                 onError = { errorMessage ->
@@ -119,13 +120,13 @@ class EditWalkFragment : Fragment() {
         val elapsedTime = (endTime - startTime) / 1000
 
         view.findViewById<EditText>(R.id.editNameWalk).setText(walkName)
-        view.findViewById<TextView>(R.id.distanceText).text = "Distância: %.2f km".format(distance)
-        view.findViewById<TextView>(R.id.elapsedTimeText).text = "Tempo decorrido: ${formatTime(elapsedTime)}"
+        view.findViewById<TextView>(R.id.distanceText).text = getString(R.string.dist_ncia_2f_km, distance)
+        view.findViewById<TextView>(R.id.elapsedTimeText).text = getString(R.string.total_time)
 
         view.findViewById<Button>(R.id.saveButton).setOnClickListener {
             val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()
             if (walkNameInput.isEmpty()) {
-                Toast.makeText(requireContext(), "O nome da caminhada não pode estar vazio.", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.walk_name_empty), Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -147,7 +148,8 @@ class EditWalkFragment : Fragment() {
             walk?.let { it1 ->
                 viewModel.saveWalk(it1,
                     onSuccess = { savedWalkId ->
-                        Toast.makeText(requireContext(), "Caminhada salva com sucesso!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(),
+                            getString(R.string.walk_saved), Toast.LENGTH_LONG).show()
                         val bundle = Bundle().apply {
                             putLong("walkId", savedWalkId)
                         }

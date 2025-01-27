@@ -29,13 +29,14 @@ class HistoryFragment : Fragment() {
         val binding = inflater.inflate(R.layout.fragment_history, container, false)
         val recyclerView: RecyclerView = binding.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = WalkHistoryAdapter()
+        val adapter = WalkHistoryAdapter(requireContext())
         recyclerView.adapter = adapter
 
         // Observar os dados do histórico
         viewModel.historyItems.observe(viewLifecycleOwner, Observer { items ->
             if (items.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "No walks found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.nenhuma_caminhada_localizada), Toast.LENGTH_SHORT).show()
             } else {
                 adapter.submitList(items)  // Atualiza a RecyclerView com os dados
             }
@@ -50,7 +51,8 @@ class HistoryFragment : Fragment() {
         return sharedPref.getLong("current_user_id", -1L).also { userId ->
             if (userId == -1L) {
                 // Exibe uma mensagem de erro e redireciona para o login se necessário
-                Toast.makeText(requireContext(), "Usuário não autenticado. Faça login novamente.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -86,11 +86,13 @@ class EditProfileFragment : Fragment() {
         viewModel.updateStatus.observe(viewLifecycleOwner, Observer { status ->
             when (status) {
                 EditProfileViewModel.UpdateStatus.SUCCESS -> {
-                    Toast.makeText(requireContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
                 EditProfileViewModel.UpdateStatus.FAILURE -> {
-                    Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.failed_to_update_profile), Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -119,7 +121,7 @@ class EditProfileFragment : Fragment() {
             })
         } else {
             // Redireciona para o login se o ID do usuário não for encontrado
-            Toast.makeText(requireContext(), "Usuário não autenticado. Faça login novamente.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
         }
     }
 

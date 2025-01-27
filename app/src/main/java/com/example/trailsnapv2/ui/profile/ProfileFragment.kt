@@ -47,7 +47,7 @@ class ProfileFragment : Fragment() {
         if (userId != -1L) {
             viewModel.loadUserData(userId)
         } else {
-            Log.e("ProfileFragment", "Nenhum usuário logado.")
+            Log.e("ProfileFragment", "User not Found")
         }
 
         val usernameTextView: TextView = view.findViewById(R.id.username)

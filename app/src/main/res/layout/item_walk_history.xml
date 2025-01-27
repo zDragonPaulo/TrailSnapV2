@@ -35,12 +35,6 @@
             android:text="Start Time"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/item_end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="End Time"
-            android:textSize="12sp" />
     </LinearLayout>
 
     <ImageView

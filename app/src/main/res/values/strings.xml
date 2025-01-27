@@ -58,5 +58,13 @@
     <string name="total_walks_text">Caminhadas Totais: %d</string>
     <string name="no_achievements">Sem conquistas para mostrar</string>
     <string name="user_not_found">Utilizador não encontrado!</string>
+    <string name="dist_ncia_2f_km">Distância: %.2f km</string>
+    <string name="total_time">Tempo Total: %1$s</string>
+    <string name="nenhuma_caminhada_localizada">Nenhuma Caminhada Localizada</string>
+    <string name="profile_updated_successfully">Perfil Atualizado com Sucesso</string>
+    <string name="failed_to_update_profile">Falha ao Atualizar Perfil</string>
+    <string name="walk_name_empty">O nome da caminhada não pode estar vazio.</string>
+    <string name="walk_update">Caminhada atualizada com sucesso!</string>
+    <string name="walk_saved">Caminhada guardada com sucesso!</string>
 
 </resources>
