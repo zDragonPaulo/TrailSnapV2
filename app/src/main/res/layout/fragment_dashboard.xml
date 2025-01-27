@@ -7,46 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <!-- Botão de configurações no canto superior direito -->
+    <!-- Settings Button -->
     <ImageButton
         android:id="@+id/button_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_settings"
-    android:contentDescription="@string/settings_text"
-    android:background="?attr/selectableItemBackgroundBorderless"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp" />
+        android:contentDescription="@string/settings_text"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
 
-    <!-- Título: Meus Grupos -->
+    <!-- Total Distance -->
     <TextView
-        android:id="@+id/text_my_groups"
+        android:id="@+id/text_total_distance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/my_groups"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="Total Distance: 0 km"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/button_settings"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
-    <!-- Carrossel de Grupos -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_groups"
+    <!-- Total Walks -->
+    <TextView
+        android:id="@+id/text_total_walks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_my_groups"
+        android:text="Total Walks: 0"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/text_total_distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="8dp"
-        tools:listitem="@layout/item_group" />
+        android:layout_marginTop="8dp" />
 
-    <!-- Título: Próximas Conquistas -->
+    <!-- Title for Achievements Section -->
     <TextView
         android:id="@+id/text_next_achievements"
         android:layout_width="0dp"
@@ -54,36 +54,38 @@
         android:text="@string/next_achievements"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@android:color/black"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view_groups"
+        app:layout_constraintTop_toBottomOf="@id/text_total_walks"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp" />
 
-    <!-- Carrossel de Conquistas -->
+    <TextView
+        android:id="@+id/text_no_achievements"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_achievements"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp" />
+
+
+    <!-- RecyclerView for Achievements -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_achievements"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/text_next_achievements"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         tools:listitem="@layout/item_achievement" />
-
-    <!-- Título: Convites de Grupo -->
-    <TextView
-        android:id="@+id/text_group_invites"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/group_invites"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view_achievements"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

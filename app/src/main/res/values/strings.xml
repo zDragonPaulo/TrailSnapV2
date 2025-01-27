@@ -53,6 +53,10 @@
     <string name="invalid_credentials">Credenciais Inválidas!</string>
     <string name="user_registered_successfully">Utilizador registado com sucesso!\n</string>
     <string name="passwords_do_not_match">As passwords introduzidas não coincidem!</string>
-    <string name="user_not_found" translatable="false">Womp Womp, não fez login</string>
     <string name="add_photo_button">Adicionar Foto\n</string>
+    <string name="total_distance_text">Distância Total: %1$.2f km</string>
+    <string name="total_walks_text">Caminhadas Totais: %d</string>
+    <string name="no_achievements">Sem conquistas para mostrar</string>
+    <string name="user_not_found">Utilizador não encontrado!</string>
+
 </resources>

@@ -1,5 +1,7 @@
 package com.example.trailsnapv2.ui.dashboard
 
+import AchievementsAdapter
+import DashboardViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,30 +9,19 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.databinding.FragmentDashboardBinding
+import com.example.trailsnapv2.entities.UserAchievement
+import androidx.navigation.fragment.findNavController
 
-/**
- * Fragment that displays the dashboard of the application.
- * This fragment is responsible for showing the main dashboard UI elements and handling user interactions,
- * such as navigating to the settings screen.
- */
+
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-
     private val binding get() = _binding!!
+    private lateinit var achievementsAdapter: AchievementsAdapter
 
-    /**
-     * Called to create the view hierarchy for the fragment.
-     * This method inflates the fragment's layout and sets up the view model and click listeners for the UI elements.
-     *
-     * @param inflater The LayoutInflater used to inflate the fragment's layout.
-     * @param container The parent container to which the fragment's UI should be attached.
-     * @param savedInstanceState The previously saved instance state, if any.
-     * @return The root view of the fragment's layout.
-     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,21 +33,50 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // Initialize the RecyclerView and adapter
+        achievementsAdapter = AchievementsAdapter()
+        binding.recyclerViewAchievements.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = achievementsAdapter
+        }
+
+        // Observe data from ViewModel
+        dashboardViewModel.userAchievements.observe(viewLifecycleOwner) { userAchievements ->
+            dashboardViewModel.singularAchievements.observe(viewLifecycleOwner) { singularAchievements ->
+                // Update RecyclerView with achievements data
+                achievementsAdapter.setUserAchievements(userAchievements, singularAchievements)
+
+                // Update dashboard stats
+                updateDashboardStats(userAchievements)
+            }
+        }
+
+        // Handle settings button click
         val buttonSettings: ImageButton = binding.root.findViewById(R.id.button_settings)
         buttonSettings.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_dashboard_to_appSettingsFragment,
+            findNavController().navigate(
+                R.id.action_navigation_dashboard_to_appSettingsFragment,
                 null,
                 null,
-                null)
+                null
+            )
         }
 
         return root
     }
 
     /**
-     * Called when the view hierarchy of the fragment is being destroyed.
-     * This method is used to clean up the binding reference to avoid memory leaks.
+     * Updates the dashboard's total distance and total walks TextViews.
      */
+    private fun updateDashboardStats(userAchievements: List<UserAchievement>) {
+        // Replace these calculations with actual logic for distance/walks
+        val totalDistance = userAchievements.sumOf { it.progress } // Example logic for distance
+        val totalWalks = userAchievements.size
+
+        binding.textTotalDistance.text = getString(R.string.total_distance_text, totalDistance / 100) // Assuming 100% is 1 km
+        binding.textTotalWalks.text = getString(R.string.total_walks_text, totalWalks)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -22,6 +22,7 @@ class AchievementsAdapter : RecyclerView.Adapter<AchievementsAdapter.Achievement
         return AchievementViewHolder(binding)
     }
 
+
     override fun onBindViewHolder(holder: AchievementViewHolder, position: Int) {
         val userAchievement = userAchievements[position]
         val singularAchievement = singularAchievements.find { it.id_achievement == userAchievement.achievement_id }

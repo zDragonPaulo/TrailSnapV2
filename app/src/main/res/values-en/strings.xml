@@ -21,6 +21,7 @@
     <string name="next_achievements">Next Achievements</string>
     <string name="image_select_button">Select Image</string>
     <string name="edit_button">Edit</string>
+    <string name="add_photo_button">Add Photo[...]</string>
     <string name="settings_text">Settings</string>
     <string name="language_text">Language</string>
     <string name="theme_text">Theme</string>
@@ -47,4 +48,8 @@
     <string name="user_registered_successfully">User Registed Successfully!</string>
     <string name="passwords_do_not_match">Passwords don\'t match!</string>
     <string name="profile_photo">Profile Photo</string>
+    <string name="total_distance_text">Total Distance: %1$.2f m</string>
+    <string name="total_walks_text">Total Walks: %d</string>
+    <string name="no_achievements">No achievements to display</string>
+    <string name="user_not_found">User not found!</string>
 </resources>
