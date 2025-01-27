@@ -55,6 +55,7 @@ class ProfileFragment : Fragment() {
         val profileImageView: ImageView = view.findViewById(R.id.user_image)
         val descriptionTextView: TextView = view.findViewById(R.id.description)
         val settingsButton: Button = view.findViewById(R.id.button_settings)
+        val logoutButton: Button = view.findViewById(R.id.button_logout)
 
         viewModel.username.observe(viewLifecycleOwner) { username ->
             usernameTextView.text = username
@@ -72,6 +73,18 @@ class ProfileFragment : Fragment() {
         settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment)
         }
+
+
+        logoutButton.setOnClickListener {
+            // Apaga o ID do usuário da sessão compartilhada
+            val editor = sharedPref.edit()
+            editor.remove("current_user_id")
+            editor.apply()
+
+            // Redireciona para a tela de login (assumindo que você tenha um LoginFragment configurado)
+            findNavController().navigate(R.id.action_navigation_profile_to_loginFragment)
+        }
+
 
         return view
     }

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -34,7 +35,7 @@ class RegisterFragment : Fragment() {
         val passwordEditText: EditText = view.findViewById(R.id.password)
         val confirmPasswordEditText: EditText = view.findViewById(R.id.confirm_password)
         val registerButton: Button = view.findViewById(R.id.register_button)
-        val alreadyHaveAccountButton: Button = view.findViewById(R.id.register_bypass_button)
+        val alreadyHaveAccountButton: TextView = view.findViewById(R.id.register_bypass_button)
 
         alreadyHaveAccountButton.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)

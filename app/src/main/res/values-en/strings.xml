@@ -67,4 +67,6 @@
     <string name="achievement_status">Status (Unlocked/In Progress)</string>
     <string name="total_walk_time">Time:</string>
     <string name="total_walk_distance">Distance:</string>
+    <string name="logout_text">Logout</string>
+    <string name="create_account_text">Don\'t have an account? Create one!</string>
 </resources>

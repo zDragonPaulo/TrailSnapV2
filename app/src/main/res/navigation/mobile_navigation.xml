@@ -45,6 +45,11 @@
             app:destination="@id/editProfileFragment"
             app:popUpTo="@id/navigation_profile"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_navigation_profile_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

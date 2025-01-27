@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,6 +31,8 @@ class LoginFragment : Fragment() {
         val passwordEditText: EditText = view.findViewById(R.id.password)
         val loginButton: Button = view.findViewById(R.id.register_bypass_button)
 
+
+        val createAccount : TextView = view.findViewById(R.id.create_account_button)
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -53,6 +56,9 @@ class LoginFragment : Fragment() {
                     Toast.makeText(context, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+        createAccount.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
         return view
