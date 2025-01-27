@@ -14,7 +14,7 @@ import com.example.trailsnapv2.databinding.ItemWalkHistoryBinding
 import com.example.trailsnapv2.entities.Walk
 import java.io.File
 
-class WalkHistoryAdapter(private val context: Context) :
+class WalkHistoryAdapter(private val context: Context, private val onItemClick: (Long) -> Unit) :
     ListAdapter<Walk, WalkHistoryAdapter.WalkHistoryViewHolder>(WalkHistoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalkHistoryViewHolder {
@@ -31,28 +31,25 @@ class WalkHistoryAdapter(private val context: Context) :
     inner class WalkHistoryViewHolder(private val binding: ItemWalkHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val walkName: TextView = itemView.findViewById(R.id.item_walk_name)
-        private val distance: TextView = itemView.findViewById(R.id.item_distance)
-        private val timeOfWalTotal: TextView = itemView.findViewById(R.id.item_start_time)
-        private val photoPath: ImageView = itemView.findViewById(R.id.item_photo_path)
-
         fun bind(item: Walk) {
             binding.apply {
-                walkName.text = item.walk_name
-                distance.text = context.getString(R.string.dist_ncia_2f_km, item.distance)
-                val startTime = item.start_time
-                val endTime = item.end_time
-                val elapsedTime = (endTime - startTime) / 1000
-                timeOfWalTotal.text = context.getString(R.string.total_time, formatTime(elapsedTime))
+                itemWalkName.text = item.walk_name
+                itemDistance.text = context.getString(R.string.dist_ncia_2f_km, item.distance)
+                val elapsedTime = (item.end_time - item.start_time) / 1000
+                itemStartTime.text = context.getString(R.string.total_time, formatTime(elapsedTime))
 
+                // Adiciona o clique no item
+                root.setOnClickListener {
+                    onItemClick(item.walk_id) // Chama o callback passando o ID da caminhada
+                }
+
+                // Configurar imagem
                 val photoFile = File(item.photo_path ?: "")
-
                 if (photoFile.exists()) {
                     val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
-                    photoPath.setImageBitmap(bitmap)
+                    itemPhotoPath.setImageBitmap(bitmap)
                 } else {
-                    // Define uma imagem placeholder se o arquivo não for encontrado
-                    photoPath.setImageResource(R.drawable.ic_user_placeholder)
+                    itemPhotoPath.setImageResource(R.drawable.ic_user_placeholder)
                 }
             }
         }

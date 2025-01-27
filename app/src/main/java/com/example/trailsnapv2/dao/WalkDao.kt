@@ -17,7 +17,7 @@ interface WalkDao {
     @Query("SELECT EXISTS(SELECT 1 FROM users WHERE user_id = :userId LIMIT 1)")
     suspend fun userExists(userId: Long): Boolean  // Check if user exists, returns Boolean
 
-    @Query("SELECT * FROM walks WHERE user_id = :userId")
+    @Query("SELECT * FROM walks WHERE user_id = :userId ORDER BY walk_id DESC")
     suspend fun getWalksByUserId(userId: Long): List<Walk>
 
     // Function to calculate the total distance walked by a user

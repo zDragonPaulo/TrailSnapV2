@@ -58,4 +58,6 @@
     <string name="profile_updated_successfully">Profile updated successfully</string>
     <string name="failed_to_update_profile">Failed to update profile</string>
     <string name="walk_name_empty">Walk name can\'t be empty</string>
+    <string name="walk_update">Walk updated with sucess</string>
+    <string name="walk_saved">Walk saved with sucess</string>
 </resources>
