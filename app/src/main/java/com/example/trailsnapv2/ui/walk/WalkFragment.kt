@@ -31,6 +31,14 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
+/**
+ * WalkFragment is responsible for managing the walk tracking process.
+ * It allows the user to start and finish a walk using either GPS or accelerometer data.
+ * The fragment calculates the distance walked and time elapsed during the walk.
+ * After completing the walk, it navigates to another fragment to edit the walk details.
+ *
+ * @see WalkViewModel
+ */
 class WalkFragment : Fragment() {
 
     private lateinit var viewModel: WalkViewModel
@@ -38,7 +46,7 @@ class WalkFragment : Fragment() {
     private var startLocation: Pair<Double, Double>? = null
     private var endLocation: Pair<Double, Double>? = null
     private var intermediateLocations = mutableListOf<Pair<Double, Double>>()
-    private var totalDistance: Double = 0.0 // Distance in meters
+    private var totalDistance: Double = 0.0
     private var startTime: Long = 0
     private lateinit var textTime: TextView
     private lateinit var textDistance: TextView
@@ -53,7 +61,15 @@ class WalkFragment : Fragment() {
     private var distanceWalked = 0.0 // Distance in meters
     private lateinit var accelerometerListener: SensorEventListener
 
-    @SuppressLint("MissingInflatedId")
+    /**
+     * Inflates the layout and sets up the necessary views and listeners.
+     *
+     * @param inflater LayoutInflater to inflate the fragment's layout.
+     * @param container The parent view that the fragment's UI will be attached to.
+     * @param savedInstanceState The previously saved state of the fragment.
+     * @return The root view for this fragment's layout.
+     */
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,7 +86,7 @@ class WalkFragment : Fragment() {
 
         walkNameTextView.text = walkName
 
-        val walkDao = (requireActivity().application as MyApp).database.walkDao()
+        (requireActivity().application as MyApp).database.walkDao()
         val factory = WalkViewModel.Factory()
         viewModel = ViewModelProvider(this, factory).get(WalkViewModel::class.java)
 
@@ -112,7 +128,7 @@ class WalkFragment : Fragment() {
                     totalDistance += lastDistance
                     totalDistance
                 } else {
-                    distanceWalked // Already in meters
+                    distanceWalked
                 }
 
                 val endTime = System.currentTimeMillis()
@@ -137,10 +153,15 @@ class WalkFragment : Fragment() {
         return view
     }
 
+    /**
+     * Starts periodic updates of the user's location using the FusedLocationProviderClient.
+     * The distance walked is calculated based on the change in location.
+     */
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         locationHandler = Handler(Looper.getMainLooper())
         locationRunnable = object : Runnable {
+            @SuppressLint("SetTextI18n")
             override fun run() {
                 getCurrentLocation { location ->
                     val currentLocation = Pair(location.latitude, location.longitude)
@@ -159,22 +180,30 @@ class WalkFragment : Fragment() {
         locationHandler?.post(locationRunnable!!)
     }
 
+    /**
+     * Stops the location updates by removing the runnable from the handler.
+     */
     private fun stopLocationUpdates() {
         locationHandler?.removeCallbacks(locationRunnable!!)
     }
 
+    /**
+     * Starts tracking the user's walk using the device's accelerometer.
+     * The distance walked is estimated based on detected accelerometer events.
+     */
     private fun startAccelerometerTracking() {
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
 
         accelerometerListener = object : SensorEventListener {
+            @SuppressLint("SetTextI18n")
             override fun onSensorChanged(event: SensorEvent?) {
                 if (event != null && event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
                     val (x, y, z) = event.values
                     val acceleration = sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH
 
                     if (acceleration > 2.5) {
-                        distanceWalked += 0.6 // Approximate step distance in meters
+                        distanceWalked += 0.6
                         textDistance.text = "${"%.0f".format(distanceWalked)} m"
                         Log.d("WalkFragment", "Distance walked: $distanceWalked m")
                     }
@@ -188,6 +217,9 @@ class WalkFragment : Fragment() {
         isTrackingAccelerometer = true
     }
 
+    /**
+     * Stops tracking the accelerometer by unregistering the accelerometer listener.
+     */
     private fun stopAccelerometerTracking() {
         if (isTrackingAccelerometer) {
             sensorManager.unregisterListener(accelerometerListener)
@@ -195,6 +227,11 @@ class WalkFragment : Fragment() {
         }
     }
 
+    /**
+     * Gets the current location of the user using the FusedLocationProviderClient.
+     *
+     * @param callback Callback function that will be invoked with the current location.
+     */
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation(callback: (Location) -> Unit) {
         if (ActivityCompat.checkSelfPermission(
@@ -215,6 +252,13 @@ class WalkFragment : Fragment() {
         }
     }
 
+    /**
+     * Calculates the distance between two geographical coordinates using the Haversine formula.
+     *
+     * @param start The starting geographical coordinates.
+     * @param end The ending geographical coordinates.
+     * @return The calculated distance in meters.
+     */
     private fun calculateDistance(
         start: Pair<Double, Double>?,
         end: Pair<Double, Double>?
@@ -224,7 +268,7 @@ class WalkFragment : Fragment() {
         val (lat1, lon1) = start
         val (lat2, lon2) = end
 
-        val earthRadius = 6371000 // Radius in meters
+        val earthRadius = 6371000
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2) * sin(dLat / 2) +
@@ -234,6 +278,9 @@ class WalkFragment : Fragment() {
         return earthRadius * c
     }
 
+    /**
+     * Starts the chronometer to track the elapsed time of the walk.
+     */
     private fun startChronometer() {
         handler = Handler(Looper.getMainLooper())
         runnable = object : Runnable {
@@ -247,10 +294,20 @@ class WalkFragment : Fragment() {
         handler?.post(runnable!!)
     }
 
+    /**
+     * Stops the chronometer.
+     */
     private fun stopChronometer() {
         handler?.removeCallbacks(runnable!!)
     }
 
+    /**
+     * Formats the elapsed time in milliseconds into a readable string format (hh:mm:ss).
+     *
+     * @param elapsedTime The elapsed time in milliseconds.
+     * @return A formatted time string.
+     */
+    @SuppressLint("DefaultLocale")
     private fun formatTime(elapsedTime: Long): String {
         val hours = (elapsedTime / 3600000).toInt()
         val minutes = ((elapsedTime % 3600000) / 60000).toInt()

@@ -45,7 +45,7 @@ class AddWalkFragment : Fragment() {
         val walkName: TextInputLayout = view.findViewById(R.id.textInputLayoutWalkName)
         val buttonStartWalk: Button = view.findViewById(R.id.startWalk)
 
-        val walkDao = (requireActivity().application as MyApp).database.walkDao()
+        (requireActivity().application as MyApp).database.walkDao()
         val factory = AddWalkViewModel.Factory()
         addWalkViewModel = ViewModelProvider(this, factory).get(AddWalkViewModel::class.java)
 

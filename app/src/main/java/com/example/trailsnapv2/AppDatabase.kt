@@ -21,6 +21,20 @@ import com.example.trailsnapv2.entities.User
 import com.example.trailsnapv2.entities.UserAchievement
 import com.example.trailsnapv2.entities.Walk
 
+/**
+ * Singleton Room Database for the TrailSnap application.
+ *
+ * This database contains tables for users, walks, members, parties, achievements, and related entities.
+ * It uses Room's database builder to ensure thread safety and supports migrations to handle schema updates.
+ *
+ * @property userDao Provides access to the User entity.
+ * @property walkDao Provides access to the Walk entity.
+ * @property memberDao Provides access to the Member entity.
+ * @property partyDao Provides access to the Party entity.
+ * @property singularAchievementDao Provides access to Singular Achievements.
+ * @property userAchievementDao Provides access to User Achievements.
+ * @property partyAchievementDao Provides access to Party Achievements.
+ */
 @Database(
     entities = [
         User::class,
@@ -48,11 +62,24 @@ abstract class AppDatabase : RoomDatabase() {
         private var instance: AppDatabase? = null
         private val LOCK = Any()
 
+        /**
+         * Creates or retrieves the singleton instance of the database.
+         *
+         * @param context The application context.
+         * @return The singleton instance of the database.
+         */
         operator fun invoke(context: Context): AppDatabase {
             return instance ?: synchronized(LOCK) {
                 instance ?: buildDatabase(context).also { instance = it }
             }
         }
+
+        /**
+         * Retrieves the database instance, initializing it if necessary.
+         *
+         * @param context The application context.
+         * @return The database instance.
+         */
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {
                 val instanceForNow = Room.databaseBuilder(
@@ -64,23 +91,26 @@ abstract class AppDatabase : RoomDatabase() {
                 instanceForNow
             }
         }
+
+        /**
+         * Builds the database with support for migrations.
+         *
+         * @param context The application context.
+         * @return A fully configured Room database.
+         */
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
                 "app_database.db"
             )
-                .addMigrations(MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17) // Incluí todas as migrações
+                .addMigrations(MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17)
                 .fallbackToDestructiveMigration()
                 .build()
         }
 
-        /**
-         * Migração da versão 14 para 15: alteração de tipos de colunas.
-         */
         private val MIGRATION_14_15 = object : Migration(14, 15) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Cria uma nova tabela com o esquema atualizado
                 database.execSQL("""
                     CREATE TABLE IF NOT EXISTS walks_new (
                         walk_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -93,34 +123,24 @@ abstract class AppDatabase : RoomDatabase() {
                     )
                 """)
 
-                // Copia os dados da tabela antiga para a nova
                 database.execSQL("""
                     INSERT INTO walks_new (walk_id, user_id, walk_name, distance, start_time, end_time)
                     SELECT walk_id, user_id, walk_name, distance, start_time, end_time FROM walks
                 """)
 
-                // Remove a tabela antiga e renomeia a nova
                 database.execSQL("DROP TABLE walks")
                 database.execSQL("ALTER TABLE walks_new RENAME TO walks")
             }
         }
 
-        /**
-         * Migration from version 15 to 16: Adding `photo_path` column to `walks`.
-         */
         private val MIGRATION_15_16 = object : Migration(15, 16) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Adiciona a nova coluna `photo_path` à tabela existente
                 database.execSQL("ALTER TABLE walks ADD COLUMN photo_path TEXT")
             }
         }
 
-        /**
-         * Migration from version 16 to 17: Adding `condition` column to `singular_achievements`.
-         */
         private val MIGRATION_16_17 = object : Migration(16, 17) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Add the `condition` column with a default value
                 database.execSQL("ALTER TABLE singular_achievements ADD COLUMN condition TEXT NOT NULL DEFAULT ''")
             }
         }

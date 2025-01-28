@@ -28,32 +28,33 @@
         app:layout_constraintTop_toBottomOf="@id/button_settings"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"/>
 
     <TextView
         android:id="@+id/text_total_walks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/total_walk_time"
+        android:text="@string/total_walks"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/text_total_distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"/>
 
-    <!-- Total Time -->
     <TextView
         android:id="@+id/text_total_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Total Time: 0 min"
+        android:text="@string/total_walk_time"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/text_total_walks"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"/>
 
-    <!-- Title for Achievements Section -->
     <TextView
         android:id="@+id/text_next_achievements"
         android:layout_width="0dp"
@@ -65,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_total_walks"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="50dp" />
 
     <TextView
         android:id="@+id/text_no_achievements"
@@ -75,7 +76,10 @@
         android:textSize="16sp"
         android:visibility="gone"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/text_next_achievements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_achievements"

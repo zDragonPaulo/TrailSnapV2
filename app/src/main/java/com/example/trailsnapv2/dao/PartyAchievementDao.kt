@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.example.trailsnapv2.entities.PartyAchievement
 
 /**
+ * NOTE: USED FOR FEATURE THAT WAS NOT IMPLEMENTED
  * Data Access Object (DAO) for the PartyAchievement entity.
  * This interface provides methods to interact with the "party_achievements" table in the database,
  * allowing for operations such as retrieving, inserting, and deleting party achievement records.

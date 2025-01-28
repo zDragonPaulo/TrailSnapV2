@@ -72,4 +72,6 @@
     <string name="fill_all_fields">Please fill in all fields</string>
     <string name="register_error">Error registering user</string>
     <string name="password_not_match">Passwords do not match</string>
+    <string name="walk_not_found">Walk not found</string>
+    <string name="total_walks">Walks:</string>
 </resources>

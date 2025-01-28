@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.example.trailsnapv2.entities.Member
 
 /**
+ * NOTE: USED FOR FEATURE THAT WAS NOT IMPLEMENTED
  * Data Access Object (DAO) for the Member entity.
  * This interface provides methods to interact with the "Members" table in the database,
  * allowing for operations such as retrieving, inserting, and deleting member records.

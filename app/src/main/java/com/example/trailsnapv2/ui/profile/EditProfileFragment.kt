@@ -26,6 +26,13 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
+/**
+ * A Fragment that handles editing the user profile.
+ *
+ * This fragment provides functionality for users to update their profile details such as username,
+ * password, description, birthday, and profile picture. Changes are saved to the database
+ * through the associated ViewModel.
+ */
 class EditProfileFragment : Fragment() {
 
     private val viewModel: EditProfileViewModel by viewModels {
@@ -46,13 +53,15 @@ class EditProfileFragment : Fragment() {
         }
     }
 
+    /**
+     * Inflates the fragment layout and initializes UI elements and listeners.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
 
-        // Inicializar os componentes da interface
         usernameEditText = view.findViewById(R.id.edit_username)
         passwordEditText = view.findViewById(R.id.edit_password)
         descriptionEditText = view.findViewById(R.id.edit_user_description)
@@ -61,28 +70,23 @@ class EditProfileFragment : Fragment() {
         val selectImageButton: Button = view.findViewById(R.id.button_select_image)
         val saveButton: Button = view.findViewById(R.id.button_save)
 
-        // Configurar o campo de aniversário
         configureBirthdayEditText()
 
-        // Ação para selecionar imagem
         selectImageButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             selectImageLauncher.launch(intent)
         }
 
-        // Ação para salvar o perfil
         saveButton.setOnClickListener {
-            // Use the existing profile picture if no new image is selected
             val imagePath = if (selectedImageUri != null) {
                 saveImageToInternalStorage(selectedImageUri!!).also {
                     Log.d("EditProfileFragment", "New image saved at: $it")
                 }
             } else {
-                viewModel.profilePicture.value ?: "" // Use the existing profile picture from ViewModel
+                viewModel.profilePicture.value ?: ""
             }
 
-            // Check if the imagePath is valid
             if (imagePath.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), "Failed to save image. Please try again.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -94,16 +98,15 @@ class EditProfileFragment : Fragment() {
                 password = passwordEditText.text.toString(),
                 user_description = descriptionEditText.text.toString(),
                 birthday = birthdayEditText.text.toString(),
-                total_distance = 0.0, // Placeholder value
-                time_used = 0L, // Placeholder value
-                creation_date = "", // Placeholder value
-                profile_picture = imagePath // Use the path to the saved image
+                total_distance = 0.0,
+                time_used = 0L,
+                creation_date = "",
+                profile_picture = imagePath
             )
             viewModel.updateUser(updatedUser)
         }
 
-        // Observar mudanças no status da atualização
-        viewModel.updateStatus.observe(viewLifecycleOwner, Observer { status ->
+        viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 EditProfileViewModel.UpdateStatus.SUCCESS -> {
                     Toast.makeText(
@@ -113,6 +116,7 @@ class EditProfileFragment : Fragment() {
                     ).show()
                     findNavController().navigateUp()
                 }
+
                 EditProfileViewModel.UpdateStatus.FAILURE -> {
                     Toast.makeText(
                         requireContext(),
@@ -121,11 +125,14 @@ class EditProfileFragment : Fragment() {
                     ).show()
                 }
             }
-        })
+        }
 
         return view
     }
 
+    /**
+     * Handles the logic to load user data when the fragment is created.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -133,41 +140,38 @@ class EditProfileFragment : Fragment() {
         userId = sharedPref.getLong("current_user_id", -1L)
 
         if (userId != -1L) {
-            // Busca os dados do usuário logado
-            viewModel.getUserById(userId).observe(viewLifecycleOwner, Observer { user ->
+            viewModel.getUserById(userId).observe(viewLifecycleOwner) { user ->
                 user?.let {
-                    // Popula os campos do formulário com os dados do usuário
                     usernameEditText.setText(it.username)
                     passwordEditText.setText(it.password)
                     descriptionEditText.setText(it.user_description)
                     birthdayEditText.setText(it.birthday)
                     selectedImageUri = it.profile_picture?.let { uriString -> Uri.parse(uriString) }
-                    Log.d("IMAGEM, TÁ TUDO BEM?", selectedImageUri.toString())
-                    // Handle profile picture correctly
+
+                    Log.d("EditProfileFragment", "Profile picture: ${it.profile_picture}")
+
                     if (!it.profile_picture.isNullOrEmpty()) {
                         val file = File(it.profile_picture)
                         if (file.exists()) {
-                            // Use the file path directly for the image
-                            selectedImageUri = Uri.fromFile(file) // Convert file path to Uri
+                            selectedImageUri = Uri.fromFile(file)
                             profileImageView.setImageURI(selectedImageUri)
                         } else {
-                            // Fallback to placeholder if the file doesn't exist
                             profileImageView.setImageResource(R.drawable.ic_profile)
                         }
                     } else {
-                        // Placeholder for no profile picture
                         profileImageView.setImageResource(R.drawable.ic_profile)
                     }
                 }
-            })
+            }
         } else {
-            // Redireciona para o login se o ID do usuário não for encontrado
             Toast.makeText(requireContext(), getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
         }
     }
 
+    /**
+     * Configures the birthday input field to automatically format text as a date (DD/MM/YYYY).
+     */
     private fun configureBirthdayEditText() {
-        // Adiciona um TextWatcher para inserir barras automaticamente
         birthdayEditText.addTextChangedListener(object : TextWatcher {
             private var isUpdating = false
 
@@ -199,6 +203,9 @@ class EditProfileFragment : Fragment() {
         })
     }
 
+    /**
+     * Loads the user data from the ViewModel and populates the UI.
+     */
     private fun saveImageToInternalStorage(uri: Uri): String? {
         val context = requireContext()
         val contentResolver = context.contentResolver
@@ -211,10 +218,10 @@ class EditProfileFragment : Fragment() {
                     inputStream.copyTo(outputStream)
                 }
             }
-            file.absolutePath // Return the file path after saving
+            file.absolutePath
         } catch (e: IOException) {
             e.printStackTrace()
-            null // Return null if an error occurs
+            null
         }
     }
 }

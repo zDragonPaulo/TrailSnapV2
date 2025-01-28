@@ -24,6 +24,13 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
+/**
+ * EditWalkFragment allows the user to edit or create a new walk entry, including details such as
+ * walk name, distance, time, and photo. It supports selecting a photo from the gallery, and handles
+ * saving changes to the walk details in the database.
+ *
+ * @see EditWalkViewModel
+ */
 class EditWalkFragment : Fragment() {
     private var userId: Long = -1L
     private var selectedPhotoUri: Uri? = null
@@ -44,9 +51,18 @@ class EditWalkFragment : Fragment() {
                 AppDatabase.getInstance(requireContext()).walkDao(),
                 AppDatabase.getInstance(requireContext()).userDao()
             )
-        ).get(EditWalkViewModel::class.java)
+        )[EditWalkViewModel::class.java]
     }
 
+    /**
+     * Inflates the fragment's layout and initializes the view elements. It also checks if the user
+     * is editing an existing walk or creating a new one, and sets up the UI accordingly.
+     *
+     * @param inflater LayoutInflater to inflate the fragment's layout.
+     * @param container The parent view that the fragment's UI will be attached to.
+     * @param savedInstanceState The previously saved state of the fragment.
+     * @return The root view for this fragment's layout.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,6 +98,12 @@ class EditWalkFragment : Fragment() {
         return view
     }
 
+    /**
+     * Sets up the UI elements for editing an existing walk, populating the fields with the walk data.
+     *
+     * @param view The root view of the fragment's layout.
+     * @param walk The existing walk data to populate the UI.
+     */
     private fun setupUIForEditing(view: View, walk: Walk) {
         view.findViewById<EditText>(R.id.editNameWalk).setText(walk.walk_name)
         val elapsedTime = (walk.end_time - walk.start_time) / 1000
@@ -89,11 +111,10 @@ class EditWalkFragment : Fragment() {
         view.findViewById<TextView>(R.id.distanceText).text = getString(R.string.dist_ncia_2f_km, distance)
         view.findViewById<TextView>(R.id.elapsedTimeText).text = getString(R.string.total_time, formatTime(elapsedTime))
 
-        // Ensure walk photo is handled properly
         if (!walk.photo_path.isNullOrEmpty()) {
             val file = File(walk.photo_path)
             if (file.exists()) {
-                selectedPhotoUri = Uri.fromFile(file) // Convert file path to URI
+                selectedPhotoUri = Uri.fromFile(file)
                 walkImageView.setImageURI(selectedPhotoUri)
             } else {
                 walkImageView.setImageResource(R.drawable.ic_profile)
@@ -107,6 +128,11 @@ class EditWalkFragment : Fragment() {
         }
     }
 
+    /**
+     * Sets up the UI for creating a new walk, showing the initial details (distance, time).
+     *
+     * @param view The root view of the fragment's layout.
+     */
     private fun setupUIForNewWalk(view: View) {
         val distance = arguments?.getFloat("distance") ?: 0f
         val startTime = arguments?.getLong("startTime") ?: 0L
@@ -123,6 +149,11 @@ class EditWalkFragment : Fragment() {
         }
     }
 
+    /**
+     * Saves the updated walk details after editing.
+     *
+     * @param walk The existing walk to update with the new data.
+     */
     private fun saveWalk(walk: Walk) {
         val walkNameInput = view?.findViewById<EditText>(R.id.editNameWalk)?.text.toString()
         if (walkNameInput.isEmpty()) {
@@ -133,10 +164,11 @@ class EditWalkFragment : Fragment() {
         val imagePath = if (selectedPhotoUri != null) {
             saveImageToInternalStorage(selectedPhotoUri!!)
         } else {
-            walk.photo_path // Use existing image path
+            walk.photo_path
         }
 
         val updatedWalk = walk.copy(walk_name = walkNameInput, photo_path = imagePath)
+
         viewModel.updateWalk(updatedWalk,
             onSuccess = {
                 Toast.makeText(requireContext(), getString(R.string.walk_update), Toast.LENGTH_LONG).show()
@@ -149,6 +181,12 @@ class EditWalkFragment : Fragment() {
         )
     }
 
+    /**
+     * Formats a time in seconds to a readable string (hours, minutes, seconds).
+     *
+     * @param seconds The time in seconds to format.
+     * @return A formatted time string.
+     */
     private fun formatTime(seconds: Long): String {
         return when {
             seconds >= 3600 -> {
@@ -165,6 +203,11 @@ class EditWalkFragment : Fragment() {
         }
     }
 
+    /**
+     * Saves a new walk entry to the database.
+     *
+     * @param view The root view of the fragment's layout.
+     */
     private fun saveNewWalk(view: View) {
         val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()
         if (walkNameInput.isEmpty()) {
@@ -196,6 +239,12 @@ class EditWalkFragment : Fragment() {
         )
     }
 
+    /**
+     * Saves the selected image to internal storage and returns the file path.
+     *
+     * @param uri The URI of the selected image.
+     * @return The path of the saved image in internal storage, or null if saving failed.
+     */
     private fun saveImageToInternalStorage(uri: Uri): String? {
         val context = requireContext()
         val contentResolver = context.contentResolver
