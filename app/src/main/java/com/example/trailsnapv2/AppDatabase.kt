@@ -109,6 +109,14 @@ abstract class AppDatabase : RoomDatabase() {
                 .build()
         }
 
+        /**
+         * Migration from version 14 to 15.
+         *
+         * This migration creates a new `walks_new` table to handle changes to the `walks` table schema.
+         * Specifically, it modifies the data types of `start_time` and `end_time` to be `Long` instead of `Integer`.
+         * After creating the new table, data from the old `walks` table is copied over to the new one,
+         * and then the old table is dropped and the new table is renamed to `walks`.
+         */
         private val MIGRATION_14_15 = object : Migration(14, 15) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("""
@@ -133,12 +141,24 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Migration from version 15 to 16.
+         *
+         * This migration adds a new column `photo_path` of type `TEXT` to the `walks` table.
+         * This allows the storage of a file path or URI that points to a photo associated with a walk.
+         */
         private val MIGRATION_15_16 = object : Migration(15, 16) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE walks ADD COLUMN photo_path TEXT")
             }
         }
 
+        /**
+         * Migration from version 16 to 17.
+         *
+         * This migration adds a new column `condition` of type `TEXT` to the `singular_achievements` table.
+         * The `condition` column is required and defaults to an empty string, ensuring that every row has a value for this column.
+         */
         private val MIGRATION_16_17 = object : Migration(16, 17) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE singular_achievements ADD COLUMN condition TEXT NOT NULL DEFAULT ''")

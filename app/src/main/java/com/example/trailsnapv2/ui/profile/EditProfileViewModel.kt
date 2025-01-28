@@ -7,6 +7,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.trailsnapv2.dao.UserDao
 import com.example.trailsnapv2.entities.User
+import com.example.trailsnapv2.ui.profile.EditProfileViewModel.UpdateStatus.FAILURE
+import com.example.trailsnapv2.ui.profile.EditProfileViewModel.UpdateStatus.SUCCESS
 import kotlinx.coroutines.launch
 
 /**
