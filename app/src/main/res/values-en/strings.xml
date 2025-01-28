@@ -52,7 +52,7 @@
     <string name="total_walks_text">Total Walks: %d</string>
     <string name="no_achievements">No achievements to display</string>
     <string name="user_not_found">User not found!</string>
-    <string name="dist_ncia_2f_km">Distance: %.2f km</string>
+    <string name="dist_ncia_2f_km">Distance: %.2f m</string>
     <string name="total_time">Total Time: %1$s</string>
     <string name="no_walk_found">No Walk Found</string>
     <string name="profile_updated_successfully">Profile updated successfully</string>
