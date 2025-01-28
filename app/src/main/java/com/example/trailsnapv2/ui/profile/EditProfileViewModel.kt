@@ -11,29 +11,31 @@ import kotlinx.coroutines.launch
 
 class EditProfileViewModel(private val userDao: UserDao) : ViewModel() {
 
+    private val _profilePicture = MutableLiveData<String?>()
+    val profilePicture: LiveData<String?> = _profilePicture
+
+    private val _updateStatus = MutableLiveData<UpdateStatus>()
+    val updateStatus: LiveData<UpdateStatus> = _updateStatus
+
     fun updateUser(user: User) {
         viewModelScope.launch {
             val rowsUpdated = userDao.updateUser(user)
             if (rowsUpdated > 0) {
-                // Update was successful
-                // You can add additional logic here, such as notifying the user
-                // For example, you could use a LiveData to notify the fragment
                 _updateStatus.postValue(UpdateStatus.SUCCESS)
             } else {
-                // Update failed
-                // Handle the failure case, such as showing an error message
                 _updateStatus.postValue(UpdateStatus.FAILURE)
             }
         }
     }
 
     fun getUserById(userId: Long): LiveData<User?> {
-        return userDao.getUserById(userId).asLiveData()
+        return userDao.getUserById(userId).asLiveData().also { userLiveData ->
+            userLiveData.observeForever { user ->
+                // Update the profilePicture when the user data changes
+                _profilePicture.value = user?.profile_picture
+            }
+        }
     }
-
-
-    private val _updateStatus = MutableLiveData<UpdateStatus>()
-    val updateStatus: LiveData<UpdateStatus> = _updateStatus
 
     enum class UpdateStatus {
         SUCCESS,
