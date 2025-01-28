@@ -21,7 +21,7 @@
     <string name="next_achievements">Next Achievements</string>
     <string name="image_select_button">Select Image</string>
     <string name="edit_button">Edit</string>
-    <string name="add_photo_button">Add Photo[...]</string>
+    <string name="add_photo_button">Add Photo</string>
     <string name="settings_text">Settings</string>
     <string name="language_text">Language</string>
     <string name="theme_text">Theme</string>
@@ -43,7 +43,7 @@
     <string name="history">History</string>
     <string name="birthday_hint">Birthdate</string>
     <string name="apply_settings_button">Apply Settings</string>
-    <string name="login_successful">Sign In Sucessfully!</string>
+    <string name="login_successful">Signed In Successfully!</string>
     <string name="invalid_credentials">Invalid Credentials!</string>
     <string name="user_registered_successfully">User Registed Successfully!</string>
     <string name="passwords_do_not_match">Passwords don\'t match!</string>
@@ -58,8 +58,8 @@
     <string name="profile_updated_successfully">Profile updated successfully</string>
     <string name="failed_to_update_profile">Failed to update profile</string>
     <string name="walk_name_empty">Walk name can\'t be empty</string>
-    <string name="walk_update">Walk updated with sucess</string>
-    <string name="walk_saved">Walk saved with sucess</string>
+    <string name="walk_update">Walk updated successfully</string>
+    <string name="walk_saved">Walk saved successfully</string>
     <string name="walk_distance">Distance</string>
     <string name="walk_time">Total Time</string>
     <string name="achievement_name">Achievement Name</string>
@@ -74,42 +74,40 @@
     <string name="password_not_match">Passwords do not match</string>
     <string name="walk_not_found">Walk not found</string>
     <string name="total_walks">Walks:</string>
+    <string name="achievement_full_marathon_desc">Walked 50 Kilometers</string>
     <string name="achievement_century_walker">Century Walker</string>
     <string name="achievement_century_walker_desc">Walked 100 kilometers</string>
-
     <string name="achievement_super_walker">Super Walker</string>
     <string name="achievement_super_walker_desc">Walked 250 kilometers</string>
-
     <string name="achievement_explorer">Explorer</string>
     <string name="achievement_explorer_desc">Walked 500 kilometers</string>
-
     <string name="achievement_walking_pro">Walking Pro</string>
     <string name="achievement_walking_pro_desc">Walked 1,000 kilometers</string>
-
     <string name="achievement_first_walk">First Walk</string>
     <string name="achievement_first_walk_desc">Completed your first walk</string>
-
-    <string name="achievement_first_5w">First 5 Walks</string>
+    <string name="achievement_first_5w">First 5W</string>
     <string name="achievement_first_5w_desc">Completed 5 walks</string>
-
     <string name="achievement_10w_milestone">10 Walk Milestone</string>
     <string name="achievement_10w_milestone_desc">Completed 10 walks</string>
-
     <string name="achievement_25_walks">25 Walks</string>
     <string name="achievement_25_walks_desc">Completed 25 walks</string>
-
     <string name="achievement_walking_enthusiast">Walking Enthusiast</string>
     <string name="achievement_walking_enthusiast_desc">Completed 50 walks</string>
-
     <string name="achievement_walking_fanatic">Walking Fanatic</string>
     <string name="achievement_walking_fanatic_desc">Completed 100 walks</string>
-
     <string name="achievement_walking_maniac">Walking Maniac</string>
     <string name="achievement_walking_maniac_desc">Completed 250 walks</string>
-
     <string name="achievement_walking_machine">Walking Machine</string>
     <string name="achievement_walking_machine_desc">Completed 500 walks</string>
-
     <string name="achievement_walking_legend">Walking Legend</string>
     <string name="achievement_walking_legend_desc">Completed 1,000 walks</string>
+    <string name="achievement_half_marathon">Half Marathon</string>
+    <string name="achievement_half_marathon_desc">Walked 25 Kilometers</string>
+    <string name="achievement_full_marathon">Full Marathon</string>
+    <string name="achievement_10k_milestone">10 Kilometer Milestone</string>
+    <string name="achievement_10k_milestone_desc">Walked 10 Kilometers</string>
+    <string name="achievement_first_5k">First 5K</string>
+    <string name="achievement_first_5k_desc">Walked 5 Kilometers</string>
+    <string name="achievement_first_kilometer">First Kilometer</string>
+    <string name="achievement_first_kilometer_desc">Walked 1 Kilometer</string>
 </resources>

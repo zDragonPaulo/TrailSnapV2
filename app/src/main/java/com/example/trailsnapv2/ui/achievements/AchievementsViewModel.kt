@@ -48,32 +48,32 @@ class AchievementsViewModel(
         return listOf(
             SingularAchievement(
                 0,
-                context.getString(R.string.achievement_first_walk),
-                context.getString(R.string.achievement_first_walk_desc),
+                context.getString(R.string.achievement_first_kilometer),
+                context.getString(R.string.achievement_first_kilometer_desc),
                 """{"metric": "distance_walked", "target": 1000.0}"""
             ),
             SingularAchievement(
                 0,
-                context.getString(R.string.achievement_first_5w),
-                context.getString(R.string.achievement_first_5w_desc),
+                context.getString(R.string.achievement_first_5k),
+                context.getString(R.string.achievement_first_5k_desc),
                 """{"metric": "distance_walked", "target": 5000.0}"""
             ),
             SingularAchievement(
                 0,
-                context.getString(R.string.achievement_10w_milestone),
-                context.getString(R.string.achievement_10w_milestone_desc),
+                context.getString(R.string.achievement_10k_milestone),
+                context.getString(R.string.achievement_10k_milestone_desc),
                 """{"metric": "distance_walked", "target": 10000.0}"""
             ),
             SingularAchievement(
                 0,
-                context.getString(R.string.achievement_25_walks),
-                context.getString(R.string.achievement_25_walks_desc),
+                context.getString(R.string.achievement_half_marathon),
+                context.getString(R.string.achievement_half_marathon_desc),
                 """{"metric": "distance_walked", "target": 25000.0}"""
             ),
             SingularAchievement(
                 0,
-                context.getString(R.string.achievement_walking_enthusiast),
-                context.getString(R.string.achievement_walking_enthusiast_desc),
+                context.getString(R.string.achievement_full_marathon),
+                context.getString(R.string.achievement_full_marathon_desc),
                 """{"metric": "distance_walked", "target": 50000.0}"""
             ),
             SingularAchievement(
