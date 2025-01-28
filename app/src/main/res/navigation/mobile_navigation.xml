@@ -13,8 +13,7 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_appSettingsFragment"
             app:destination="@id/appSettingsFragment"
-            app:popUpTo="@id/navigation_dashboard"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/navigation_dashboard" />
     </fragment>
 
     <fragment

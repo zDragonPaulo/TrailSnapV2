@@ -54,11 +54,11 @@
     <string name="user_registered_successfully">Utilizador registado com sucesso!\n</string>
     <string name="passwords_do_not_match">As passwords introduzidas não coincidem!</string>
     <string name="add_photo_button">Adicionar Foto</string>
-    <string name="total_distance_text">Distância Total: %1$.2f km</string>
+    <string name="total_distance_text">Distância Total: %1$.2f m</string>
     <string name="total_walks_text">Caminhadas Totais: %d</string>
     <string name="no_achievements">Sem conquistas para mostrar</string>
     <string name="user_not_found">Utilizador não encontrado!</string>
-    <string name="dist_ncia_2f_km">Distância: %.2f km</string>
+    <string name="dist_ncia_2f_km">Distância: %.2f m</string>
     <string name="total_time">Tempo Total: %1$s</string>
     <string name="no_walk_found">Nenhuma Caminhada Localizada</string>
     <string name="profile_updated_successfully">Perfil Atualizado com Sucesso</string>
