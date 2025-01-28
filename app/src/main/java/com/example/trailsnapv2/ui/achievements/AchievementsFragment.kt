@@ -1,10 +1,13 @@
 package com.example.trailsnapv2.ui.achievements
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +16,7 @@ import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
 import com.example.trailsnapv2.databinding.FragmentAchievementsBinding
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 /**
  * A Fragment that displays the user's achievements in a grid layout. It shows both user-specific
@@ -30,6 +34,8 @@ class AchievementsFragment : Fragment() {
             (requireActivity().application as MyApp).database.walkDao()
         )
     }
+
+
 
     private var userId: Long = 0L
 
@@ -65,10 +71,20 @@ class AchievementsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set the locale to Portuguese for testing
+        setLocale(requireContext(), "pt")
+
         userId = getCurrentUserId()
         if (userId == -1L) return
 
         initializeAchievements()
+    }
+    fun setLocale(context: Context, languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 
     /**
@@ -86,7 +102,7 @@ class AchievementsFragment : Fragment() {
      */
     private fun initializeAchievements() {
         lifecycleScope.launch {
-            viewModel.insertDefaultAchievementsIfNeeded()
+            viewModel.insertDefaultAchievementsIfNeeded(requireContext())
             viewModel.initializeUserAchievements(userId)
 
             observeAchievements()

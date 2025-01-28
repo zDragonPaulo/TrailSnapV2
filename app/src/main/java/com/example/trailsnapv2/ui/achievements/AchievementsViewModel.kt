@@ -30,10 +30,10 @@ class AchievementsViewModel(
      * Inserts default achievements into the database if they haven't been inserted already.
      * This ensures that the necessary achievements are available for all users.
      */
-    fun insertDefaultAchievementsIfNeeded() {
+    fun insertDefaultAchievementsIfNeeded(context: Context) {
         viewModelScope.launch {
             if (singularAchievementDao.getAll().isEmpty()) {
-                val defaultAchievements = createDefaultAchievements()
+                val defaultAchievements = createDefaultAchievements(context)
                 singularAchievementDao.insertAll(defaultAchievements)
             }
         }
