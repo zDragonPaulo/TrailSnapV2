@@ -27,18 +27,23 @@ import java.io.IOException
 class EditWalkFragment : Fragment() {
     private var userId: Long = -1L
     private var selectedPhotoUri: Uri? = null
+    private lateinit var walkImageView: ImageView
+    private var walkId: Long = -1L
+
     private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedPhotoUri = result.data?.data
-            view?.findViewById<ImageView>(R.id.imageView)?.setImageURI(selectedPhotoUri)
+            walkImageView.setImageURI(selectedPhotoUri)
         }
     }
 
     private val viewModel: EditWalkViewModel by lazy {
         ViewModelProvider(
             this,
-            EditWalkViewModelFactory(AppDatabase.getInstance(requireContext()).walkDao(),
-                AppDatabase.getInstance(requireContext()).userDao())
+            EditWalkViewModelFactory(
+                AppDatabase.getInstance(requireContext()).walkDao(),
+                AppDatabase.getInstance(requireContext()).userDao()
+            )
         ).get(EditWalkViewModel::class.java)
     }
 
@@ -48,20 +53,22 @@ class EditWalkFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_edit_walk, container, false)
 
-        val walkId = arguments?.getLong("walkId", -1)
+        walkId = arguments?.getLong("walkId", -1) ?: -1L
         val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
         userId = sharedPref.getLong("current_user_id", -1L)
 
-        if (walkId != null && walkId != -1L) {
-            Log.d("ATENZZIONE PICKPOCKET CARALHO FODA-SE", "Walk ID: $walkId")
-            viewModel.getWalkById(walkId,
-                onSuccess = { walk ->
-                    setupUIForEditing(view, walk)
-                },
+        walkImageView = view.findViewById(R.id.imageView)
+
+        if (walkId != -1L) {
+            Log.d("EditWalkFragment", "Editing walk with ID: $walkId")
+            viewModel.getWalkById(
+                walkId,
+                onSuccess = { walk -> setupUIForEditing(view, walk) },
                 onError = { errorMessage ->
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
                     findNavController().popBackStack()
-                })
+                }
+            )
         } else {
             setupUIForNewWalk(view)
         }
@@ -72,44 +79,31 @@ class EditWalkFragment : Fragment() {
             selectImageLauncher.launch(intent)
         }
 
-
-
         return view
     }
 
     private fun setupUIForEditing(view: View, walk: Walk) {
         view.findViewById<EditText>(R.id.editNameWalk).setText(walk.walk_name)
-        val startTime = walk.start_time
-        val endTime = walk.end_time
-        val elapsedTime = (endTime - startTime) / 1000
+        val elapsedTime = (walk.end_time - walk.start_time) / 1000
         val distance = walk.distance
         view.findViewById<TextView>(R.id.distanceText).text = getString(R.string.dist_ncia_2f_km, distance)
         view.findViewById<TextView>(R.id.elapsedTimeText).text = getString(R.string.total_time, formatTime(elapsedTime))
 
-        selectedPhotoUri = walk.photo_path?.let { Uri.parse(it) }
-        view.findViewById<ImageView>(R.id.imageView)?.setImageURI(selectedPhotoUri)
-        view.findViewById<Button>(R.id.saveButton).setOnClickListener {
-            val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()
-            if (walkNameInput.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.walk_name_empty), Toast.LENGTH_LONG).show()
-                return@setOnClickListener
+        // Ensure walk photo is handled properly
+        if (!walk.photo_path.isNullOrEmpty()) {
+            val file = File(walk.photo_path)
+            if (file.exists()) {
+                selectedPhotoUri = Uri.fromFile(file) // Convert file path to URI
+                walkImageView.setImageURI(selectedPhotoUri)
+            } else {
+                walkImageView.setImageResource(R.drawable.ic_profile)
             }
+        } else {
+            walkImageView.setImageResource(R.drawable.ic_profile)
+        }
 
-            // Salvar imagem no armazenamento interno
-            val imagePath = selectedPhotoUri?.let { saveImageToInternalStorage(it) }
-
-            val updatedWalk = walk.copy(walk_name = walkNameInput, photo_path = imagePath)
-            viewModel.updateWalk(updatedWalk,
-                onSuccess = {
-                    Toast.makeText(requireContext(),
-                        getString(R.string.walk_update), Toast.LENGTH_LONG).show()
-                    findNavController().popBackStack()
-                },
-                onError = { errorMessage ->
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
-                    Log.e("ERRO NESTA MERDA", errorMessage)
-                }
-            )
+        view.findViewById<Button>(R.id.saveButton).setOnClickListener {
+            saveWalk(walk)
         }
     }
 
@@ -125,44 +119,34 @@ class EditWalkFragment : Fragment() {
         view.findViewById<TextView>(R.id.elapsedTimeText).text = getString(R.string.total_time, formatTime(elapsedTime))
 
         view.findViewById<Button>(R.id.saveButton).setOnClickListener {
-            val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()
-            if (walkNameInput.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.walk_name_empty), Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
-
-            // Salvar imagem no armazenamento interno
-            val imagePath = selectedPhotoUri?.let { saveImageToInternalStorage(it) }
-
-            val walkId = arguments?.getLong("walkId", -1)
-            val walk = walkId?.let { it1 ->
-                Walk(
-                    user_id = userId,
-                    walk_name = walkNameInput,
-                    distance = arguments?.getFloat("distance")?.toDouble() ?: 0.0,
-                    start_time = arguments?.getLong("startTime") ?: 0L,
-                    end_time = arguments?.getLong("endTime") ?: 0L,
-                    photo_path = imagePath
-                )
-            }
-
-            walk?.let { it1 ->
-                viewModel.saveWalk(it1,
-                    onSuccess = { savedWalkId ->
-                        Toast.makeText(requireContext(),
-                            getString(R.string.walk_saved), Toast.LENGTH_LONG).show()
-                        val bundle = Bundle().apply {
-                            putLong("walkId", savedWalkId)
-                        }
-                        findNavController().navigate(R.id.action_editWalkFragment_to_walkDetailsFragment, bundle)
-                    },
-                    onError = { errorMessage ->
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
-                        Log.e("ERRO NESTA MERDA", errorMessage)
-                    }
-                )
-            }
+            saveNewWalk(view)
         }
+    }
+
+    private fun saveWalk(walk: Walk) {
+        val walkNameInput = view?.findViewById<EditText>(R.id.editNameWalk)?.text.toString()
+        if (walkNameInput.isEmpty()) {
+            Toast.makeText(requireContext(), getString(R.string.walk_name_empty), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val imagePath = if (selectedPhotoUri != null) {
+            saveImageToInternalStorage(selectedPhotoUri!!)
+        } else {
+            walk.photo_path // Use existing image path
+        }
+
+        val updatedWalk = walk.copy(walk_name = walkNameInput, photo_path = imagePath)
+        viewModel.updateWalk(updatedWalk,
+            onSuccess = {
+                Toast.makeText(requireContext(), getString(R.string.walk_update), Toast.LENGTH_LONG).show()
+                findNavController().popBackStack()
+            },
+            onError = { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                Log.e("EditWalkFragment", errorMessage)
+            }
+        )
     }
 
     private fun formatTime(seconds: Long): String {
@@ -180,23 +164,55 @@ class EditWalkFragment : Fragment() {
             else -> "$seconds s"
         }
     }
+
+    private fun saveNewWalk(view: View) {
+        val walkNameInput = view.findViewById<EditText>(R.id.editNameWalk).text.toString()
+        if (walkNameInput.isEmpty()) {
+            Toast.makeText(requireContext(), getString(R.string.walk_name_empty), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val imagePath = selectedPhotoUri?.let { saveImageToInternalStorage(it) }
+
+        val walk = Walk(
+            user_id = userId,
+            walk_name = walkNameInput,
+            distance = arguments?.getFloat("distance")?.toDouble() ?: 0.0,
+            start_time = arguments?.getLong("startTime") ?: 0L,
+            end_time = arguments?.getLong("endTime") ?: 0L,
+            photo_path = imagePath
+        )
+
+        viewModel.saveWalk(walk,
+            onSuccess = { savedWalkId ->
+                Toast.makeText(requireContext(), getString(R.string.walk_saved), Toast.LENGTH_LONG).show()
+                val bundle = Bundle().apply { putLong("walkId", savedWalkId) }
+                findNavController().navigate(R.id.action_editWalkFragment_to_walkDetailsFragment, bundle)
+            },
+            onError = { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                Log.e("EditWalkFragment", errorMessage)
+            }
+        )
+    }
+
     private fun saveImageToInternalStorage(uri: Uri): String? {
         val context = requireContext()
         val contentResolver = context.contentResolver
         val fileName = "walk_image_${System.currentTimeMillis()}.jpg"
         val file = File(context.filesDir, fileName)
 
-        try {
+        return try {
             contentResolver.openInputStream(uri)?.use { inputStream ->
                 FileOutputStream(file).use { outputStream ->
                     inputStream.copyTo(outputStream)
                 }
             }
-            return file.absolutePath
+            Log.d("EditWalkFragment", "Image saved successfully at ${file.absolutePath}")
+            file.absolutePath
         } catch (e: IOException) {
-            e.printStackTrace()
+            Log.e("EditWalkFragment", "Error saving image", e)
+            null
         }
-        return null
     }
-
 }

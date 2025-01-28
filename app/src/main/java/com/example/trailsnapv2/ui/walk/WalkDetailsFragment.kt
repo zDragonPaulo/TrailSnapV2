@@ -2,6 +2,7 @@ package com.example.trailsnapv2.ui.walk
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,47 +11,39 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.AppDatabase
 import com.example.trailsnapv2.R
 import kotlinx.coroutines.launch
+import java.io.File
 
-/**
- * Fragment that displays the details of a specific walk. It fetches walk details from the database
- * using the walk ID passed in as an argument and presents information such as walk name, distance,
- * duration, and an associated image. It also provides the option to edit the walk details.
- */
 class WalkDetailsFragment : Fragment() {
 
     companion object {
+        fun newInstance() = WalkDetailsFragment()
     }
 
-    /**
-     * Inflates the view and initializes UI elements. Retrieves the walk details from the database
-     * and displays them. If the walk is found, its name, distance, time, and image are shown.
-     * A button is also provided to navigate to the EditWalkFragment for editing the walk.
-     *
-     * @param inflater The LayoutInflater used to inflate the view.
-     * @param container The parent view that the fragment’s UI will be attached to.
-     * @param savedInstanceState A Bundle containing the fragment's previously saved state, if any.
-     * @return The root view for the fragment’s layout.
-     */
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_walk_details, container, false)
 
+        // Views do layout
         val walkNameTextView: TextView = view.findViewById(R.id.walkNameDetail)
         val distanceTextView: TextView = view.findViewById(R.id.distanteUsedDetail)
         val timeTextView: TextView = view.findViewById(R.id.timeUsedDetail)
         val imageView: ImageView = view.findViewById(R.id.imageView2)
         val buttonEditWalk: Button = view.findViewById(R.id.editButton)
 
+        // Obter o DAO do banco de dados
         val database = AppDatabase.getInstance(requireContext())
         val walkDao = database.walkDao()
 
+        // Buscar os detalhes da caminhada usando o ID recebido
         val walkId = arguments?.getLong("walkId") ?: 0
         lifecycleScope.launch {
             val walk = walkDao.getWalkById(walkId)
@@ -61,32 +54,40 @@ class WalkDetailsFragment : Fragment() {
                 val endTime = walk.end_time
                 val elapsedTime = (endTime - startTime) / 1000
                 val distance = walk.distance
-                distanceTextView.text = "Distância: %.2f km".format(distance)
-                timeTextView.text = "Tempo: ${formatTime(elapsedTime)}"
-                imageView.setImageURI(Uri.parse(walk.photo_path))
+                distanceTextView.text = getString(R.string.dist_ncia_2f_km, distance)
+                timeTextView.text = getString(R.string.total_time, formatTime(elapsedTime))
+
+                // Handle walk photo correctly
+                if (!walk.photo_path.isNullOrEmpty()) {
+                    val file = File(walk.photo_path)
+                    if (file.exists()) {
+                        imageView.setImageURI(Uri.fromFile(file)) // Convert file path to URI
+                    } else {
+                        Log.w("WalkDetailsFragment", "Image file not found: ${walk.photo_path}")
+                        imageView.setImageResource(R.drawable.ic_profile) // Use placeholder
+                    }
+                } else {
+                    imageView.setImageResource(R.drawable.ic_profile) // Placeholder if no image
+                }
+
             } else {
-                Toast.makeText(requireContext(),
-                    getString(R.string.walk_not_found), Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
+                Toast.makeText(requireContext(), getString(R.string.walk_saved), Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack() // Voltar se não encontrar
             }
         }
 
+        // Configurar botão de edição
         buttonEditWalk.setOnClickListener {
             val bundle = Bundle().apply {
                 putLong("walkId", walkId)
             }
+            Log.d("WalkDetailsFragment", "Navigating to edit with Walk ID: $walkId")
             findNavController().navigate(R.id.action_walkDetailsFragment_to_editWalkFragment, bundle)
         }
 
         return view
     }
 
-    /**
-     * Formats a given time in seconds into a human-readable format (e.g., hours, minutes, seconds).
-     *
-     * @param seconds The time in seconds to format.
-     * @return A string representing the formatted time.
-     */
     private fun formatTime(seconds: Long): String {
         return when {
             seconds >= 3600 -> {
