@@ -86,7 +86,7 @@ class AchievementsFragment : Fragment() {
      */
     private fun initializeAchievements() {
         lifecycleScope.launch {
-            viewModel.insertDefaultAchievementsIfNeeded()
+            viewModel.insertDefaultAchievementsIfNeeded(requireContext())
             viewModel.initializeUserAchievements(userId)
 
             observeAchievements()
