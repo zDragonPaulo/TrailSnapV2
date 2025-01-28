@@ -70,21 +70,10 @@ class AchievementsFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set the locale to Portuguese for testing
-        setLocale(requireContext(), "pt")
-
         userId = getCurrentUserId()
         if (userId == -1L) return
 
         initializeAchievements()
-    }
-    fun setLocale(context: Context, languageCode: String) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.setLocale(locale)
-        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 
     /**
