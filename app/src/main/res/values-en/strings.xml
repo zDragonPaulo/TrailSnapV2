@@ -74,4 +74,42 @@
     <string name="password_not_match">Passwords do not match</string>
     <string name="walk_not_found">Walk not found</string>
     <string name="total_walks">Walks:</string>
+    <string name="achievement_century_walker">Century Walker</string>
+    <string name="achievement_century_walker_desc">Walked 100 kilometers</string>
+
+    <string name="achievement_super_walker">Super Walker</string>
+    <string name="achievement_super_walker_desc">Walked 250 kilometers</string>
+
+    <string name="achievement_explorer">Explorer</string>
+    <string name="achievement_explorer_desc">Walked 500 kilometers</string>
+
+    <string name="achievement_walking_pro">Walking Pro</string>
+    <string name="achievement_walking_pro_desc">Walked 1,000 kilometers</string>
+
+    <string name="achievement_first_walk">First Walk</string>
+    <string name="achievement_first_walk_desc">Completed your first walk</string>
+
+    <string name="achievement_first_5w">First 5 Walks</string>
+    <string name="achievement_first_5w_desc">Completed 5 walks</string>
+
+    <string name="achievement_10w_milestone">10 Walk Milestone</string>
+    <string name="achievement_10w_milestone_desc">Completed 10 walks</string>
+
+    <string name="achievement_25_walks">25 Walks</string>
+    <string name="achievement_25_walks_desc">Completed 25 walks</string>
+
+    <string name="achievement_walking_enthusiast">Walking Enthusiast</string>
+    <string name="achievement_walking_enthusiast_desc">Completed 50 walks</string>
+
+    <string name="achievement_walking_fanatic">Walking Fanatic</string>
+    <string name="achievement_walking_fanatic_desc">Completed 100 walks</string>
+
+    <string name="achievement_walking_maniac">Walking Maniac</string>
+    <string name="achievement_walking_maniac_desc">Completed 250 walks</string>
+
+    <string name="achievement_walking_machine">Walking Machine</string>
+    <string name="achievement_walking_machine_desc">Completed 500 walks</string>
+
+    <string name="achievement_walking_legend">Walking Legend</string>
+    <string name="achievement_walking_legend_desc">Completed 1,000 walks</string>
 </resources>

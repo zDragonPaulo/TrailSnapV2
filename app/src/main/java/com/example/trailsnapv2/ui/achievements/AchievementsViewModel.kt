@@ -1,10 +1,12 @@
 package com.example.trailsnapv2.ui.achievements
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.example.trailsnapv2.R
 import com.example.trailsnapv2.dao.SingularAchievementDao
 import com.example.trailsnapv2.dao.UserAchievementDao
 import com.example.trailsnapv2.dao.WalkDao
@@ -42,28 +44,119 @@ class AchievementsViewModel(
      *
      * @return A list of default SingularAchievements.
      */
-    private fun createDefaultAchievements(): List<SingularAchievement> {
+    private fun createDefaultAchievements(context: Context): List<SingularAchievement> {
         return listOf(
-            SingularAchievement(0, "First Steps", "Walked 1 kilometer", """{"metric": "distance_walked", "target": 1000.0}"""),
-            SingularAchievement(0, "First 5K", "Walked 5 kilometers", """{"metric": "distance_walked", "target": 5000.0}"""),
-            SingularAchievement(0, "10K Milestone", "Walked 10 kilometers", """{"metric": "distance_walked", "target": 10000.0}"""),
-            SingularAchievement(0, "Half Marathon", "Walked 25 kilometers", """{"metric": "distance_walked", "target": 25000.0}"""),
-            SingularAchievement(0, "Full Marathon", "Walked 50 kilometers", """{"metric": "distance_walked", "target": 50000.0}"""),
-            SingularAchievement(0, "Century Walker", "Walked 100 kilometers", """{"metric": "distance_walked", "target": 100000.0}"""),
-            SingularAchievement(0, "Super Walker", "Walked 250 kilometers", """{"metric": "distance_walked", "target": 250000.0}"""),
-            SingularAchievement(0, "Explorer", "Walked 500 kilometers", """{"metric": "distance_walked", "target": 500000.0}"""),
-            SingularAchievement(0, "Walking Pro", "Walked 1000 kilometers", """{"metric": "distance_walked", "target": 1000000.0}"""),
-            SingularAchievement(0, "First Walk", "Completed your first walk", """{"metric": "walks_completed", "target": 1.0}"""),
-            SingularAchievement(0, "First 5W", "Completed 5 walks", """{"metric": "walks_completed", "target": 5.0}"""),
-            SingularAchievement(0, "10W Milestone", "Completed 10 walks", """{"metric": "walks_completed", "target": 10.0}"""),
-            SingularAchievement(0, "25 Walks Challenge", "Completed 25 walks", """{"metric": "walks_completed", "target": 25.0}"""),
-            SingularAchievement(0, "Walking Enthusiast", "Completed 50 walks", """{"metric": "walks_completed", "target": 50.0}"""),
-            SingularAchievement(0, "Walking Fanatic", "Completed 100 walks", """{"metric": "walks_completed", "target": 100.0}"""),
-            SingularAchievement(0, "Walking Maniac", "Completed 250 walks", """{"metric": "walks_completed", "target": 250.0}"""),
-            SingularAchievement(0, "Walking Machine", "Completed 500 walks", """{"metric": "walks_completed", "target": 500.0}"""),
-            SingularAchievement(0, "Walking Legend", "Completed 1000 walks", """{"metric": "walks_completed", "target": 1000.0}""")
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_first_walk),
+                context.getString(R.string.achievement_first_walk_desc),
+                """{"metric": "distance_walked", "target": 1000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_first_5w),
+                context.getString(R.string.achievement_first_5w_desc),
+                """{"metric": "distance_walked", "target": 5000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_10w_milestone),
+                context.getString(R.string.achievement_10w_milestone_desc),
+                """{"metric": "distance_walked", "target": 10000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_25_walks),
+                context.getString(R.string.achievement_25_walks_desc),
+                """{"metric": "distance_walked", "target": 25000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_walking_enthusiast),
+                context.getString(R.string.achievement_walking_enthusiast_desc),
+                """{"metric": "distance_walked", "target": 50000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_century_walker),
+                context.getString(R.string.achievement_century_walker_desc),
+                """{"metric": "distance_walked", "target": 100000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_super_walker),
+                context.getString(R.string.achievement_super_walker_desc),
+                """{"metric": "distance_walked", "target": 250000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_explorer),
+                context.getString(R.string.achievement_explorer_desc),
+                """{"metric": "distance_walked", "target": 500000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_walking_pro),
+                context.getString(R.string.achievement_walking_pro_desc),
+                """{"metric": "distance_walked", "target": 1000000.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_first_walk),
+                context.getString(R.string.achievement_first_walk_desc),
+                """{"metric": "walks_completed", "target": 1.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_first_5w),
+                context.getString(R.string.achievement_first_5w_desc),
+                """{"metric": "walks_completed", "target": 5.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_10w_milestone),
+                context.getString(R.string.achievement_10w_milestone_desc),
+                """{"metric": "walks_completed", "target": 10.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_25_walks),
+                context.getString(R.string.achievement_25_walks_desc),
+                """{"metric": "walks_completed", "target": 25.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_walking_enthusiast),
+                context.getString(R.string.achievement_walking_enthusiast_desc),
+                """{"metric": "walks_completed", "target": 50.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_walking_fanatic),
+                context.getString(R.string.achievement_walking_fanatic_desc),
+                """{"metric": "walks_completed", "target": 100.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_walking_maniac),
+                context.getString(R.string.achievement_walking_maniac_desc),
+                """{"metric": "walks_completed", "target": 250.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_walking_machine),
+                context.getString(R.string.achievement_walking_machine_desc),
+                """{"metric": "walks_completed", "target": 500.0}"""
+            ),
+            SingularAchievement(
+                0,
+                context.getString(R.string.achievement_walking_legend),
+                context.getString(R.string.achievement_walking_legend_desc),
+                """{"metric": "walks_completed", "target": 1000.0}"""
+            )
         )
     }
+
 
     /**
      * Updates the user's achievements based on their progress. This includes calculating the user's

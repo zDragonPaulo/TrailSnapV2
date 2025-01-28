@@ -82,5 +82,43 @@
     <string name="password_not_match">Passwords não são iguais</string>
     <string name="walk_not_found">Caminhada não encontrada.</string>
     <string name="total_walks">Caminhadas:</string>
+    <string name="achievement_century_walker">Caminhante do Século</string>
+    <string name="achievement_century_walker_desc">Caminhou 100 quilômetros</string>
+
+    <string name="achievement_super_walker">Super Caminhante</string>
+    <string name="achievement_super_walker_desc">Caminhou 250 quilômetros</string>
+
+    <string name="achievement_explorer">Explorador</string>
+    <string name="achievement_explorer_desc">Caminhou 500 quilômetros</string>
+
+    <string name="achievement_walking_pro">Profissional da Caminhada</string>
+    <string name="achievement_walking_pro_desc">Caminhou 1.000 quilômetros</string>
+
+    <string name="achievement_first_walk">Primeira Caminhada</string>
+    <string name="achievement_first_walk_desc">Concluiu sua primeira caminhada</string>
+
+    <string name="achievement_first_5w">Primeiras 5 Caminhadas</string>
+    <string name="achievement_first_5w_desc">Concluiu 5 caminhadas</string>
+
+    <string name="achievement_10w_milestone">Marco das 10 Caminhadas</string>
+    <string name="achievement_10w_milestone_desc">Concluiu 10 caminhadas</string>
+
+    <string name="achievement_25_walks">25 Caminhadas</string>
+    <string name="achievement_25_walks_desc">Concluiu 25 caminhadas</string>
+
+    <string name="achievement_walking_enthusiast">Entusiasta da Caminhada</string>
+    <string name="achievement_walking_enthusiast_desc">Concluiu 50 caminhadas</string>
+
+    <string name="achievement_walking_fanatic">Fanático da Caminhada</string>
+    <string name="achievement_walking_fanatic_desc">Concluiu 100 caminhadas</string>
+
+    <string name="achievement_walking_maniac">Maníaco da Caminhada</string>
+    <string name="achievement_walking_maniac_desc">Concluiu 250 caminhadas</string>
+
+    <string name="achievement_walking_machine">Máquina de Caminhada</string>
+    <string name="achievement_walking_machine_desc">Concluiu 500 caminhadas</string>
+
+    <string name="achievement_walking_legend">Lenda da Caminhada</string>
+    <string name="achievement_walking_legend_desc">Concluiu 1.000 caminhadas</string>
 
 </resources>
