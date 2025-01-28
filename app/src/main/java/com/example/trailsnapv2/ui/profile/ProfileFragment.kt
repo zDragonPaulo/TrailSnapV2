@@ -27,13 +27,15 @@ class ProfileFragment : Fragment() {
     }
 
     /**
-     * Called to create the view for the fragment. This is where UI components are initialized.
-     * The user's data is loaded and displayed in the corresponding TextViews.
+     * Inflates the layout for the profile fragment and sets up the UI components.
+     * The fragment displays the user's profile information such as username, birthday,
+     * description, and profile picture. The user can also navigate to the EditProfileFragment
+     * or log out of their account.
      *
-     * @param inflater The LayoutInflater used to inflate the fragment's view.
-     * @param container The parent view that this fragment's UI will be attached to.
-     * @param savedInstanceState The previous saved state (if any).
-     * @return The root view for this fragment.
+     * @param inflater The LayoutInflater object to inflate the view.
+     * @param container The container for the fragment's view.
+     * @param savedInstanceState Any previously saved state for the fragment.
+     * @return The view for the profile fragment.
      */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,17 +76,13 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment)
         }
 
-
         logoutButton.setOnClickListener {
-            // Apaga o ID do usuário da sessão compartilhada
             val editor = sharedPref.edit()
             editor.remove("current_user_id")
             editor.apply()
 
-            // Redireciona para a tela de login (assumindo que você tenha um LoginFragment configurado)
             findNavController().navigate(R.id.action_navigation_profile_to_loginFragment)
         }
-
 
         return view
     }

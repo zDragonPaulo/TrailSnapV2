@@ -9,30 +9,40 @@ import com.example.trailsnapv2.dao.WalkDao
 import com.example.trailsnapv2.entities.Walk
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel that handles the data and logic for the HistoryFragment.
+ * It loads the walk history data for a specific user and provides it to the UI.
+ *
+ * @param walkDao The DAO used to access the walk data in the database.
+ * @param userId The ID of the user whose walk history is to be fetched.
+ */
 class HistoryViewModel(
     private val walkDao: WalkDao,
     private val userId: Long
 ) : ViewModel() {
 
-    // MutableLiveData interno
     private val _historyItems = MutableLiveData<List<Walk>>()
 
-    // LiveData público, apenas de leitura
     val historyItems: LiveData<List<Walk>> get() = _historyItems
 
     init {
-        loadHistoryItems()  // Carregar dados ao inicializar o ViewModel
+        loadHistoryItems()
     }
 
+    /**
+     * Loads the walk history items from the database using the provided user ID.
+     * This method is called by the ViewModel to fetch the data asynchronously.
+     * If the data is successfully fetched, it updates the `_historyItems` LiveData.
+     * If there is an error, it logs the error and sets an empty list.
+     */
     fun loadHistoryItems() {
         viewModelScope.launch {
             try {
-                // Busca caminhadas para o usuário específico
                 val items = walkDao.getWalksByUserId(userId)
-                _historyItems.postValue(items)  // Atualiza o LiveData
+                _historyItems.postValue(items)
             } catch (e: Exception) {
-                Log.e("HistoryViewModel", "Erro ao buscar caminhadas", e)
-                _historyItems.postValue(emptyList())  // Emite uma lista vazia em caso de erro
+                Log.e("HistoryViewModel", "Error getting walks", e)
+                _historyItems.postValue(emptyList())
             }
         }
     }

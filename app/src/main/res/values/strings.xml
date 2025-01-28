@@ -1,4 +1,8 @@
 <resources>
+    <string-array name="language_options">
+        <item>Português</item>
+        <item>English</item>
+    </string-array>
     <string name="app_name" translatable="false">TrailSnap</string>
     <string name="title_home">Página Inicial</string>
     <string name="title_dashboard">Dashboard</string>
@@ -29,10 +33,6 @@
     <string name="telemetry_text">Telemetria</string>
     <string name="accelerometer_text">Acelerometro</string>
     <string name="gps_text" translatable="false">GPS</string>
-    <string-array name="language_options">
-        <item>Português</item>
-        <item>English</item>
-    </string-array>
     <string name="already_have_account">Já tem conta? Inicie Sessão!</string>
     <string name="dashboard">Página Inicial</string>
     <string name="achievements">Conquistas</string>
@@ -60,7 +60,7 @@
     <string name="user_not_found">Utilizador não encontrado!</string>
     <string name="dist_ncia_2f_km">Distância: %.2f km</string>
     <string name="total_time">Tempo Total: %1$s</string>
-    <string name="nenhuma_caminhada_localizada">Nenhuma Caminhada Localizada</string>
+    <string name="no_walk_found">Nenhuma Caminhada Localizada</string>
     <string name="profile_updated_successfully">Perfil Atualizado com Sucesso</string>
     <string name="failed_to_update_profile">Falha ao Atualizar Perfil</string>
     <string name="walk_name_empty">O nome da caminhada não pode estar vazio.</string>
@@ -77,5 +77,9 @@
     <string name="total_walk_distance">Distância:</string>
     <string name="logout_text">Terminar Sessão</string>
     <string name="create_account_text">Não tem conta? Crie uma!</string>
+    <string name="fill_all_fields">Por favor preencha todos os campos</string>
+    <string name="register_error">Erro ao registar utilizador</string>
+    <string name="password_not_match">Passwords não são iguais</string>
+    <string name="walk_not_found">Caminhada não encontrada.</string>
 
 </resources>

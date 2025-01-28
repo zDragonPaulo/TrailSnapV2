@@ -10,7 +10,7 @@ import com.example.trailsnapv2.entities.Party
  * Data Access Object (DAO) for the Party entity.
  * This interface provides methods to interact with the "party" table in the database,
  * allowing for operations such as retrieving, inserting, and deleting party records.
- * It defines the necessary queries to manage party-related data within the application.
+ * It defines the necessary queries to manage Party-related data within the application.
  */
 @Dao
 interface PartyDao {

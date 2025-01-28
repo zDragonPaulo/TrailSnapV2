@@ -18,10 +18,25 @@ import com.example.trailsnapv2.R
 import com.example.trailsnapv2.entities.User
 import kotlinx.coroutines.launch
 
+/**
+ * A Fragment that handles the user registration process.
+ * It allows users to create a new account by providing a username and password.
+ * It interacts with the `RegisterViewModel` to handle registration logic.
+ */
 class RegisterFragment : Fragment() {
 
     private lateinit var viewModel: RegisterViewModel
 
+    /**
+     * Inflates the fragment's layout and sets up the UI components.
+     * Binds the UI elements like EditText for username, password, and confirm password.
+     * Initializes the ViewModel and sets up click listeners for the register and "already have an account" buttons.
+     *
+     * @param inflater The LayoutInflater object used to inflate the fragment's layout.
+     * @param container The parent view group that the fragment's view will be attached to.
+     * @param savedInstanceState A Bundle containing the fragment's previously saved state.
+     * @return The root view of the fragment's layout.
+     */
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +44,7 @@ class RegisterFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_register, container, false)
 
-        viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
+        viewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
 
         val usernameEditText: EditText = view.findViewById(R.id.username)
         val passwordEditText: EditText = view.findViewById(R.id.password)
@@ -45,12 +60,12 @@ class RegisterFragment : Fragment() {
             val password = passwordEditText.text.toString()
             val confirmPassword = confirmPasswordEditText.text.toString()
             if (username == "" || password == "" || confirmPassword == "") {
-                Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (password == confirmPassword) {
                 val user = User(
-                    user_id = 0, // This will be updated in the ViewModel
+                    user_id = 0,
                     username = username,
                     password = password,
                     user_description = "",
@@ -65,14 +80,15 @@ class RegisterFragment : Fragment() {
                     val userId = viewModel.registerUser(user)
                     if (userId !== -1L) {
                         Log.d("RegisterFragment", "Registered user ID: $userId")
-                        Toast.makeText(context, "User registered successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.user_registered_successfully), Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     } else {
-                        Toast.makeText(context, "Error registering user", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,
+                            getString(R.string.register_error), Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
-                Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.password_not_match), Toast.LENGTH_SHORT).show()
             }
         }
 

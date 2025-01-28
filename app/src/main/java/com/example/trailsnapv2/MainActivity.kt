@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -45,10 +46,18 @@ class MainActivity : AppCompatActivity() {
             resources.displayMetrics
         )
 
+        val isDarkModeEnabled = sharedPreferences.getBoolean("darkMode", false)
+        val mode = if (isDarkModeEnabled) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView // Usa o navView diretamente
+        val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -66,9 +75,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController) // Configura o navView com o navController
+        navView.setupWithNavController(navController)
     }
-
 
     /**
      * Handles navigation when the "up" button in the action bar is pressed.
@@ -80,5 +88,4 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 }

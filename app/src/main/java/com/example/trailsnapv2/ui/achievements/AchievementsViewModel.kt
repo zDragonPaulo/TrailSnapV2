@@ -13,15 +13,23 @@ import com.example.trailsnapv2.entities.UserAchievement
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
+/**
+ * ViewModel responsible for handling and managing achievements for the user.
+ * It interacts with the DAO layers to retrieve and update achievements based on the user's progress.
+ * It ensures that default achievements are inserted if necessary and updates the user's achievements.
+ */
 class AchievementsViewModel(
     private val singularAchievementDao: SingularAchievementDao,
     private val userAchievementDao: UserAchievementDao,
     private val walkDao: WalkDao
 ) : ViewModel() {
 
+    /**
+     * Inserts default achievements into the database if they haven't been inserted already.
+     * This ensures that the necessary achievements are available for all users.
+     */
     fun insertDefaultAchievementsIfNeeded() {
         viewModelScope.launch {
-            // Check if achievements are already initialized
             if (singularAchievementDao.getAll().isEmpty()) {
                 val defaultAchievements = createDefaultAchievements()
                 singularAchievementDao.insertAll(defaultAchievements)
@@ -29,7 +37,11 @@ class AchievementsViewModel(
         }
     }
 
-    // Returns a list of default achievements
+    /**
+     * Creates a list of default achievements that can be unlocked by users.
+     *
+     * @return A list of default SingularAchievements.
+     */
     private fun createDefaultAchievements(): List<SingularAchievement> {
         return listOf(
             SingularAchievement(0, "First Steps", "Walked 1 kilometer", """{"metric": "distance_walked", "target": 1000.0}"""),
@@ -53,62 +65,74 @@ class AchievementsViewModel(
         )
     }
 
+    /**
+     * Updates the user's achievements based on their progress. This includes calculating the user's
+     * total distance walked and total walks completed, and updating the user's achievements accordingly.
+     *
+     * @param userId The ID of the user whose achievements will be updated.
+     */
     fun updateAchievements(userId: Long) {
         viewModelScope.launch {
-            // Get all singular achievements
             val singularAchievements = singularAchievementDao.getAll()
-
-            // Get the user's current achievements
             val userAchievements = userAchievementDao.getUserAchievements(userId)
 
-            // Fetch user's metrics
             if (getTotalDistanceWalked(userId) != null) {
-                val distanceWalked = getTotalDistanceWalked(userId) // Get total distance
-                val walksCompleted = getTotalWalksCompleted(userId) // Get total walks
+                val distanceWalked = getTotalDistanceWalked(userId)
+                val walksCompleted = getTotalWalksCompleted(userId)
 
-                // Loop through the user's achievements and update their progress
                 val updatedAchievements = userAchievements.map { userAchievement ->
                     val singularAchievement = singularAchievements.find { it.id_achievement == userAchievement.achievement_id }
                     singularAchievement?.let { sa ->
-                        val condition = sa.condition // Get condition JSON string
-                        val (metric, target) = parseCondition(condition) // Parse the condition into metric and target
+                        val condition = sa.condition
+                        val (metric, target) = parseCondition(condition)
 
-                        // Calculate progress based on the metric
                         val progress = when (metric) {
                             "distance_walked" -> (distanceWalked / target) * 100
                             "walks_completed" -> (walksCompleted / target) * 100
-                            else -> userAchievement.progress  // Fallback to existing progress
+                            else -> userAchievement.progress
                         }
 
-                        // Determine if the achievement is unlocked
                         val unlocked = progress >= 100
 
                         userAchievement.copy(progress = progress.coerceAtMost(100.0), unlocked = unlocked)
                     } ?: userAchievement
                 }
 
-                // Update the user's achievements in the database
                 userAchievementDao.updateAll(updatedAchievements)
+
             } else {
+                Log.e("AchievementsViewModel", "Failed to retrieve total distance walked for user $userId")
 
-                Log.d("OMAE WA MOU SHINDEIRU", "NANI? IT'S MY FIRST TIME")
             }
-
         }
     }
 
-    // Function to get total distance walked for a user
+    /**
+     * Retrieves the total distance walked by the user.
+     *
+     * @param userId The ID of the user.
+     * @return The total distance walked by the user.
+     */
     private suspend fun getTotalDistanceWalked(userId: Long): Double {
-        return walkDao.calculateDistanceWalked(userId) // Ensure this function returns a Double
+        return walkDao.calculateDistanceWalked(userId)
     }
 
-    // Function to get total walks completed by a user
+    /**
+     * Retrieves the total number of walks completed by the user.
+     *
+     * @param userId The ID of the user.
+     * @return The total number of walks completed by the user.
+     */
     private suspend fun getTotalWalksCompleted(userId: Long): Int {
-        return walkDao.calculateWalksCompleted(userId) // Ensure this function returns an Int
+        return walkDao.calculateWalksCompleted(userId)
     }
 
-
-    // Helper function to parse the condition JSON string
+    /**
+     * Parses the condition of an achievement from its JSON string to extract the metric and target.
+     *
+     * @param condition The JSON string representing the condition of the achievement.
+     * @return A pair consisting of the metric type and target value.
+     */
     private fun parseCondition(condition: String): Pair<String, Double> {
         val json = JSONObject(condition)
         val metric = json.getString("metric")
@@ -116,25 +140,37 @@ class AchievementsViewModel(
         return Pair(metric, target)
     }
 
-
-    // Function to get all SingularAchievements
+    /**
+     * Retrieves all singular achievements from the database.
+     *
+     * @return A LiveData object containing a list of all SingularAchievements.
+     */
     fun getAllSingularAchievements(): LiveData<List<SingularAchievement>> {
         return liveData {
             emit(singularAchievementDao.getAll())
         }
     }
 
-    // Function to get UserAchievements
+    /**
+     * Retrieves the user achievements for a specific user.
+     *
+     * @param userId The ID of the user.
+     * @return A LiveData object containing a list of the user's achievements.
+     */
     fun getUserAchievements(userId: Long): LiveData<List<UserAchievement>> {
         return liveData {
             emit(userAchievementDao.getUserAchievements(userId))
         }
     }
 
-    // Function to initialize user achievements
+    /**
+     * Initializes the user's achievements. If the user does not have any achievements,
+     * it creates and inserts them based on the available singular achievements.
+     *
+     * @param userId The ID of the user whose achievements will be initialized.
+     */
     fun initializeUserAchievements(userId: Long) {
         viewModelScope.launch {
-            // Check if user achievements are initialized for this user
             if (userAchievementDao.getUserAchievements(userId).isEmpty()) {
                 val achievements = singularAchievementDao.getAll()
                 val userAchievements = achievements.map { achievement ->

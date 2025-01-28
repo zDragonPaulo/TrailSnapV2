@@ -2,32 +2,32 @@ package com.example.trailsnapv2.ui.walk
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.example.trailsnapv2.dao.WalkDao
-import com.example.trailsnapv2.entities.Walk
-import kotlinx.coroutines.launch
 
-class WalkViewModel(private val walkDao: WalkDao) : ViewModel() {
+/**
+ * ViewModel class responsible for handling the data and logic related to the walk functionality.
+ * This ViewModel is intended to manage UI-related data in a lifecycle-conscious way for the walk feature.
+ * The ViewModel provides data to the associated UI components and handles any business logic related to walks.
+ */
+class WalkViewModel : ViewModel() {
 
-    fun createWalk(walkName: String, userId: Long, startTime: Long, endTime: Long, distance: Double) {
-        viewModelScope.launch {
-            val walk = Walk(
-                walk_id = 0, // Room will auto-generate the ID
-                user_id = userId,
-                walk_name = walkName,
-                distance = distance,
-                start_time = startTime,
-                end_time = endTime
-            )
-            walkDao.insertWalk(walk)
-        }
-    }
+    /**
+     * A factory for creating instances of [WalkViewModel].
+     * This factory is needed because [WalkViewModel] requires no parameters to be constructed,
+     * and the default constructor is not accessible through [ViewModelProvider].
+     */
+    class Factory : ViewModelProvider.Factory {
 
-    class Factory(private val walkDao: WalkDao) : ViewModelProvider.Factory {
+        /**
+         * Creates an instance of [WalkViewModel].
+         *
+         * @param modelClass The class of the ViewModel to be created.
+         * @return A new instance of [WalkViewModel].
+         * @throws IllegalArgumentException If the given class is not a [WalkViewModel].
+         */
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(WalkViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return WalkViewModel(walkDao) as T
+                return WalkViewModel() as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

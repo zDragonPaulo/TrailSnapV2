@@ -8,9 +8,9 @@ import com.example.trailsnapv2.entities.Member
 
 /**
  * Data Access Object (DAO) for the Member entity.
- * This interface provides methods to interact with the "members" table in the database,
+ * This interface provides methods to interact with the "Members" table in the database,
  * allowing for operations such as retrieving, inserting, and deleting member records.
- * It defines the necessary queries to manage member-related data within the application.
+ * It defines the necessary queries to manage Member-related data within the application.
  */
 @Dao
 interface MemberDao {

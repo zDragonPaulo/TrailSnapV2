@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
  * Data Access Object (DAO) for the User entity.
  * This interface provides methods to interact with the "users" table in the database,
  * allowing for operations such as retrieving, inserting, and updating user records.
- * It defines the necessary queries to manage user-related data within the application.
+ * It defines the necessary queries to manage User-related data within the application.
  */
 @Dao
 interface UserDao {

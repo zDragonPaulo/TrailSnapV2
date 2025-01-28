@@ -16,10 +16,25 @@ import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.R
 import kotlinx.coroutines.launch
 
+/**
+ * A fragment responsible for handling user login functionality.
+ * It allows the user to enter a username and password, and attempts to authenticate the user.
+ * Upon successful login, the user is redirected to the dashboard.
+ */
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by activityViewModels()
 
+    /**
+     * Inflates the login fragment layout and initializes UI components like the username,
+     * password input fields, and login button.
+     * Sets up a click listener on the login button to initiate the login process.
+     *
+     * @param inflater The LayoutInflater used to inflate the fragment's view.
+     * @param container The container that holds the fragment's view.
+     * @param savedInstanceState The saved instance state of the fragment.
+     * @return The root view of the fragment.
+     */
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +55,6 @@ class LoginFragment : Fragment() {
             lifecycleScope.launch {
                 val success = viewModel.loginUser(username, password)
                 if (success) {
-                    // Salvar user_id no SharedPreferences
                     val userId = viewModel.getUserId(username)
                     userId?.let {
                         val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)

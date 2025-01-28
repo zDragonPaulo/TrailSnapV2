@@ -31,7 +31,7 @@ import com.example.trailsnapv2.entities.Walk
         SingularAchievement::class,
         PartyAchievement::class
     ],
-    version = 17 // Atualizei para a nova versão
+    version = 17
 )
 abstract class AppDatabase : RoomDatabase() {
 

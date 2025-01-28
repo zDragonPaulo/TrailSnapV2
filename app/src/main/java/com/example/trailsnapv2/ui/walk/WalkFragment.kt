@@ -71,7 +71,7 @@ class WalkFragment : Fragment() {
         walkNameTextView.text = walkName
 
         val walkDao = (requireActivity().application as MyApp).database.walkDao()
-        val factory = WalkViewModel.Factory(walkDao)
+        val factory = WalkViewModel.Factory()
         viewModel = ViewModelProvider(this, factory).get(WalkViewModel::class.java)
 
         val sharedPreferences = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE)

@@ -10,11 +10,10 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel for managing the profile data of a user.
  * This ViewModel retrieves and holds the user's information like username, birthday,
- * total distance, and time used, and updates the UI accordingly.
+ * description and profile picture, and updates the UI accordingly.
  *
  * @param userDao The DAO used to interact with the database for user-related operations.
  */
-
 class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
 
     private val _username = MutableLiveData<String>()
@@ -22,12 +21,6 @@ class ProfileViewModel(private val userDao: UserDao) : ViewModel() {
 
     private val _birthday = MutableLiveData<String>()
     val birthday: LiveData<String> = _birthday
-
-    private val _totalDistance = MutableLiveData<String>()
-    val totalDistance: LiveData<String> = _totalDistance
-
-    private val _timeUsed = MutableLiveData<String>()
-    val timeUsed: LiveData<String> = _timeUsed
 
     private val _description = MutableLiveData<String>()
     val description: LiveData<String> = _description

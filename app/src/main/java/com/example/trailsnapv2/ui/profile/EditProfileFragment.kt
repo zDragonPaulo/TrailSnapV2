@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.trailsnapv2.MyApp
 import com.example.trailsnapv2.R
@@ -49,7 +48,6 @@ class EditProfileFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
 
-        // Inicializar os componentes da interface
         usernameEditText = view.findViewById(R.id.edit_username)
         passwordEditText = view.findViewById(R.id.edit_password)
         descriptionEditText = view.findViewById(R.id.edit_user_description)
@@ -58,14 +56,12 @@ class EditProfileFragment : Fragment() {
         val selectImageButton: Button = view.findViewById(R.id.button_select_image)
         val saveButton: Button = view.findViewById(R.id.button_save)
 
-        // Ação para selecionar imagem
         selectImageButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             selectImageLauncher.launch(intent)
         }
 
-        // Ação para salvar o perfil
         saveButton.setOnClickListener {
             val imagePath = selectedImageUri?.let { saveImageToInternalStorage(it) }
             val updatedUser = User(
@@ -74,28 +70,32 @@ class EditProfileFragment : Fragment() {
                 password = passwordEditText.text.toString(),
                 user_description = descriptionEditText.text.toString(),
                 birthday = birthdayEditText.text.toString(),
-                total_distance = 0.0, // Placeholder value
-                time_used = 0L, // Placeholder value
-                creation_date = "", // Placeholder value
-                profile_picture = imagePath // Use the path to the saved image
+                total_distance = 0.0,
+                time_used = 0L,
+                creation_date = "",
+                profile_picture = imagePath
             )
             viewModel.updateUser(updatedUser)
         }
 
-        // Observar mudanças no status da atualização
-        viewModel.updateStatus.observe(viewLifecycleOwner, Observer { status ->
+        viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 EditProfileViewModel.UpdateStatus.SUCCESS -> {
-                    Toast.makeText(requireContext(),
-                        getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT
+                    ).show()
                     findNavController().navigateUp()
                 }
+
                 EditProfileViewModel.UpdateStatus.FAILURE -> {
-                    Toast.makeText(requireContext(),
-                        getString(R.string.failed_to_update_profile), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.failed_to_update_profile), Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-        })
+        }
 
         return view
     }
@@ -107,10 +107,8 @@ class EditProfileFragment : Fragment() {
         userId = sharedPref.getLong("current_user_id", -1L)
 
         if (userId != -1L) {
-            // Busca os dados do usuário logado
-            viewModel.getUserById(userId).observe(viewLifecycleOwner, Observer { user ->
+            viewModel.getUserById(userId).observe(viewLifecycleOwner) { user ->
                 user?.let {
-                    // Popula os campos do formulário com os dados do usuário
                     usernameEditText.setText(it.username)
                     passwordEditText.setText(it.password)
                     descriptionEditText.setText(it.user_description)
@@ -118,9 +116,8 @@ class EditProfileFragment : Fragment() {
                     selectedImageUri = it.profile_picture?.let { uriString -> Uri.parse(uriString) }
                     profileImageView.setImageURI(selectedImageUri)
                 }
-            })
+            }
         } else {
-            // Redireciona para o login se o ID do usuário não for encontrado
             Toast.makeText(requireContext(), getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
         }
     }

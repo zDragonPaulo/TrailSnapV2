@@ -14,9 +14,13 @@ import com.example.trailsnapv2.databinding.FragmentAppSettingsBinding
 import java.util.Locale
 
 /**
- * Fragment that manages the application settings related to language preferences.
- * This fragment allows the user to select a language from a spinner and updates
- * the app's locale accordingly to provide a localized user experience.
+ * A fragment that allows the user to configure app settings, including:
+ * - Language selection
+ * - Dark mode toggle
+ * - Telemetry type selection (GPS or accelerometer)
+ *
+ * The fragment loads the current settings from SharedPreferences and allows the user
+ * to apply changes. Upon applying the settings, the app restarts to reflect the new settings.
  */
 class AppSettingsFragment : Fragment() {
 
@@ -27,6 +31,13 @@ class AppSettingsFragment : Fragment() {
     private var isDarkModeEnabled: Boolean = false
     private var selectedTelemetry: String = "gps"
 
+    /**
+     * Inflates the fragment layout and prepares the UI components.
+     * @param inflater The LayoutInflater used to inflate the view.
+     * @param container The parent view that the fragment's UI will be attached to.
+     * @param savedInstanceState A bundle containing any saved instance state of the fragment.
+     * @return The root view of the fragment.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,73 +46,21 @@ class AppSettingsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Initializes the settings UI based on the saved preferences.
+     * Sets up listeners for user interaction and handles the application of new settings.
+     * @param view The root view of the fragment.
+     * @param savedInstanceState A bundle containing any saved instance state of the fragment.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize SharedPreferences
         val sharedPreferences = requireContext().getSharedPreferences("AppSettings", AppCompatActivity.MODE_PRIVATE)
 
-        // Load saved preferences
         selectedLanguageCode = sharedPreferences.getString("languageCode", "en") ?: "en"
         isDarkModeEnabled = sharedPreferences.getBoolean("darkMode", false)
         selectedTelemetry = sharedPreferences.getString("telemetry", "gps") ?: "gps"
 
-        // Set initial states for UI components
-        binding.languageSpinner.setSelection(
-            if (selectedLanguageCode == "pt") 0 else 1
-        )
-        binding.themeSwitch.isChecked = isDarkModeEnabled
-
-        // Set default telemetry selection (GPS or accelerometer)
-        when (selectedTelemetry) {
-            "accelerometer" -> binding.telemetryRadioGroup.check(R.id.telemetry_accelerometer)
-            else -> binding.telemetryRadioGroup.check(R.id.telemetry_gps) // Default to GPS
-        }
-
-        // Set up button click listener
-        binding.applySettingsButton.setOnClickListener {
-            Log.d("AppSettingsFragment", "Button clicked")
-
-            // Get selected language from spinner
-            selectedLanguageCode = when (binding.languageSpinner.selectedItemPosition) {
-                0 -> "pt" // Português
-                1 -> "en" // English
-                else -> "en"
-            }
-
-            // Get dark mode status from switch
-            isDarkModeEnabled = binding.themeSwitch.isChecked
-
-            // Get selected telemetry type from RadioGroup
-            val selectedTelemetry = when (binding.telemetryRadioGroup.checkedRadioButtonId) {
-                R.id.telemetry_accelerometer -> "accelerometer"
-                else -> "gps" // Default to GPS
-            }
-
-            // Save and apply the settings
-            applySettings(selectedTelemetry)
-        }
-    }
-
-    /**
-     * Saves and applies user settings for language and dark mode.
-     */
-    private fun applySettings(telemetry: String) {
-        val sharedPreferences = requireContext().getSharedPreferences("AppSettings", AppCompatActivity.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
-        // Save language preference
-        editor.putString("languageCode", selectedLanguageCode)
-
-        // Save dark mode preference
-        editor.putBoolean("darkMode", isDarkModeEnabled)
-
-        // Save telemetry preference
-        editor.putString("telemetry", telemetry)
-
-        editor.commit() // Synchronous saving
-
-        // Apply dark mode
         val mode = if (isDarkModeEnabled) {
             AppCompatDelegate.MODE_NIGHT_YES
         } else {
@@ -109,17 +68,71 @@ class AppSettingsFragment : Fragment() {
         }
         AppCompatDelegate.setDefaultNightMode(mode)
 
-        // Apply language changes
+        binding.languageSpinner.setSelection(
+            if (selectedLanguageCode == "pt") 0 else 1
+        )
+        binding.themeSwitch.isChecked = isDarkModeEnabled
+
+        when (selectedTelemetry) {
+            "accelerometer" -> binding.telemetryRadioGroup.check(R.id.telemetry_accelerometer)
+            else -> binding.telemetryRadioGroup.check(R.id.telemetry_gps)
+        }
+
+        binding.applySettingsButton.setOnClickListener {
+            Log.d("AppSettingsFragment", "Button clicked")
+
+            selectedLanguageCode = when (binding.languageSpinner.selectedItemPosition) {
+                0 -> "pt"
+                1 -> "en"
+                else -> "en"
+            }
+
+            isDarkModeEnabled = binding.themeSwitch.isChecked
+
+            val selectedTelemetry = when (binding.telemetryRadioGroup.checkedRadioButtonId) {
+                R.id.telemetry_accelerometer -> "accelerometer"
+                else -> "gps"
+            }
+
+            applySettings(selectedTelemetry)
+        }
+    }
+
+
+    /**
+     * Saves the user's settings (language, dark mode, and telemetry) and applies them.
+     * This method updates the app's appearance (dark mode, language) and restarts the activity.
+     *
+     * @param telemetry The selected telemetry type (GPS or accelerometer).
+     */
+
+    private fun applySettings(telemetry: String) {
+        val sharedPreferences = requireContext().getSharedPreferences("AppSettings", AppCompatActivity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        editor.putString("languageCode", selectedLanguageCode)
+        editor.putBoolean("darkMode", isDarkModeEnabled)
+        editor.putString("telemetry", telemetry)
+
+        editor.apply()
+
+        val mode = if (isDarkModeEnabled) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
+
         updateLocale(selectedLanguageCode)
 
-        // Restart the activity to apply changes
         activity?.recreate()
     }
 
     /**
-     * Updates the app's locale to the selected language.
+     * Updates the app's locale to reflect the selected language.
+     * This change applies the new language to the app without restarting the app entirely.
      *
-     * @param languageCode The ISO language code to set the app's locale.
+     * @param languageCode The ISO code of the language to set for the app.
      */
     private fun updateLocale(languageCode: String) {
         val locale = Locale(languageCode)
@@ -134,6 +147,9 @@ class AppSettingsFragment : Fragment() {
         )
     }
 
+    /**
+     * Cleans up the binding reference when the fragment's view is destroyed to avoid memory leaks.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

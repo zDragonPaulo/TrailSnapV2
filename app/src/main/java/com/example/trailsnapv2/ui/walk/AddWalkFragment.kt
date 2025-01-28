@@ -15,11 +15,28 @@ import com.example.trailsnapv2.R
 import com.example.trailsnapv2.ui.auth.LoginViewModel
 import com.google.android.material.textfield.TextInputLayout
 
+/**
+ * Fragment responsible for adding a new walk.
+ * This fragment allows the user to enter a name for the walk and start it.
+ * It observes the current user's data and passes the walk name to the next fragment to start the walk.
+ */
 class AddWalkFragment : Fragment() {
 
     private lateinit var addWalkViewModel: AddWalkViewModel
     private val userViewModel: LoginViewModel by activityViewModels()
     private var userId: Long = 0L
+
+    /**
+     * Inflates the layout for the AddWalkFragment and sets up the UI components.
+     * The user is asked to input a name for the walk, and upon clicking "Start Walk",
+     * the fragment navigates to the WalkFragment to start the walk with the given name.
+     * Observes the current user's data and retrieves the user ID for validation.
+     *
+     * @param inflater The LayoutInflater object to inflate the view.
+     * @param container The container for the fragment's view.
+     * @param savedInstanceState Any previously saved state for the fragment.
+     * @return The view for the AddWalkFragment.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,12 +45,10 @@ class AddWalkFragment : Fragment() {
         val walkName: TextInputLayout = view.findViewById(R.id.textInputLayoutWalkName)
         val buttonStartWalk: Button = view.findViewById(R.id.startWalk)
 
-        // Initialize AddWalkViewModel
         val walkDao = (requireActivity().application as MyApp).database.walkDao()
-        val factory = AddWalkViewModel.Factory(walkDao)
+        val factory = AddWalkViewModel.Factory()
         addWalkViewModel = ViewModelProvider(this, factory).get(AddWalkViewModel::class.java)
 
-        // Observe user data
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
                 Log.d("AddWalkFragment", "Observed user ID: ${it.user_id}")
@@ -60,16 +75,23 @@ class AddWalkFragment : Fragment() {
                 putString("walkName", name)
             }
 
-            // Navigate to the next fragment
             findNavController().navigate(R.id.action_navigation_add_walk_to_walkFragment, bundle)
         }
 
         return view
     }
+
+    /**
+     * Observes the user data when the view is created and logs the user ID if available.
+     * This function is called after the view has been created to ensure the user data
+     * is properly observed and logged.
+     *
+     * @param view The view that was created for the fragment.
+     * @param savedInstanceState The previously saved state of the fragment.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observe user data
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 Log.d("AddWalkFragment", "Observed user ID in onViewCreated: ${user.user_id}")

@@ -10,7 +10,7 @@ import com.example.trailsnapv2.entities.PartyAchievement
  * Data Access Object (DAO) for the PartyAchievement entity.
  * This interface provides methods to interact with the "party_achievements" table in the database,
  * allowing for operations such as retrieving, inserting, and deleting party achievement records.
- * It defines the necessary queries to manage party achievement-related data within the application.
+ * It defines the necessary queries to manage Party Achievement-related data within the application.
  */
 @Dao
 interface PartyAchievementDao {
