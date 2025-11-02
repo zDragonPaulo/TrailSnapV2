@@ -52,5 +52,3 @@ Quick steps
 
 Notes
 - If you hit Gradle/SDK errors, open Android Studio's Build window for specific guidance and ensure your compileSdkVersion and installed SDK platforms match.
-
-```
